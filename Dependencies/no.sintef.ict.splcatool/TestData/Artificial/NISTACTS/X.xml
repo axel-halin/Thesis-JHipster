@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<System name="X">
+  <Parameters>
+    <Parameter id="0" name="Y" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices>
+        <basechoice>true</basechoice>
+        <basechoice>false</basechoice>
+      </basechoices>
+    </Parameter>
+    <Parameter id="1" name="Z" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices>
+        <basechoice>true</basechoice>
+        <basechoice>false</basechoice>
+      </basechoices>
+    </Parameter>
+    <Parameter id="2" name="Q" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices>
+        <basechoice>true</basechoice>
+        <basechoice>false</basechoice>
+      </basechoices>
+    </Parameter>
+    <Parameter id="3" name="R" type="2">
+      <values>
+        <value>true</value>
+        <value>false</value>
+      </values>
+      <basechoices>
+        <basechoice>true</basechoice>
+        <basechoice>false</basechoice>
+      </basechoices>
+    </Parameter>
+  </Parameters>
+  <Constraints>
+    <Constraint text="Y">
+      <Parameters>
+        <Parameter name="Y" />
+      </Parameters>
+    </Constraint>
+    <Constraint text="R || Q">
+      <Parameters>
+        <Parameter name="R" />
+        <Parameter name="Q" />
+      </Parameters>
+    </Constraint>
+  </Constraints>
+</System>
+

@@ -1,0 +1,22 @@
+FM;Features;Solutions;;Seconds;1-wise;seconds;2-wise;seconds;3-wise;seconds
+Eshop-fm.xml;326;26415;lower bound;500;8;3;40;52;165;4747
+Violet.m;113;38612;lower bound;500;5;0;23;9;104;142
+Berkeley.m;90;40988;lower bound;500;5;0;25;13;92;89
+Home-integration-system-fm.xml;73;6401;excact;3;4;0;10;1;35;21
+Documentation-generation-fm.xml;53;46280;lower bound;500;4;0;18;1;56;7
+Thread-domain-fm.xml;51;48847;lower bound;500;6;0;29;3;87;13
+Gg4.m;46;960;excact;0;6;0;23;1;60;4
+TightVNC.m;35;53841;lower bound;500;3;0;14;0;40;0
+Graph-manipulation.xml;33;193;excact;0;3;0;11;1;26;4
+Apl.m;31;4176;excact;1;4;0;12;0;36;0
+Key-word-in-context-fm.xml;31;241;excact;0;5;0;14;0;38;2
+Insurance-product-fm.xml;30;1385;excact;0;4;0;14;0;35;1
+Digital-video-system-fm.xml;26;22681;excact;29;2;0;11;0;32;1
+Graph-product-line-fm.xml;24;31;excact;0;6;0;17;0;27;0
+Monitor-engine-system-fm.xml;19;29;excact;0;2;0;7;0;13;0
+Text-editor-fm.xml;19;397;excact;0;3;0;11;0;28;0
+James-fm.xml;17;69;excact;0;3;0;8;0;21;0
+Jplug-fm.xml;16;81;excact;0;2;0;11;0;22;0
+Virtual-office-of-future-fm.xml;15;49;excact;0;2;0;7;0;16;0
+Cellphone-fm.xml;14;15;excact;0;3;0;9;0;14;0
+Telecommunication-system-fm.xml;14;19;excact;0;4;0;10;0;19;0

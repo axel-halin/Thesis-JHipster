@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<System name="TCAS">
+<Parameters>
+<Parameter id="0" name="Cur_Vertical_Sep" type="0">
+<values>
+  <value>299</value> 
+  <value>300</value> 
+  <value>601</value> 
+  </values>
+  </Parameter>
+<Parameter id="1" name="High_Confidence" type="2">
+<values>
+  <value>true</value> 
+  <value>false</value> 
+  </values>
+  </Parameter>
+<Parameter id="2" name="Two_of_Three_Reports_Valid" type="2">
+<values>
+  <value>true</value> 
+  <value>false</value> 
+  </values>
+  </Parameter>
+<Parameter id="3" name="Own_Tracked_Alt" type="0">
+<values>
+  <value>1</value> 
+  <value>2</value> 
+  </values>
+  </Parameter>
+<Parameter id="4" name="Other_Tracked_Alt" type="0">
+<values>
+  <value>1</value> 
+  <value>2</value> 
+  </values>
+  </Parameter>
+<Parameter id="5" name="Own_Tracked_Alt_Rate" type="0">
+<values>
+  <value>600</value> 
+  <value>601</value> 
+  </values>
+  </Parameter>
+<Parameter id="6" name="Alt_Layer_Value" type="0">
+<values>
+  <value>0</value> 
+  <value>1</value> 
+  <value>2</value> 
+  <value>3</value> 
+  </values>
+  </Parameter>
+<Parameter id="7" name="Up_Separation" type="0">
+<values>
+  <value>0</value> 
+  <value>399</value> 
+  <value>400</value> 
+  <value>499</value> 
+  <value>500</value> 
+  <value>639</value> 
+  <value>640</value> 
+  <value>739</value> 
+  <value>740</value> 
+  <value>840</value> 
+  </values>
+  </Parameter>
+<Parameter id="8" name="Down_Separation" type="0">
+<values>
+  <value>0</value> 
+  <value>399</value> 
+  <value>400</value> 
+  <value>499</value> 
+  <value>500</value> 
+  <value>639</value> 
+  <value>640</value> 
+  <value>739</value> 
+  <value>740</value> 
+  <value>840</value> 
+  </values>
+  </Parameter>
+<Parameter id="9" name="Other_RAC" type="1">
+<values>
+  <value>NO_INTENT</value> 
+  <value>DO_NOT_CLIMB</value> 
+  <value>DO_NOT_DESCEND</value> 
+  </values>
+  </Parameter>
+<Parameter id="10" name="Other_Capability" type="1">
+<values>
+  <value>TCAS_TA</value> 
+  <value>OTHER</value> 
+  </values>
+  </Parameter>
+<Parameter id="11" name="Climb_Inhibit" type="2">
+<values>
+  <value>true</value> 
+  <value>false</value> 
+  </values>
+  </Parameter>
+  </Parameters>
+<Relations>
+<Relation Strength="2" Default="false">
+<Parameter name="Cur_Vertical_Sep">
+  <value>299</value> 
+  <value>300</value> 
+  <value>601</value> 
+  </Parameter>
+<Parameter name="High_Confidence">
+  <value>true</value> 
+  <value>false</value> 
+  </Parameter>
+<Parameter name="Two_of_Three_Reports_Valid">
+  <value>true</value> 
+  <value>false</value> 
+  </Parameter>
+<Parameter name="Own_Tracked_Alt">
+  <value>1</value> 
+  <value>2</value> 
+  </Parameter>
+<Parameter name="Other_Tracked_Alt">
+  <value>1</value> 
+  <value>2</value> 
+  </Parameter>
+<Parameter name="Own_Tracked_Alt_Rate">
+  <value>600</value> 
+  <value>601</value> 
+  </Parameter>
+<Parameter name="Alt_Layer_Value">
+  <value>0</value> 
+  <value>1</value> 
+  <value>2</value> 
+  <value>3</value> 
+  </Parameter>
+<Parameter name="Up_Separation">
+  <value>0</value> 
+  <value>399</value> 
+  <value>400</value> 
+  <value>499</value> 
+  <value>500</value> 
+  <value>639</value> 
+  <value>640</value> 
+  <value>739</value> 
+  <value>740</value> 
+  <value>840</value> 
+  </Parameter>
+<Parameter name="Down_Separation">
+  <value>0</value> 
+  <value>399</value> 
+  <value>400</value> 
+  <value>499</value> 
+  <value>500</value> 
+  <value>639</value> 
+  <value>640</value> 
+  <value>739</value> 
+  <value>740</value> 
+  <value>840</value> 
+  </Parameter>
+<Parameter name="Other_RAC">
+  <value>NO_INTENT</value> 
+  <value>DO_NOT_CLIMB</value> 
+  <value>DO_NOT_DESCEND</value> 
+  </Parameter>
+<Parameter name="Other_Capability">
+  <value>TCAS_TA</value> 
+  <value>OTHER</value> 
+  </Parameter>
+<Parameter name="Climb_Inhibit">
+  <value>true</value> 
+  <value>false</value> 
+  </Parameter>
+  </Relation>
+  </Relations>
+  </System>

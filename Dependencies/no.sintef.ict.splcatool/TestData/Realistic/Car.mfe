@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mfe:FeatureModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mfe="http://www.es.tu-darmstadt.de">
+  <feature xsi:type="mfe:Mandatory" name="root"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter4"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.1" name="Car_Safety"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.1" name="NOT(Car_Safety)"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter7"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.4" name="Engine"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter11"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.6" name="Car_ABS"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.6" name="NOT(Car_ABS)"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter12"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.9" name="Car_ESP"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.9" name="NOT(Car_ESP)"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter6"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.12" name="_Brakes_BrakeActuation_Rear_Front"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter9"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.14" name="Electric"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.14" name="Electrohydraulic"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.14" name="Hydraulisch"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter1"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.18" name="Disc_rear"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.18" name="Drum_rear"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter2"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.21" name="Disc_front"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.21" name="Drum_front"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter3"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.24" name="Automatic"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.24" name="NOT(Automatic)"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter5"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.27" name="Manual"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.27" name="NOT(Manual)"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter8"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.30" name="_Gearbox_Gears"/>
+  <feature xsi:type="mfe:Mandatory" parent="//@feature.0" name="Parameter10"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.32" name="Diesel"/>
+  <feature xsi:type="mfe:Alternative" parent="//@feature.32" name="Gasoline"/>
+</mfe:FeatureModel>
