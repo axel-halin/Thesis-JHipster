@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<featureModel chosenLayoutAlgorithm="1">
+		<struct>
+			<and abstract="true" mandatory="true" name="jhipster">
+				<and abstract="true" mandatory="true" name="Base">
+					<alt abstract="true" name="javaVersion">
+						<feature mandatory="true" name="java7"/>
+						<feature mandatory="true" name="java8"/>
+					</alt>
+					<alt abstract="true" name="authentification">
+						<feature mandatory="true" name="session"/>
+						<feature mandatory="true" name="oauth2">
+							<description>
+								stateless, with an OAuth2 server implementation
+							</description>
+						</feature>
+						<feature mandatory="true" name="xauth">
+							<description>
+								stateless, with a token
+							</description>
+						</feature>
+					</alt>
+					<alt abstract="true" name="databaseType">
+						<and mandatory="true" name="sql">
+							<alt abstract="true" mandatory="true" name="prodDatabaseType">
+								<feature mandatory="true" name="mysql"/>
+								<feature mandatory="true" name="postgresql"/>
+								<feature mandatory="true" name="oracle"/>
+							</alt>
+							<alt abstract="true" mandatory="true" name="devDatabaseType">
+								<feature mandatory="true" name="h2Memory"/>
+								<feature mandatory="true" name="mysqlDev"/>
+								<feature mandatory="true" name="oracleDev"/>
+								<feature mandatory="true" name="postgresqlDev"/>
+							</alt>
+							<alt name="hibernateCache">
+								<feature mandatory="true" name="ehcache"/>
+								<feature mandatory="true" name="hazelcast"/>
+							</alt>
+						</and>
+						<feature mandatory="true" name="mongodb"/>
+						<feature mandatory="true" name="cassandra"/>
+					</alt>
+					<feature name="clusteredHttpSession"/>
+					<and name="websocket">
+						<feature mandatory="true" name="spring-websocket"/>
+					</and>
+					<and abstract="true" name="Build">
+						<alt abstract="true" name="Server">
+							<feature mandatory="true" name="maven"/>
+							<feature mandatory="true" name="graddle"/>
+						</alt>
+						<alt abstract="true" name="Client">
+							<feature mandatory="true" name="grunt"/>
+							<feature mandatory="true" name="gulp.js"/>
+						</alt>
+					</and>
+					<feature name="useCompass"/>
+					<and name="searchEngine">
+						<feature mandatory="true" name="elasticsearch"/>
+					</and>
+					<feature name="enableTranslation"/>
+				</and>
+			</and>
+		</struct>
+		<constraints>
+			<rule>
+				<imp>
+					<var>clusteredHttpSession</var>
+					<var>hazelcast</var>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<disj>
+						<var>oauth2</var>
+						<var>java8</var>
+					</disj>
+					<not>
+						<var>cassandra</var>
+					</not>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<disj>
+						<var>java7</var>
+						<var>sql</var>
+					</disj>
+					<not>
+						<var>searchEngine</var>
+					</not>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>mysql</var>
+					<disj>
+						<var>mysqlDev</var>
+						<var>h2Memory</var>
+					</disj>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>postgresql</var>
+					<disj>
+						<var>postgresqlDev</var>
+						<var>h2Memory</var>
+					</disj>
+				</imp>
+			</rule>
+			<rule>
+				<imp>
+					<var>oracle</var>
+					<disj>
+						<var>oracleDev</var>
+						<var>h2Memory</var>
+					</disj>
+				</imp>
+			</rule>
+		</constraints>
+		<calculations Auto="true" Constraints="true" Features="true" Redundant="true" Tautology="true"/>
+		<comments/>
+		<featureOrder userDefined="false"/>
+	</featureModel>
