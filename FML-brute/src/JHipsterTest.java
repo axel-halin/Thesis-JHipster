@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -86,6 +87,8 @@ public class JHipsterTest extends FMLTest{
 	 * @param fmvJhipster Feature Model of JHipster.
 	 * @return JhipsterConfiguration object representing a specific configuration (strConfs)
 	 */
+	// TODO Integrate ClientApp and ServerApp
+	// TODO Refactor!!
 	private JhipsterConfiguration toJhipsterConfiguration(Set<String> strConfs, FeatureModelVariable fmvJhipster) {
 		// Foo values
 		final String BASENAME = "jhipster-fou";
@@ -98,50 +101,60 @@ public class JHipsterTest extends FMLTest{
 		
 		JhipsterConfiguration jhipsterConf = new JhipsterConfiguration();
 		
-		String generator = get("Generator", strConfs, fmvJhipster);
-		// Server
-		if (generator.equals("Server")){
-			String server = get("Server", strConfs, fmvJhipster);
-			// Microservice | Uaa
-			if (!server.equals("ServerApp")){
-				jhipsterConf.applicationType = server;
-				jhipsterConf.skipClient = true;
-			} else{
-				jhipsterConf.applicationType="serverApp";
+		// Find application type
+		switch (get("Generator", strConfs, fmvJhipster)){
+			case "Server": 	jhipsterConf.applicationType = get("Server", strConfs, fmvJhipster);
+							break;
+			case "Application": jhipsterConf.applicationType = get("Application", strConfs, fmvJhipster);
+								break;
+			case "Client": 	jhipsterConf.applicationType="clientApp";
+							break;
+		}
+		
+		if(!jhipsterConf.applicationType.equals("clientApp")){
+			// Common attributes
+			jhipsterConf.jhipsterVersion = JHIPSTERVERSION;
+			jhipsterConf.baseName = BASENAME;
+			jhipsterConf.packageName = PACKAGENAME;
+			jhipsterConf.packageFolder = PACKAGENAME.replace(".", "/");
+			jhipsterConf.serverPort = SERVERPORT;
+			jhipsterConf.authenticationType = get("Authentication", strConfs, fmvJhipster);
+			jhipsterConf.hibernateCache = falseByNo(get("Hibernate2ndLvlCache", strConfs, fmvJhipster));
+			// Common to ServerApp and Monolith application
+			if(jhipsterConf.applicationType.equals("serverApp") || jhipsterConf.applicationType.equals("monolith") || jhipsterConf.applicationType.equals("gateway")){
+				jhipsterConf.clusteredHttpSession = falseByNo(get("ClusteredSession", strConfs, fmvJhipster));
+				jhipsterConf.websocket = falseByNo(get("SpringWebSockets", strConfs, fmvJhipster));
+				jhipsterConf.enableSocialSignIn = Boolean.parseBoolean(isIncluded("SocialLogin", strConfs));
 			}
-			
+			// Common attributes
+			jhipsterConf.databaseType = falseByNo(get("Database", strConfs, fmvJhipster));
+			jhipsterConf.devDatabaseType = falseByNo(get("Development", strConfs, fmvJhipster));
+			if (jhipsterConf.devDatabaseType.equals("H2")){jhipsterConf.devDatabaseType=get("H2", strConfs, fmvJhipster);}
+			jhipsterConf.prodDatabaseType = falseByNo(get("Production", strConfs, fmvJhipster));
+			jhipsterConf.searchEngine = falseByNo(get("ElasticSearch", strConfs, fmvJhipster));
+			jhipsterConf.buildTool = get("BackEnd", strConfs, fmvJhipster);
+			// Authentication Key
+			if (jhipsterConf.authenticationType.equals("jwt")){jhipsterConf.jwtSecretKey = JWTKEY;}
+			else if (jhipsterConf.authenticationType.equals("session")){jhipsterConf.rememberMeKey = SESSIONKEY;}
+			// Not for ServerApp
+			if (!jhipsterConf.applicationType.equals("serverApp")){
+				jhipsterConf.jhiPrefix = JHIPREFIX;
+				jhipsterConf.testFrameworks = gets("TestingFrameworks", strConfs, fmvJhipster);
+			}
 		}
-		// Gateway | Monolithic
-		else if (generator.equals("Application")){
-			jhipsterConf.applicationType = get("Application", strConfs, fmvJhipster);
-			jhipsterConf.clusteredHttpSession = falseByNo(get("ClusteredSession", strConfs, fmvJhipster));
-			jhipsterConf.websocket = falseByNo(get("SpringWebSockets", strConfs, fmvJhipster));
+		
+		
+		if (jhipsterConf.applicationType.equals("microservice") || jhipsterConf.applicationType.equals("uaa")) 
+			jhipsterConf.skipClient = true;
+		
+		if (jhipsterConf.applicationType.equals("microservice") || 
+				(jhipsterConf.applicationType.equals("gateway") && jhipsterConf.authenticationType.equals("uaa"))){
+			jhipsterConf.skipUserManagement = true;
+		}
+		
+		if (jhipsterConf.applicationType.equals("monolith") || jhipsterConf.applicationType.equals("clientApp") || jhipsterConf.applicationType.equals("gateway")) 
 			jhipsterConf.useSass = Boolean.parseBoolean(isIncluded("LibSass", strConfs));
-		}
-		// Else ==> Client
-		else jhipsterConf.applicationType = "clientApp";
 		
-		// Common attributes
-		jhipsterConf.jhipsterVersion = JHIPSTERVERSION;
-		jhipsterConf.baseName = BASENAME;
-		jhipsterConf.packageName = PACKAGENAME;
-		jhipsterConf.packageFolder = PACKAGENAME.replace(".", "/");
-		jhipsterConf.serverPort = SERVERPORT;
-		jhipsterConf.authenticationType = get("Authentication", strConfs, fmvJhipster);
-		jhipsterConf.hibernateCache = falseByNo(get("Hibernate2ndLvlCache", strConfs, fmvJhipster)); // can be false if microservice
-		jhipsterConf.databaseType = falseByNo(get("Database", strConfs, fmvJhipster));
-		jhipsterConf.devDatabaseType = falseByNo(get("Development", strConfs, fmvJhipster));
-		if (jhipsterConf.devDatabaseType.equals("H2")){jhipsterConf.devDatabaseType=get("H2", strConfs, fmvJhipster);}
-		jhipsterConf.prodDatabaseType = falseByNo(get("Production", strConfs, fmvJhipster));
-		jhipsterConf.searchEngine = falseByNo(get("ElasticSearch", strConfs, fmvJhipster));
-		jhipsterConf.buildTool = get("BackEnd", strConfs, fmvJhipster);
-		jhipsterConf.jhiPrefix = JHIPREFIX;
-		jhipsterConf.enableTranslation = Boolean.parseBoolean(isIncluded("InternationalizationSupport", strConfs));
-		jhipsterConf.testFrameworks = gets("TestingFrameworks", strConfs, fmvJhipster);
-		
-		// Authentication Key
-		if (jhipsterConf.authenticationType.equals("jwt")){jhipsterConf.jwtSecretKey = JWTKEY;}
-		else if (jhipsterConf.authenticationType.equals("session")){jhipsterConf.rememberMeKey = SESSIONKEY;}
 		
 		// If internationalization support (we limit ourselves to english for now)
 		// TODO support languages
@@ -151,13 +164,6 @@ public class JHipsterTest extends FMLTest{
 		}*/
 		jhipsterConf.enableTranslation = false;
 		
-		// If not clientapp nor serverapp
-		if (jhipsterConf.applicationType != null){
-			if (jhipsterConf.applicationType.equals("microservice") || 
-					(jhipsterConf.applicationType.equals("gateway") && jhipsterConf.authenticationType.equals("uaa"))){
-				jhipsterConf.skipUserManagement = true;
-			}
-		}
 		return jhipsterConf;
 	}
 	
@@ -215,7 +221,7 @@ public class JHipsterTest extends FMLTest{
 		
 		// TODO
 		// Microservices need Jhipster-registry to be running
-		if(!conf.applicationType.equals("monolith")){
+		if(!conf.applicationType.equals("monolith") & !conf.applicationType.endsWith("App")){
 			
 		}
 		
@@ -253,7 +259,10 @@ public class JHipsterTest extends FMLTest{
 	 * @return
 	 */
 	private String toJSON2(GeneratorJhipsterConfiguration jhipsterConf) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson;
+		// If ClientApp or ServerApp, applicationType should not be displayed.
+		if(jhipsterConf.generatorJhipster.applicationType.endsWith("App")){gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).setPrettyPrinting().create();}
+		else {gson = new GsonBuilder().setPrettyPrinting().create();}
 		return gson.toJson(jhipsterConf);	
 	}
 
@@ -352,6 +361,7 @@ public class JHipsterTest extends FMLTest{
 			case "Gatling":					return "gatling";
 			case "Protractor":				return "protractor";
 			case "Cucumber":				return "cucumber";
+			case "ServerApp":				return "serverApp";
 			default: 	return feature;
 		}
 	}
@@ -413,6 +423,16 @@ public class JHipsterTest extends FMLTest{
 	}
 	
 	
+	private void generateClientAppScript(String jDirectory){
+		String buildScript = "#!/bin/bash\n\n"
+				+ "ofolder=`pwd`\n" 
+				+ "yo jhipster:client >> jhipsteryo.log 2>&1\n";
+		
+		buildScript += "gulp test >> test.log\n";
+		
+		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
+	}
+	
 
 	/**
 	 * Generates all variants of JHipster 3.6.1 to test them afterwards. 
@@ -425,7 +445,6 @@ public class JHipsterTest extends FMLTest{
 		_log.info("Checking validity of Feature Model...");
 		assertTrue(fmvJhipster.isValid());
 		_log.info("Feature Model is valid !");
-		
 		
 		_log.info("The feature model has: "+fmvJhipster.counting()+" valid configuration(s).");
 		_log.info("The feature model has: "+fmvJhipster.nbFeatures()+ " feature(s).");
@@ -460,14 +479,18 @@ public class JHipsterTest extends FMLTest{
 			String yorc = toJSON2(jhipGen);
 			Files.writeStringIntoFile(getjDirectory(jDirectory) + ".yo-rc.json", yorc);
 			
-			if(jConf.applicationType.equals("clientApp") || jConf.applicationType.equals("serverApp")){
-				_log.error("Client App and Server App not handled yet...");
-			}else{
+			if(jConf.applicationType.equals("clientApp")){
+				generateClientAppScript(jDirectory);
+			}
+			else if (jConf.applicationType.equals("serverApp")){
+				_log.error("Server App not supported....");
+			}
+			else{
 				_log.info("Parsing script...");
 				writeScript(jConf, jDirectory);
 			}
 			
-			_log.info("Configuration "+i+" is done");
+			_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 		}
 	}
 }

@@ -20,7 +20,7 @@ public class JhipsterConfiguration {
 	String searchEngine;
 	String buildTool;
 	String jwtSecretKey;
-	String applicationType; // gateway | microservice | monolith | uaa
+	protected String applicationType; // gateway | microservice | monolith | uaa
 	String[] testFrameworks;
 	String jhiPrefix;
 	String jhipsterVersion;
@@ -30,9 +30,9 @@ public class JhipsterConfiguration {
 	
 	String nativeLanguage;
 	//String[] languages = new String[2];
-	boolean skipClient;
-	boolean skipUserManagement;
-	boolean enableSocialSignIn;
+	Boolean skipClient;
+	Boolean skipUserManagement;
+	Boolean enableSocialSignIn;
 	String rememberMeKey;
 
 		
