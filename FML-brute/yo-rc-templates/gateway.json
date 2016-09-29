@@ -1,0 +1,30 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "temp",
+    "packageName": "com.mycompany.myapp",
+    "packageFolder": "com/mycompany/myapp",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "hibernateCache": "hazelcast",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "h2Disk",
+    "prodDatabaseType": "mysql",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "jwtSecretKey": "5a3322e4265dbeafb56d3aa576a4fbd472b9af01",
+    "useSass": false,
+    "applicationType": "gateway",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ]
+  }
+}

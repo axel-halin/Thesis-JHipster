@@ -1,0 +1,26 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "temp",
+    "packageName": "com.mycompany.myapp",
+    "packageFolder": "com/mycompany/myapp",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "jwtSecretKey": "2e528c0b1195a5787a8e3f63ff9f75cb04b76e50",
+    "useSass": false,
+    "applicationType": "gateway",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "enableTranslation": false
+  }
+}

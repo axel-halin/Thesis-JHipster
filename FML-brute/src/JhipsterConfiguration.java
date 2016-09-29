@@ -34,7 +34,7 @@ public class JhipsterConfiguration {
 	Boolean skipUserManagement;
 	Boolean enableSocialSignIn;
 	String rememberMeKey;
-
+	String uaaBaseName;
 		
 		
 		// TODO update toString and equals.

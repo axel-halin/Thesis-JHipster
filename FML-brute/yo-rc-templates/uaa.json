@@ -1,0 +1,27 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "temp",
+    "packageName": "com.mycompany.myapp",
+    "packageFolder": "com/mycompany/myapp",
+    "serverPort": "9999",
+    "authenticationType": "uaa",
+    "hibernateCache": "no",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableTranslation": true,
+    "applicationType": "uaa",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "skipClient": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ]
+  }
+}

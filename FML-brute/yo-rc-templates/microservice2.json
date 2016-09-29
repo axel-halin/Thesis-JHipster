@@ -1,0 +1,30 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "temp",
+    "packageName": "com.mycompany.myapp",
+    "packageFolder": "com/mycompany/myapp",
+    "serverPort": "8081",
+    "authenticationType": "uaa",
+    "uaaBaseName": "uaa",
+    "hibernateCache": "no",
+    "databaseType": "no",
+    "devDatabaseType": "no",
+    "prodDatabaseType": "no",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "jwtSecretKey": "46c44629b9e45e1a2e741c8792c38431d95fb932",
+    "enableTranslation": true,
+    "applicationType": "microservice",
+    "testFrameworks": [
+      "gatling"
+    ],
+    "jhiPrefix": "jhi",
+    "skipClient": true,
+    "skipUserManagement": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "generator-jhipster": {
+    "useSass": false,
+    "enableTranslation": false
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "generator-jhipster": {
+    "jhipsterVersion": "3.6.1",
+    "baseName": "temp",
+    "packageName": "com.mycompany.myapp",
+    "packageFolder": "com/mycompany/myapp",
+    "serverPort": "8080",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": "no",
+    "buildTool": "maven",
+    "enableSocialSignIn": false,
+    "rememberMeKey": "8797b436e989326f39bc97abb7ca8e2b45a14f23",
+    "enableTranslation": true,
+    "nativeLanguage": "en",
+    "languages": [
+      "en"
+    ]
+  }
+}
