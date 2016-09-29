@@ -87,8 +87,6 @@ public class JHipsterTest extends FMLTest{
 	 * @param fmvJhipster Feature Model of JHipster.
 	 * @return JhipsterConfiguration object representing a specific configuration (strConfs)
 	 */
-	// TODO Integrate ClientApp and ServerApp
-	// TODO Refactor!!
 	private JhipsterConfiguration toJhipsterConfiguration(Set<String> strConfs, FeatureModelVariable fmvJhipster) {
 		// Foo values
 		final String BASENAME = "jhipster-fou";
@@ -98,6 +96,7 @@ public class JHipsterTest extends FMLTest{
 		final String JHIPREFIX = "jhi";
 		final String SESSIONKEY = "13e6029734fb9984533b9bb5c511bca6d624c6ed";
 		final String JWTKEY = "d8837e4a671d25456432b55b1e4a99fe0356ed07";
+		final String UAABASENAME = "uaa";
 		
 		JhipsterConfiguration jhipsterConf = new JhipsterConfiguration();
 		
@@ -136,6 +135,7 @@ public class JHipsterTest extends FMLTest{
 			// Authentication Key
 			if (jhipsterConf.authenticationType.equals("jwt")){jhipsterConf.jwtSecretKey = JWTKEY;}
 			else if (jhipsterConf.authenticationType.equals("session")){jhipsterConf.rememberMeKey = SESSIONKEY;}
+			else if (jhipsterConf.authenticationType.equals("uaa")){jhipsterConf.uaaBaseName = UAABASENAME;}
 			// Not for ServerApp
 			if (!jhipsterConf.applicationType.equals("serverApp")){
 				jhipsterConf.jhiPrefix = JHIPREFIX;
@@ -173,6 +173,8 @@ public class JHipsterTest extends FMLTest{
 	 * 
 	 * @param conf JHipster configuration to be generated.
 	 */
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void writeScript(JhipsterConfiguration conf, String jDirectory){
 		String buildScript = "#!/bin/bash\n\n"
 							+ "ofolder=`pwd`\n" 
@@ -245,8 +247,6 @@ public class JHipsterTest extends FMLTest{
 			}
 		}
 		
-		
-		
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
 	}
 	
@@ -263,6 +263,11 @@ public class JHipsterTest extends FMLTest{
 		// If ClientApp or ServerApp, applicationType should not be displayed.
 		if(jhipsterConf.generatorJhipster.applicationType.endsWith("App")){gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).setPrettyPrinting().create();}
 		else {gson = new GsonBuilder().setPrettyPrinting().create();}
+		
+		if (!Utils.testJson(gson.toJsonTree(jhipsterConf), new JsonChecker())){
+			System.err.println("JSON pared is wrong !!!");
+		}
+		
 		return gson.toJson(jhipsterConf);	
 	}
 
@@ -423,6 +428,8 @@ public class JHipsterTest extends FMLTest{
 	}
 	
 	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private void generateClientAppScript(String jDirectory){
 		String buildScript = "#!/bin/bash\n\n"
 				+ "ofolder=`pwd`\n" 
@@ -433,12 +440,41 @@ public class JHipsterTest extends FMLTest{
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
 	}
 	
+	
+	
+	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		
+		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
+		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
+		else script += "yo jhipster ";
+		
+		script += ">> generate.log";
+		
+		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
+	}
+	
+	
+	
+	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		if(jconf.buildTool.equals("maven")) script += "./mvnw -Pprod ";
+		else script += "./gradlew -Pprod ";
+		
+		script += ">> build.log";
+		Files.writeStringIntoFile(getjDirectory(jDirectory) + "build.sh", script);
+	}
+	
+	// TODO
+	private void generateTestScript(JhipsterConfiguration jconf, String jDirectory){}
+	
 
 	/**
 	 * Generates all variants of JHipster 3.6.1 to test them afterwards. 
 	 */
 	@Test
 	public void testJHipsterGeneration() throws Exception{
+		
 		_log.info("Extracting Feature Model...");
 		FeatureModelVariable fmvJhipster = getFMJHipster();
 		
@@ -468,28 +504,30 @@ public class JHipsterTest extends FMLTest{
 			
 			String jDirectory = "jhipster" + i;
 			mkdirJhipster(jDirectory);
-			
+		 	
 			_log.info("Extracting features from the configuration...");
 			Set<String> strConfs = extractFeatures(configuration);
 			
 			_log.info("Parsing JSON...");
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
+			if(jConf.applicationType.startsWith("client")){
 			GeneratorJhipsterConfiguration jhipGen = new GeneratorJhipsterConfiguration();
 			jhipGen.generatorJhipster = jConf;
 			String yorc = toJSON2(jhipGen);
 			Files.writeStringIntoFile(getjDirectory(jDirectory) + ".yo-rc.json", yorc);
-			
-			if(jConf.applicationType.equals("clientApp")){
-				generateClientAppScript(jDirectory);
-			}
-			else if (jConf.applicationType.equals("serverApp")){
-				_log.error("Server App not supported....");
-			}
-			else{
-				_log.info("Parsing script...");
-				writeScript(jConf, jDirectory);
+			_log.info("JSON generated...");
 			}
 			
+			_log.info("Generating scripts...");
+			generateYoJhipsterScript(jConf, jDirectory);
+			if (!jConf.applicationType.equals("clientApp"))
+			{
+				generateBuildScript(jConf, jDirectory);
+				generateTestScript(jConf, jDirectory);
+			}
+			
+			_log.info("Scripts generated...");
+	
 			_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 		}
 	}
