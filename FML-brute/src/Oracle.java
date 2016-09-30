@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,43 +29,8 @@ public class Oracle {
 
 	private final static Logger _log = Logger.getLogger("JHipsterTest");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
-	
+
 	private String projectDirectory = System.getProperty("user.dir");
-
-	public void executeCommands() throws IOException {
-
-		File tempScript = createTempScript();
-
-		try {
-			ProcessBuilder pb = new ProcessBuilder("bash", tempScript.toString());
-			pb.inheritIO();
-			Process process = pb.start();
-			try {
-				process.waitFor();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} finally {
-			tempScript.delete();
-		}
-	}
-
-	public File createTempScript() throws IOException {
-		File tempScript = File.createTempFile("script", null);
-
-		Writer streamWriter = new OutputStreamWriter(new FileOutputStream(
-				tempScript));
-		PrintWriter printWriter = new PrintWriter(streamWriter);
-
-		printWriter.println("#!/bin/bash");
-		printWriter.println("cd bin");
-		printWriter.println("ls");
-
-		printWriter.close();
-
-		return tempScript;
-	}
 
 	/**
 	 * Generate the App from the yo-rc.json.
@@ -73,18 +39,37 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 * @throws IOException 
 	 */
-	private void generateApp(String jDirectory) throws InterruptedException, IOException{
+	private void generateApp(String jDirectory,boolean system) throws InterruptedException, IOException{
 
-		try {
-			ProcessBuilder pb2 = new ProcessBuilder("./generate.sh");
-			//System.out.println("Current directory is: "+pb2.directory());
-			pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-			pb2.inheritIO();
-			Process process = pb2.start();
-			process.waitFor();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		// for windows add script bashgit.bat launch bashgit and execute generate.sh
+		if (!system)
+
+		{
+			try {
+				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitgenerate.bat");
+				Process process = pb.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		else
+
+			//linux
+		{
+			try {
+				ProcessBuilder pb2 = new ProcessBuilder("./generate.sh");
+				//System.out.println("Current directory is: "+pb2.directory());
+				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+				pb2.inheritIO();
+				Process process = pb2.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 
@@ -98,7 +83,7 @@ public class Oracle {
 	private boolean checkGenerateApp(String jDirectory) throws FileNotFoundException{
 
 		String text = "";
-		
+
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "jhipsteryo.log");
 
@@ -120,12 +105,41 @@ public class Oracle {
 	 * Build the App which is generated successfully
 	 * 
 	 * @param jDirectory Name of the folder
+	 * @throws InterruptedException 
 	 */
-	private void buildApp(String jDirectory){
+	private void buildApp(String jDirectory, boolean system) throws InterruptedException{
 
-		//String buildSh = Files.readFileIntoString(getjDirectory(jDirectory) + "build.sh");
+		// for windows add script bashgit.bat launch bashgit and execute build.sh
+		if (!system)
 
-		return;
+		{
+			try {
+				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitbuild.bat");
+				Process process = pb.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		else
+
+			//linux
+		{
+			try {
+				ProcessBuilder pb2 = new ProcessBuilder("./build.sh");
+				//System.out.println("Current directory is: "+pb2.directory());
+				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+				pb2.inheritIO();
+				Process process = pb2.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -134,9 +148,9 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 */
 	private boolean checkBuildApp(String jDirectory) throws FileNotFoundException{
-		
+
 		String text = "";
-		
+
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "jhipsterbuild.log");
 
@@ -158,13 +172,41 @@ public class Oracle {
 	 * Launch Tests on the App is build successfully
 	 * 
 	 * @param jDirectory Name of the folder
+	 * @throws InterruptedException 
 	 */
-	private void testGenerateApp(String jDirectory){
+	private void testGenerateApp(String jDirectory, boolean system) throws InterruptedException{
 
-		//String generatorAppCommand = Files.readFileIntoString(getjDirectory(jDirectory) + "test.sh");
+		// for windows add script bashgit.bat launch bashgit and execute test.sh
+		if (!system)
 
+		{
+			try {
+				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgittest.bat");
+				Process process = pb.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
-		return;
+		else
+
+			//linux
+		{
+			try {
+				ProcessBuilder pb2 = new ProcessBuilder("./test.sh");
+				//System.out.println("Current directory is: "+pb2.directory());
+				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+				pb2.inheritIO();
+				Process process = pb2.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 
 	/**
@@ -175,6 +217,39 @@ public class Oracle {
 	 */
 	private String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
+	}
+	
+	/**
+	 * Return the value of the system 
+	 * 
+	 * @return true if linux else windows
+	 * @throws IOException 
+	 */
+	private boolean getValueOfSystem() throws IOException {
+		InputStream inputStream = null;
+
+		try {
+			Properties prop = new Properties();
+			String propFileName = "System.properties";
+
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+			if (inputStream != null) {
+				prop.load(inputStream);
+			} else {
+				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			}
+
+			Boolean system = Boolean.parseBoolean(prop.getProperty("system"));
+			
+			return system;
+
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} finally {
+			inputStream.close();
+		}
+		return true; // default linux
 	}
 
 	/**
@@ -187,6 +262,10 @@ public class Oracle {
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
+		// false = windows
+		//true = linux
+		Boolean system = getValueOfSystem();
+
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
@@ -195,7 +274,7 @@ public class Oracle {
 			_log.info(getjDirectory(jDirectory));
 
 			_log.info("Generate the App...");
-			generateApp(jDirectory);
+			generateApp(jDirectory, system);
 			_log.info("App Generated...");
 
 			_log.info("Oracle generate "+i+" is done");
@@ -212,6 +291,10 @@ public class Oracle {
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
+		// false = windows
+		//true = linux
+		Boolean system = getValueOfSystem();
+
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
@@ -225,7 +308,7 @@ public class Oracle {
 			if (check)
 			{
 				_log.info("App Checked Success...-> build of the app");
-				buildApp(getjDirectory(jDirectory));
+				buildApp(jDirectory,system);
 			}	
 			else
 			{
@@ -246,6 +329,10 @@ public class Oracle {
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
+		// false = windows
+		//true = linux
+		Boolean system = getValueOfSystem();
+
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
@@ -255,7 +342,7 @@ public class Oracle {
 			if (check)
 			{
 				_log.info("Build Success -> Launch tests of the App...");
-				testGenerateApp(jDirectory);
+				testGenerateApp(jDirectory,system);
 			}	
 			else
 			{
