@@ -1,11 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,6 +29,104 @@ public class Oracle {
 	private String projectDirectory = System.getProperty("user.dir");
 
 	/**
+	 * Creates the script for windows. //TODO !!
+	 * 
+	 * @param conf JHipster configuration to be generated.
+	 */
+	private void writeScriptBat(String nameScriptBat,String nameScriptSh,String jDirectory)
+	{
+		String buildScript = "cd "+getjDirectory(jDirectory)+"\n"; 
+		//buildScript += "create database if not exists \"jhipster-fou\";\n";
+		//buildScript += "\"C:\Program Files\Git\bin\sh.exe\" --login ./" + nameScript;
+		buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
+		Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
+	}
+	
+	/**
+	 * Creates the script to launch all databases 
+	 * 
+	 */
+	private void writeScriptDatabases(){
+		
+		String buildScript = "#!/bin/bash\n\n";
+		
+			//CASSANDRA
+			buildScript += "echo 'Cassandra!'\n";
+			buildScript += "services cassandra start\n";
+			buildScript += "cqlsh -f src/main/resources/config/cql/create-keyspace.cql\n";
+			buildScript += "cqlsh -f src/main/resources/config/cql/changelog/00000000000000_create-tables.cql\n";
+			buildScript += "cqlsh -f src/main/resources/config/cql/changelog/00000000000001_insert_default_users.cql\n";
+		
+			//MONGODB
+			buildScript += "echo 'MongoDB!'\n";
+			buildScript += "services mongodb start\n";
+
+			// ORACLE TODO
+		
+			//POSTGRE
+			
+			buildScript += "echo 'Postgres!'\n";
+			buildScript += "services pgservice start\n";
+			buildScript += "psql -U postgres <<EOF\n";
+			buildScript += "create role \"jhipster-fou\" login;\n";
+			buildScript += "create database \"jhipster-fou\";\n";
+			buildScript += "\\q\n";
+			buildScript += "EOF\n";
+		
+			//MARIADB + MYSQL
+
+			buildScript += "echo 'MariaDB-SQL!'\n";
+			buildScript += "services mysql start\n";
+			buildScript += "mysql -u root <<EOF\n";
+			buildScript += "SET SESSION sql_mode = 'ANSI';\n";
+			buildScript += "create database if not exists \"jhipster-fou\";\n";
+			buildScript += "\\q\n";
+			buildScript += "EOF\n";
+		
+		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
+	}
+	
+	/**
+	 * Launch Databases.
+	 * 
+	 * @throws InterruptedException 
+	 * @throws IOException 
+	 */
+	private void launchDatabases(boolean system) throws InterruptedException, IOException{
+
+		// for windows add script bashgit.bat launch bashgit and execute generate.sh
+		if (!system)
+		{
+			try {
+				ProcessBuilder pb = new ProcessBuilder("bashgitlaunchDatabases.bat");
+				pb.inheritIO();
+				Process process = pb.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		else
+			//linux
+		{
+			try {
+				ProcessBuilder pb2 = new ProcessBuilder("./launchDatabases.sh");
+				//System.out.println("Current directory is: "+pb2.directory());
+				pb2.inheritIO();
+				Process process = pb2.start();
+				process.waitFor();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
+	}
+	
+	/**
 	 * Generate the App from the yo-rc.json.
 	 * 
 	 * @param jDirectory Name of the folder
@@ -47,6 +141,7 @@ public class Oracle {
 		{
 			try {
 				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitgenerate.bat");
+				pb.inheritIO();
 				Process process = pb.start();
 				process.waitFor();
 			} catch (IOException e) {
@@ -112,9 +207,10 @@ public class Oracle {
 		// for windows add script bashgit.bat launch bashgit and execute build.sh
 		if (!system)
 
-		{
+		{	
 			try {
 				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitbuild.bat");
+				pb.inheritIO();
 				Process process = pb.start();
 				process.waitFor();
 			} catch (IOException e) {
@@ -182,6 +278,7 @@ public class Oracle {
 		{
 			try {
 				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgittest.bat");
+				pb.inheritIO();
 				Process process = pb.start();
 				process.waitFor();
 			} catch (IOException e) {
@@ -257,19 +354,27 @@ public class Oracle {
 	 */
 	@Test
 	public void generateJHipsterVariants() throws Exception{
+		
+		//false = windows
+		//true = linux
+		Boolean system = getValueOfSystem();
 
 		// weight of Folder Jhipsters
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
-		// false = windows
-		//true = linux
-		Boolean system = getValueOfSystem();
-
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
-
+			
+			if (!system)
+				//write .bat Scripts for windows
+			{
+			writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
+			writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
+			writeScriptBat("bashgittest.bat","test.sh",jDirectory);
+			}
+			
 			_log.info("Extracting files from jhipster "+i+"...");
 			_log.info(getjDirectory(jDirectory));
 
@@ -294,6 +399,12 @@ public class Oracle {
 		// false = windows
 		//true = linux
 		Boolean system = getValueOfSystem();
+		
+		// LAUNCH DATABASES AT THE BEGINING
+		writeScriptDatabases();
+		_log.info("Launch Databases...");
+		launchDatabases(system);
+		_log.info("End launching databases...");
 
 		for (Integer i =1;i<=weightFolder;i++){
 
