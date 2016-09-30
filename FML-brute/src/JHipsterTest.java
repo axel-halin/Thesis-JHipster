@@ -14,7 +14,7 @@ import org.prop4j.Node;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fr.familiar.FMLTest;
+import fr.familiar.FMLTest; 
 import fr.familiar.operations.featureide.SATFMLFormula;
 import fr.familiar.variable.FeatureModelVariable;
 import fr.familiar.variable.FeatureVariable;
@@ -265,7 +265,7 @@ public class JHipsterTest extends FMLTest{
 		else {gson = new GsonBuilder().setPrettyPrinting().create();}
 		
 		if (!Utils.testJson(gson.toJsonTree(jhipsterConf), new JsonChecker())){
-			System.err.println("JSON pared is wrong !!!");
+			System.err.println("JSON parsed is wrong !!!");
 		}
 		
 		return gson.toJson(jhipsterConf);	
@@ -510,13 +510,11 @@ public class JHipsterTest extends FMLTest{
 			
 			_log.info("Parsing JSON...");
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
-			if(jConf.applicationType.startsWith("client")){
 			GeneratorJhipsterConfiguration jhipGen = new GeneratorJhipsterConfiguration();
 			jhipGen.generatorJhipster = jConf;
 			String yorc = toJSON2(jhipGen);
 			Files.writeStringIntoFile(getjDirectory(jDirectory) + ".yo-rc.json", yorc);
 			_log.info("JSON generated...");
-			}
 			
 			_log.info("Generating scripts...");
 			generateYoJhipsterScript(jConf, jDirectory);

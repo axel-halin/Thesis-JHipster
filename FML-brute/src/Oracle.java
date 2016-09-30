@@ -28,6 +28,8 @@ public class Oracle {
 
 	private final static Logger _log = Logger.getLogger("JHipsterTest");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
+	
+	private String projectDirectory = System.getProperty("user.dir");
 
 	public void executeCommands() throws IOException {
 
@@ -73,17 +75,10 @@ public class Oracle {
 	 */
 	private void generateApp(String jDirectory) throws InterruptedException, IOException{
 
-		/*ProcessBuilder pb = new ProcessBuilder("ls");
-		pb.inheritIO();
-		pb.directory(new File("bin"));
-		pb.start();
-
-	    String generateSh = Files.readFileIntoString(getjDirectory(jDirectory) + "generate.sh");
-
-		System.out.println(generateSh);*/
-
 		try {
-			ProcessBuilder pb2 = new ProcessBuilder("");
+			ProcessBuilder pb2 = new ProcessBuilder("./generate.sh");
+			//System.out.println("Current directory is: "+pb2.directory());
+			pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 			pb2.inheritIO();
 			Process process = pb2.start();
 			process.waitFor();
@@ -91,6 +86,8 @@ public class Oracle {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+
 	}
 
 	/**
@@ -190,7 +187,7 @@ public class Oracle {
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
-		for (Integer i =1;i<weightFolder;i++){
+		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
 
@@ -208,14 +205,14 @@ public class Oracle {
 	/**
 	 * Check all generation of JHipster 3.6.1. and build the app if the generation is OK.
 	 */
-	@Test
+	//@Test
 	public void checkAndBuildJHipsterVariants() throws Exception{
 
 		// weight of Folder Jhipsters
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
-		for (Integer i =1;i<weightFolder;i++){
+		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
 
@@ -242,14 +239,14 @@ public class Oracle {
 	/**
 	 * Launch tests on variants of JHipster 3.6.1.
 	 */
-	@Test
+	//@Test
 	public void testsJHipsterVariants() throws Exception{
 
 		// weight of Folder Jhipsters
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
-		for (Integer i =1;i<weightFolder;i++){
+		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
 

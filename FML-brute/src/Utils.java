@@ -12,7 +12,7 @@ public class Utils {
 	public static boolean testJson(JsonElement json, JsonChecker jsonChecker){
 		JsonObject object = json.getAsJsonObject().get("generator-jhipster").getAsJsonObject();
 		if(object.has("applicationType")){
-			switch(object.get("application").getAsString()){
+			switch(object.get("applicationType").getAsString()){
 				case "monolith": 	return monolithCheck(object, jsonChecker);
 				case "microservice": return microserviceCheck(object, jsonChecker);
 				case "gateway": return gatewayCheck(object, jsonChecker);
@@ -97,6 +97,7 @@ public class Utils {
 	 */
 	private static boolean haveSameSkeleton(JsonObject object1, JsonObject object2){
 		boolean res = (object1.entrySet().size() == object2.entrySet().size());
+		System.err.println(res);
 		if (res){
 			for(java.util.Map.Entry<String, JsonElement> entry : object1.entrySet()){
 				if (!object2.has(entry.getKey())) return false;

@@ -78,7 +78,7 @@ public class JsonChecker {
 			uaa = new JsonObject[2];
 			for (final File file:new File(YO_RC_DIRECTORY).listFiles()){
 				if(file.getName().startsWith("uaa")){
-					JsonObject object = jsonParser.parse(Files.readFileIntoString(YO_RC_DIRECTORY)+file.getName()).getAsJsonObject();
+					JsonObject object = jsonParser.parse(Files.readFileIntoString(YO_RC_DIRECTORY+file.getName())).getAsJsonObject();
 					uaa[i] = object;
 					i++;
 				}
@@ -94,7 +94,7 @@ public class JsonChecker {
 			monolith = new JsonObject[4];
 			for(final File file:new File(YO_RC_DIRECTORY).listFiles()){
 				if (file.getName().startsWith("monolith")){
-					JsonObject object = jsonParser.parse(Files.readFileIntoString(YO_RC_DIRECTORY)+file.getName()).getAsJsonObject();
+					JsonObject object = jsonParser.parse(Files.readFileIntoString(YO_RC_DIRECTORY+file.getName())).getAsJsonObject();
 					monolith[i] = object;
 					i++;
 				}
