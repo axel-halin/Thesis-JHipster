@@ -89,7 +89,7 @@ public class JHipsterTest extends FMLTest{
 	 */
 	private JhipsterConfiguration toJhipsterConfiguration(Set<String> strConfs, FeatureModelVariable fmvJhipster) {
 		// Foo values
-		final String BASENAME = "jhipster-fou";
+		final String BASENAME = "jhipster";
 		final String PACKAGENAME = "io.variability.jhipster";
 		final String SERVERPORT = "8080";
 		final String JHIPSTERVERSION = "3.6.1";
@@ -439,8 +439,6 @@ public class JHipsterTest extends FMLTest{
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
 	}
 	
-	
-	
 	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		
@@ -453,6 +451,14 @@ public class JHipsterTest extends FMLTest{
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
 	}
 	
+	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
+		else script+="gradle compile";
+		
+		script += ">> compile.log 2&1";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"compile.sh", script);
+	}
 	
 	
 	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
@@ -525,6 +531,7 @@ public class JHipsterTest extends FMLTest{
 				generateYoJhipsterScript(jConf, jDirectory);
 				if (!jConf.applicationType.equals("clientApp"))
 				{
+					generateCompileScript(jConf, jDirectory);
 					generateBuildScript(jConf, jDirectory);
 					generateTestScript(jConf, jDirectory);
 				}
@@ -533,8 +540,8 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==150){
-					_log.info("Stopping at 150...");
+				if(i==5){
+					_log.info("Stopping at 5...");
 					System.exit(0);
 				}
 			}

@@ -96,28 +96,36 @@ public class Oracle {
 
 	
 	private void startProcess(String fileName, boolean system, String jDirectory){
+		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
 			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory)));
-			Process process = processBuilder.start();
+			process = processBuilder.start();
 			process.waitFor();
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
+		} finally{
+			try{process.destroy();}
+			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
 	
 	private void startProcess(String fileName,boolean system, String jDirectory, long timeOut, TimeUnit unit){
+		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
 			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-			Process process = processBuilder.start();
+			process = processBuilder.start();
 			process.waitFor(timeOut, unit);
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
+		} finally{
+			try{process.destroy();}
+			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
 	
