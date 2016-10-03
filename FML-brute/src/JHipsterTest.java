@@ -264,9 +264,10 @@ public class JHipsterTest extends FMLTest{
 		if(jhipsterConf.generatorJhipster.applicationType.endsWith("App")){gson = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PROTECTED).setPrettyPrinting().create();}
 		else {gson = new GsonBuilder().setPrettyPrinting().create();}
 		
-		if (!Utils.testJson(gson.toJsonTree(jhipsterConf), new JsonChecker())){
+		//TODO JWT is wrong because no template with JWT
+		/*if (!Utils.testJson(gson.toJsonTree(jhipsterConf), new JsonChecker())){
 			System.err.println("JSON parsed is wrong !!!");
-		}
+		}*/
 		
 		return gson.toJson(jhipsterConf);	
 	}
@@ -449,7 +450,7 @@ public class JHipsterTest extends FMLTest{
 		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
 		else script += "yo jhipster ";
 		
-		script += ">> generate.log";
+		script += ">> generate.log 2>&1";
 		
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
 	}
@@ -461,7 +462,7 @@ public class JHipsterTest extends FMLTest{
 		if(jconf.buildTool.equals("maven")) script += "./mvnw -Pprod ";
 		else script += "./gradlew -Pprod ";
 		
-		script += ">> build.log";
+		script += ">> build.log 2>&1";
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "build.sh", script);
 	}
 	
@@ -500,33 +501,48 @@ public class JHipsterTest extends FMLTest{
 		
 		int i = 0;
 		for (Variable configuration : confs){
-			i++;
+
 			
-			String jDirectory = "jhipster" + i;
-			mkdirJhipster(jDirectory);
-		 	
 			_log.info("Extracting features from the configuration...");
 			Set<String> strConfs = extractFeatures(configuration);
 			
-			_log.info("Parsing JSON...");
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
-			GeneratorJhipsterConfiguration jhipGen = new GeneratorJhipsterConfiguration();
-			jhipGen.generatorJhipster = jConf;
-			String yorc = toJSON2(jhipGen);
-			Files.writeStringIntoFile(getjDirectory(jDirectory) + ".yo-rc.json", yorc);
-			_log.info("JSON generated...");
 			
-			_log.info("Generating scripts...");
-			generateYoJhipsterScript(jConf, jDirectory);
-			if (!jConf.applicationType.equals("clientApp"))
-			{
-				generateBuildScript(jConf, jDirectory);
-				generateTestScript(jConf, jDirectory);
-			}
-			
-			_log.info("Scripts generated...");
+			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
+			if(jConf.devDatabaseType.equals("oracle") || jConf.devDatabaseType.equals("H2")
+				|| jConf.applicationType.endsWith("App")){}
+			else{
+				i++;
+				String jDirectory = "jhipster" + i;
+				mkdirJhipster(jDirectory);
+			 	
 	
-			_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
+				
+				_log.info("Parsing JSON...");
+	
+				GeneratorJhipsterConfiguration jhipGen = new GeneratorJhipsterConfiguration();
+				jhipGen.generatorJhipster = jConf;
+				String yorc = toJSON2(jhipGen);
+				Files.writeStringIntoFile(getjDirectory(jDirectory) + ".yo-rc.json", yorc);
+				_log.info("JSON generated...");
+				
+				_log.info("Generating scripts...");
+				generateYoJhipsterScript(jConf, jDirectory);
+				if (!jConf.applicationType.equals("clientApp"))
+				{
+					generateBuildScript(jConf, jDirectory);
+					generateTestScript(jConf, jDirectory);
+				}
+				
+				_log.info("Scripts generated...");
+		
+				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
+				
+				if(i==150){
+					_log.info("Stopping at 150...");
+					System.exit(0);
+				}
+			}
 		}
 	}
 }

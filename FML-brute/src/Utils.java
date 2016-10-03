@@ -57,9 +57,11 @@ public class Utils {
 	
 	private static boolean monolithCheck(JsonObject object, JsonChecker jsonChecker){
 		int size = object.entrySet().size();
-		if(size == 19 || size == 21 || size == 22){
+		if(size == 19 || size == 21 || size == 22 || size == 23){
 			JsonObject[] templates = jsonChecker.getMonolithJson();
-			for (JsonObject obj:templates) if (haveSameSkeleton(object, obj.get("generator-jhipster").getAsJsonObject())) return true;
+			for (JsonObject obj:templates) {
+				if (haveSameSkeleton(object, obj.get("generator-jhipster").getAsJsonObject())) return true;
+			}
 			return false;
 		}
 		else return false;
