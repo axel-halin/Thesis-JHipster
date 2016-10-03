@@ -20,11 +20,12 @@ import org.junit.Test;
  *  - tests
  * 
  * @author Nuttinck Alexandre
+ * @author Axel Halin
  *
  */
 public class Oracle {
 
-	private final static Logger _log = Logger.getLogger("JHipsterTest");
+	private final static Logger _log = Logger.getLogger("Oracle");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 
 	private String projectDirectory = System.getProperty("user.dir");
@@ -43,7 +44,6 @@ public class Oracle {
 			buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
 
 			Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
-
 		}
 		else
 		{
@@ -58,7 +58,6 @@ public class Oracle {
 	 * 
 	 */
 	private void writeScriptDatabases(){
-
 		String buildScript = "#!/bin/bash\n\n";
 
 		//CASSANDRA
@@ -75,7 +74,6 @@ public class Oracle {
 		// ORACLE TODO
 
 		//POSTGRE
-
 		buildScript += "echo 'Postgres!'\n";
 		buildScript += "services pgservice start\n";
 		buildScript += "psql -U postgres <<EOF\n";
@@ -85,7 +83,6 @@ public class Oracle {
 		buildScript += "EOF\n";
 
 		//MARIADB + MYSQL
-
 		buildScript += "echo 'MariaDB-SQL!'\n";
 		buildScript += "services mysql start\n";
 		buildScript += "mysql -u root <<EOF\n";
@@ -97,6 +94,36 @@ public class Oracle {
 		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
 	}
 
+	
+	private void startProcess(String fileName, boolean system, String jDirectory){
+		try{
+			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
+			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory)));
+			Process process = processBuilder.start();
+			process.waitFor();
+		} catch(IOException e){
+			_log.error("IOException: "+e.getMessage());
+		} catch(InterruptedException e){
+			_log.error("InterruptedException: "+e.getMessage());
+		}
+	}
+	
+	private void startProcess(String fileName,boolean system, String jDirectory, long timeOut, TimeUnit unit){
+		try{
+			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
+			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+			Process process = processBuilder.start();
+			process.waitFor(timeOut, unit);
+		} catch(IOException e){
+			_log.error("IOException: "+e.getMessage());
+		} catch(InterruptedException e){
+			_log.error("InterruptedException: "+e.getMessage());
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * Launch Databases.
 	 * 
@@ -105,37 +132,9 @@ public class Oracle {
 	 * @throws IOException 
 	 */
 	private void launchDatabases(boolean system) throws InterruptedException, IOException{
-
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
-		if (!system)
-		{
-			try {
-				ProcessBuilder pb = new ProcessBuilder("bashgitlaunchDatabases.bat");
-				pb.inheritIO();
-				Process process = pb.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		else
-			//linux
-		{
-			try {
-				ProcessBuilder pb2 = new ProcessBuilder("./launchDatabases.sh");
-				//System.out.println("Current directory is: "+pb2.directory());
-				pb2.inheritIO();
-				Process process = pb2.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-
+		if (!system) startProcess("bashgitlaunchDatabases.bat", system, "");
+		else startProcess("./launchDatabases.sh", system, "");
 	}
 
 	/**
@@ -148,27 +147,8 @@ public class Oracle {
 	 */
 	private void generateApp(String jDirectory,boolean system) throws InterruptedException, IOException{
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
-		if (!system){
-			try {
-				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitgenerate.bat");
-				pb.inheritIO();
-				Process process = pb.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			try {
-				ProcessBuilder pb2 = new ProcessBuilder("./generate.sh");
-				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-				Process process = pb2.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		if (!system) startProcess(getjDirectory(jDirectory) + "bashgitgenerate.bat", system, jDirectory);
+		else startProcess("./generate.sh",system,jDirectory+"/");
 	}
 
 	/**
@@ -188,12 +168,7 @@ public class Oracle {
 		Matcher m = Pattern.compile("((.*?)Server app generated successfully.)").matcher(text);
 		Matcher m2 = Pattern.compile("((.*?)Client app generated successfully.)").matcher(text);
 
-		while(m.find() | m2.find())
-
-		{
-			return true;
-		} 
-
+		while(m.find() | m2.find()) return true; 
 		return false;
 	}
 
@@ -205,39 +180,9 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 */
 	private void buildApp(String jDirectory, boolean system) throws InterruptedException{
-
 		// for windows add script bashgit.bat launch bashgit and execute build.sh
-		if (!system)
-
-		{	
-			try {
-				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgitbuild.bat");
-				pb.inheritIO();
-				Process process = pb.start();
-				process.waitFor(200, TimeUnit.SECONDS);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		else
-
-			//linux
-		{
-			try {
-				ProcessBuilder pb2 = new ProcessBuilder("./build.sh");
-				//System.out.println("Current directory is: "+pb2.directory());
-				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-				pb2.inheritIO();
-				Process process = pb2.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
+		else startProcess("./build.sh", system, jDirectory, 200, TimeUnit.SECONDS);
 	}
 
 	/**
@@ -246,23 +191,15 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 */
 	private boolean checkBuildApp(String jDirectory) throws FileNotFoundException{
-
 		String text = "";
 
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
-
 		//CHECK IF APPLICATION FAILED TO START THEN false
 		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
 
-		while(m.find())
-
-		{
-			return false;
-
-		} 
-
+		while(m.find()) return false;
 		return true;
 	}
 
@@ -273,39 +210,8 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 */
 	private void testGenerateApp(String jDirectory, boolean system) throws InterruptedException{
-
-		// for windows add script bashgit.bat launch bashgit and execute test.sh
-		if (!system)
-
-		{
-			try {
-				ProcessBuilder pb = new ProcessBuilder(getjDirectory(jDirectory) + "bashgittest.bat");
-				pb.inheritIO();
-				Process process = pb.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-		else
-
-			//linux
-		{
-			try {
-				ProcessBuilder pb2 = new ProcessBuilder("./test.sh");
-				//System.out.println("Current directory is: "+pb2.directory());
-				pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-				pb2.inheritIO();
-				Process process = pb2.start();
-				process.waitFor();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+		if(!system) startProcess(getjDirectory(jDirectory)+"bashgittest.bat", system, jDirectory);
+		else startProcess("./test.sh", system, jDirectory);
 	}
 
 	/**
@@ -324,7 +230,7 @@ public class Oracle {
 	 * @return true if linux else windows
 	 * @throws IOException 
 	 */
-	private boolean getValueOfSystem() throws IOException {
+	private boolean getValueOfSystem() {
 		InputStream inputStream = null;
 
 		try {
@@ -346,7 +252,8 @@ public class Oracle {
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);
 		} finally {
-			inputStream.close();
+			try{inputStream.close();}
+			catch (IOException e){e.printStackTrace();}
 		}
 		return true; // default linux
 	}

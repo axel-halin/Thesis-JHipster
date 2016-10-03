@@ -234,8 +234,6 @@ public class JHipsterTest extends FMLTest{
 			buildScript += "./gradlew >> jhipsterbuild.log 2>&1\n";
 		}
 		
-		
-		//TODO: check test frameworks (add boolean value to JhipsterConfiguration ?? if so prevent that value from being parsed).
 		for(String s : conf.testFrameworks){
 			switch (s){
 				case "gatling":
@@ -502,7 +500,6 @@ public class JHipsterTest extends FMLTest{
 		int i = 0;
 		for (Variable configuration : confs){
 
-			
 			_log.info("Extracting features from the configuration...");
 			Set<String> strConfs = extractFeatures(configuration);
 			
@@ -516,8 +513,6 @@ public class JHipsterTest extends FMLTest{
 				String jDirectory = "jhipster" + i;
 				mkdirJhipster(jDirectory);
 			 	
-	
-				
 				_log.info("Parsing JSON...");
 	
 				GeneratorJhipsterConfiguration jhipGen = new GeneratorJhipsterConfiguration();
