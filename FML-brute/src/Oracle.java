@@ -321,7 +321,7 @@ public class Oracle {
 	/**
 	 * Return the value of the system 
 	 * 
-	 * @return true if linux else windows
+	 * @return true if linux else false for windows
 	 * @throws IOException 
 	 */
 	private boolean getValueOfSystem() throws IOException {
@@ -352,10 +352,10 @@ public class Oracle {
 	}
 
 	/**
-	 * Generate all variants of JHipster 3.6.1. 
+	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	@Test
-	public void generateJHipsterVariants() throws Exception{
+	public void genJHipsterVariants() throws Exception{
 
 		//false = windows
 		//true = linux
@@ -365,6 +365,20 @@ public class Oracle {
 		File folder = new File(getjDirectory(""));
 		Integer weightFolder = folder.list().length;
 
+		if (!system)
+			//write .bat Scripts for windows
+		{
+			//launchDatabases
+			writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
+		}
+
+		// LAUNCH DATABASES AT THE BEGINING
+		writeScriptDatabases();
+		_log.info("Launch Databases...");
+		launchDatabases(system);
+		_log.info("Finish launch databases...");
+
+		// 1 -> weightFolder 
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
@@ -385,46 +399,10 @@ public class Oracle {
 			_log.info("App Generated...");
 
 			_log.info("Oracle generate "+i+" is done");
-		}
-	}
-
-	/**
-	 * Check all generation of JHipster 3.6.1. and build the app if the generation is OK.
-	 */
-	@Test
-	public void checkAndBuildJHipsterVariants() throws Exception{
-
-		// weight of Folder Jhipsters
-		File folder = new File(getjDirectory(""));
-		Integer weightFolder = folder.list().length;
-
-		// false = windows
-		//true = linux
-		Boolean system = getValueOfSystem();
-
-		if (!system)
-			//write .bat Scripts for windows
-		{
-			writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
-		}
-
-		// LAUNCH DATABASES AT THE BEGINING
-		writeScriptDatabases();
-		_log.info("Launch Databases...");
-		launchDatabases(system);
-		_log.info("End launching databases...");
-
-		for (Integer i =1;i<=weightFolder;i++){
-
-			String jDirectory = "jhipster"+i;
-
-			_log.info("Extracting files from jhipster "+i+"...");
-			_log.info(getjDirectory(jDirectory));
-
 
 			_log.info("Check the generation of the App...");
-			boolean	check = checkGenerateApp(jDirectory);
-			if (check)
+			boolean	checkGen = checkGenerateApp(jDirectory);
+			if (checkGen)
 			{
 				_log.info("App Checked Success...-> build of the app");
 				buildApp(jDirectory,system);
@@ -434,31 +412,11 @@ public class Oracle {
 				_log.info("App generation Failure...");
 			}	
 
-			_log.info("Oracle checkAndBuil "+i+" is done");
-		}
-	}
-
-	/**
-	 * Launch tests on variants of JHipster 3.6.1.
-	 */
-	//@Test
-	public void testsJHipsterVariants() throws Exception{
-
-		// weight of Folder Jhipsters
-		File folder = new File(getjDirectory(""));
-		Integer weightFolder = folder.list().length;
-
-		// false = windows
-		//true = linux
-		Boolean system = getValueOfSystem();
-
-		for (Integer i =1;i<=weightFolder;i++){
-
-			String jDirectory = "jhipster"+i;
+			_log.info("Oracle checkAndBuild "+i+" is done");
 
 			_log.info("Check the build ...");
-			boolean	check = checkBuildApp(jDirectory);
-			if (check)
+			boolean	checkBuild = checkBuildApp(jDirectory);
+			if (checkGen & checkBuild)
 			{
 				_log.info("Build Success -> Launch tests of the App...");
 				testGenerateApp(jDirectory,system);
@@ -469,6 +427,7 @@ public class Oracle {
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
+
 		}
 	}
 }
