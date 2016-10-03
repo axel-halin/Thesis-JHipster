@@ -74,20 +74,16 @@ public class Oracle {
 	 * @throws IOException 
 	 */
 	private void generateApp(String jDirectory) throws InterruptedException, IOException{
-
 		try {
 			ProcessBuilder pb2 = new ProcessBuilder("./generate.sh");
-			//System.out.println("Current directory is: "+pb2.directory());
 			pb2.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-			pb2.inheritIO();
+			//pb2.inheritIO();
 			Process process = pb2.start();
 			process.waitFor();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 	}
 
 	/**
