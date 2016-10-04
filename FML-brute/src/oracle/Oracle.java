@@ -1,8 +1,5 @@
 package oracle;
-<<<<<<< HEAD
 
-=======
->>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -185,15 +182,11 @@ public class Oracle {
 	 * @param system boolean type of the system (linux then true, else false)
 	 */
 	private void compileApp(String jDirectory, boolean system){
-<<<<<<< HEAD
+
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
 		if (!system) {startProcess(getjDirectory(jDirectory) + "bashgitcompile.bat", system, jDirectory);}
-		else startProcess("./compile.sh", system, jDirectory);
-=======
-		// TODO Add Windows Support
-		if (!system) {}
 		else startProcess("./compile.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
->>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
+
 	}
 	
 	
@@ -410,13 +403,9 @@ public class Oracle {
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
-<<<<<<< HEAD
 			
 			_log.info("Writing into jhipster.csv");
-			
 
-=======
->>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
 		}
 		
 		//termination();
