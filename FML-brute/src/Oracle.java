@@ -93,7 +93,6 @@ public class Oracle {
 
 		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
 	}
-
 	
 	private void startProcess(String fileName, boolean system, String jDirectory){
 		Process process = null;
@@ -128,9 +127,6 @@ public class Oracle {
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
-	
-	
-	
 	
 	/**
 	 * Launch Databases.
@@ -273,6 +269,35 @@ public class Oracle {
 		}
 		return true; // default linux
 	}
+	
+	/**
+	 * Return stacktrace if the app doesn't compile or execute 
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of stacktraces
+	 * 
+	 */
+	private String extractStacktraces(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
+
+		//CHECK IF APPLICATION FAILED TO START THEN false
+		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
+		//m2 Exceptions not find in m1 regex
+		Matcher m2 = Pattern.compile("(.*\\bException\\b.*)\\r?\\n(.*\\r?\\n)*(.*\\bat\\b.*)*(\\d{1,4}\\)\\r?\\n)").matcher(text);
+
+		String stacktraces = "";
+		
+		while(m1.find() | m2.find())
+			{
+			stacktraces = stacktraces + m1.toString();
+			stacktraces = stacktraces + m2.toString();
+			}
+		
+		return stacktraces;
+	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -348,12 +373,13 @@ public class Oracle {
 			boolean	checkBuild = checkBuildApp(jDirectory);
 			if (checkGen & checkBuild)
 			{
-				_log.info("Build Success -> Launch tests of the App...");
+				_log.info("Build Success... Launch tests of the App...");
 				testGenerateApp(jDirectory,system);
 			}	
 			else
 			{
-				_log.info("App Build Failure...");
+				_log.info("App Build Failure... Extract Stacktraces");
+				String stacktraces = extractStacktraces(jDirectory);
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
