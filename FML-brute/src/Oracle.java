@@ -77,8 +77,8 @@ public class Oracle {
 		buildScript += "echo 'Postgres!'\n";
 		buildScript += "services pgservice start\n";
 		buildScript += "psql -U postgres <<EOF\n";
-		buildScript += "create role \"jhipster-fou\" login;\n";
-		buildScript += "create database \"jhipster-fou\";\n";
+		buildScript += "create role jhipster login;\n";
+		buildScript += "create database jhipster;\n";
 		buildScript += "\\q\n";
 		buildScript += "EOF\n";
 
@@ -87,7 +87,7 @@ public class Oracle {
 		buildScript += "services mysql start\n";
 		buildScript += "mysql -u root <<EOF\n";
 		buildScript += "SET SESSION sql_mode = 'ANSI';\n";
-		buildScript += "create database if not exists \"jhipster-fou\";\n";
+		buildScript += "create database if not exists jhipster;\n";
 		buildScript += "\\q\n";
 		buildScript += "EOF\n";
 
@@ -179,6 +179,14 @@ public class Oracle {
 		while(m.find() | m2.find()) return true; 
 		return false;
 	}
+	
+	private void compileApp(String jDirectory, boolean system){
+		// TODO Add Windows Support
+		if (!system) {}
+		else startProcess("./compile.sh", system, jDirectory);
+	}
+	
+	
 
 	/**
 	 * Build the App which is generated successfully
@@ -316,6 +324,13 @@ public class Oracle {
 			_log.info("Oracle generate "+i+" is done");
 
 			_log.info("Check the generation of the App...");
+			if(checkGenerateApp(jDirectory)){
+				_log.info("Trying to compile the App...");
+				compileApp(jDirectory, system);
+			}
+			else _log.error("App Generation Failure...");
+			
+			
 			boolean	checkGen = checkGenerateApp(jDirectory);
 			if (checkGen)
 			{

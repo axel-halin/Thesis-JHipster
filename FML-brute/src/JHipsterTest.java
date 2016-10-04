@@ -221,7 +221,6 @@ public class JHipsterTest extends FMLTest{
 			buildScript += "\\q\n";
 		}
 		
-		// TODO
 		// Microservices need Jhipster-registry to be running
 		if(!conf.applicationType.equals("monolith") & !conf.applicationType.endsWith("App")){
 			
@@ -454,9 +453,9 @@ public class JHipsterTest extends FMLTest{
 	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
-		else script+="gradle compile";
+		else script+="./gradlew compileJava";
 		
-		script += ">> compile.log 2&1";
+		script += ">> compile.log 2>&1";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"compile.sh", script);
 	}
 	
@@ -479,6 +478,7 @@ public class JHipsterTest extends FMLTest{
 	 */
 	@Test
 	public void testJHipsterGeneration() throws Exception{
+		
 		
 		_log.info("Extracting Feature Model...");
 		FeatureModelVariable fmvJhipster = getFMJHipster();
@@ -512,8 +512,8 @@ public class JHipsterTest extends FMLTest{
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
 			
 			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
-			if(jConf.devDatabaseType.equals("oracle") || jConf.devDatabaseType.equals("H2")
-				|| jConf.applicationType.endsWith("App")){}
+			if(jConf.devDatabaseType.equals("oracle") || jConf.prodDatabaseType.equals("oracle") 
+				|| jConf.devDatabaseType.equals("H2") || jConf.applicationType.endsWith("App")){}
 			else{
 				i++;
 				String jDirectory = "jhipster" + i;
