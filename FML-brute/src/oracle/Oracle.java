@@ -1,5 +1,8 @@
 package oracle;
+<<<<<<< HEAD
 
+=======
+>>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,10 +29,13 @@ import org.junit.Test;
  *
  */
 public class Oracle {
-
-	private final static Logger _log = Logger.getLogger("Oracle");
+	
+	private static final Logger _log = Logger.getLogger("Oracle");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
-
+	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
+	
+	private Thread threadRegistry;
+	
 	private String projectDirectory = System.getProperty("user.dir");
 
 	/**
@@ -39,20 +45,14 @@ public class Oracle {
 	 */
 	private void writeScriptBat(String nameScriptBat,String nameScriptSh,String jDirectory)
 	{
-		if (nameScriptBat != "bashgitlaunchDatabases.bat")
-		{
+		if (nameScriptBat != "bashgitlaunchDatabases.bat"){
 			String buildScript = "cd "+getjDirectory(jDirectory)+"\n"; 
-
 			buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
-
 			Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
-		}
-		else
-		{
+		} else{
 			String buildScript =  "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
 			Files.writeStringIntoFile("bashgitlaunchDatabases.bat", buildScript);
 		}
-
 	}
 
 	/**
@@ -96,11 +96,11 @@ public class Oracle {
 		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
 	}
 	
-	private void startProcess(String fileName, boolean system, String jDirectory){
+	private void startProcess(String fileName, boolean system, String desiredDirectory){
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
-			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory)));
+			if(system) processBuilder.directory(new File(projectDirectory + "/" + desiredDirectory));
 			process = processBuilder.start();
 			process.waitFor();
 		} catch(IOException e){
@@ -137,7 +137,7 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 * @throws IOException 
 	 */
-	private void launchDatabases(boolean system) throws InterruptedException, IOException{
+	private void launchDatabases(boolean system){
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
 		if (!system) startProcess("bashgitlaunchDatabases.bat", system, "");
 		else startProcess("./launchDatabases.sh", system, "");
@@ -185,9 +185,15 @@ public class Oracle {
 	 * @param system boolean type of the system (linux then true, else false)
 	 */
 	private void compileApp(String jDirectory, boolean system){
+<<<<<<< HEAD
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
 		if (!system) {startProcess(getjDirectory(jDirectory) + "bashgitcompile.bat", system, jDirectory);}
 		else startProcess("./compile.sh", system, jDirectory);
+=======
+		// TODO Add Windows Support
+		if (!system) {}
+		else startProcess("./compile.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
+>>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
 	}
 	
 	
@@ -308,27 +314,44 @@ public class Oracle {
 		
 		return stacktraces;
 	}
-
+	
+	
+	/**
+	 * Launch initialization scripts:
+	 * 		- Start Uaa Server (in case of Uaa authentication)
+	 * 		- Start Jhipster-Registry (in case of Microservices)
+	 * 		- Launch Databases
+	 */
+	private void initialization(final Boolean system){
+		_log.info("Starting intialization scripts...");
+		// startUaaServer();
+		
+		// Start Jhipster Registry
+		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
+		threadRegistry.start();
+		
+		//launchDatabases(system);
+		_log.info("Oracle intialized !");
+	}
+	
+	
+	private void termination(){
+		threadRegistry.stop();
+	}
+	
+	
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	@Test
 	public void genJHipsterVariants() throws Exception{
-
-		//false = windows
-		//true = linux
+		// False = Windows; True = Linux
 		Boolean system = getValueOfSystem();
-
-		// weight of Folder Jhipsters
-		File folder = new File(getjDirectory(""));
-		Integer weightFolder = folder.list().length;
-
-		if (!system)
-			//write .bat Scripts for windows
-		{
-			//launchDatabases
-			writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
-		}
+		
+		initialization(system);
+		
+		if (!system) writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
 
 		// LAUNCH DATABASES AT THE BEGINING
 		writeScriptDatabases();
@@ -350,11 +373,8 @@ public class Oracle {
 				writeScriptBat("bashgittest.bat","test.sh",jDirectory);
 			}
 
-			_log.info("Extracting files from jhipster "+i+"...");
-			_log.info(getjDirectory(jDirectory));
-
 			_log.info("Generate the App...");
-			generateApp(jDirectory, system);
+			generateApp(JHIPSTERS_DIRECTORY+"/"+jDirectory, system);
 			_log.info("App Generated...");
 
 			_log.info("Oracle generate "+i+" is done");
@@ -372,10 +392,7 @@ public class Oracle {
 				_log.info("App Checked Success...-> build of the app");
 				buildApp(jDirectory,system);
 			}	
-			else
-			{
-				_log.info("App generation Failure...");
-			}	
+			else _log.info("App generation Failure...");
 
 			_log.info("Oracle checkAndBuild "+i+" is done");
 
@@ -393,10 +410,15 @@ public class Oracle {
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
+<<<<<<< HEAD
 			
 			_log.info("Writing into jhipster.csv");
 			
 
+=======
+>>>>>>> b0cbe7be30f8515a91d03b89cf1e559c05c7813f
 		}
+		
+		//termination();
 	}
 }
