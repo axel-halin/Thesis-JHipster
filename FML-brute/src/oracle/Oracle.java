@@ -258,7 +258,6 @@ public class Oracle {
 			Boolean system = Boolean.parseBoolean(prop.getProperty("system"));
 
 			return system;
-
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);
 		} finally {
@@ -394,6 +393,6 @@ public class Oracle {
 			_log.info("Oracle Tests "+i+" is done");
 		}
 		
-		//termination();
+		termination();
 	}
 }
