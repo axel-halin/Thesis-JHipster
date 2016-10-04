@@ -1,3 +1,5 @@
+package oracle;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -175,10 +177,16 @@ public class Oracle {
 		while(m.find() | m2.find()) return true; 
 		return false;
 	}
-	
+
+	/**
+	 * Compile the App from the yo-rc.json.
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @param system boolean type of the system (linux then true, else false)
+	 */
 	private void compileApp(String jDirectory, boolean system){
-		// TODO Add Windows Support
-		if (!system) {}
+		// for windows add script bashgit.bat launch bashgit and execute generate.sh
+		if (!system) {startProcess(getjDirectory(jDirectory) + "bashgitcompile.bat", system, jDirectory);}
 		else startProcess("./compile.sh", system, jDirectory);
 	}
 	
@@ -208,10 +216,12 @@ public class Oracle {
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
-		//CHECK IF APPLICATION FAILED TO START THEN false
+		//CHECK IF BUILD FAILED THEN false
 		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
+		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
+		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
 
-		while(m.find()) return false;
+		while(m.find() | m2.find() | m3.find()) return false;
 		return true;
 	}
 
@@ -335,6 +345,7 @@ public class Oracle {
 				//write .bat Scripts for windows
 			{
 				writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
+				writeScriptBat("bashgitcompile.bat","compile.sh",jDirectory);
 				writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
 				writeScriptBat("bashgittest.bat","test.sh",jDirectory);
 			}
@@ -354,10 +365,9 @@ public class Oracle {
 				compileApp(jDirectory, system);
 			}
 			else _log.error("App Generation Failure...");
-			
-			
+				
 			boolean	checkGen = checkGenerateApp(jDirectory);
-			if (checkGen)
+			if (checkGenerateApp(jDirectory))
 			{
 				_log.info("App Checked Success...-> build of the app");
 				buildApp(jDirectory,system);
@@ -383,6 +393,9 @@ public class Oracle {
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
+			
+			_log.info("Writing into jhipster.csv");
+			
 
 		}
 	}
