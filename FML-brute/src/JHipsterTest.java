@@ -438,40 +438,6 @@ public class JHipsterTest extends FMLTest{
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
 	}
 	
-	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
-		String script = "#!/bin/bash\n\n";
-		
-		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
-		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
-		else script += "yo jhipster ";
-		
-		script += ">> generate.log 2>&1";
-		
-		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
-	}
-	
-	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
-		String script = "#!/bin/bash\n\n";
-		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
-		else script+="./gradlew compileJava";
-		
-		script += ">> compile.log 2>&1";
-		Files.writeStringIntoFile(getjDirectory(jDirectory)+"compile.sh", script);
-	}
-	
-	
-	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
-		String script = "#!/bin/bash\n\n";
-		if(jconf.buildTool.equals("maven")) script += "./mvnw -Pprod ";
-		else script += "./gradlew -Pprod ";
-		
-		script += ">> build.log 2>&1";
-		Files.writeStringIntoFile(getjDirectory(jDirectory) + "build.sh", script);
-	}
-	
-	// TODO
-	private void generateTestScript(JhipsterConfiguration jconf, String jDirectory){}
-	
 
 	/**
 	 * Generates all variants of JHipster 3.6.1 to test them afterwards. 
@@ -528,20 +494,20 @@ public class JHipsterTest extends FMLTest{
 				_log.info("JSON generated...");
 				
 				_log.info("Generating scripts...");
-				generateYoJhipsterScript(jConf, jDirectory);
+				new ScriptsBuilder().generateYoJhipsterScript(jConf, jDirectory);
 				if (!jConf.applicationType.equals("clientApp"))
 				{
-					generateCompileScript(jConf, jDirectory);
-					generateBuildScript(jConf, jDirectory);
-					generateTestScript(jConf, jDirectory);
+					new ScriptsBuilder().generateCompileScript(jConf, jDirectory);
+					new ScriptsBuilder().generateBuildScript(jConf, jDirectory);
+					new ScriptsBuilder().generateTestScript(jConf, jDirectory);
 				}
 				
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==5){
-					_log.info("Stopping at 5...");
+				if(i==1){
+					_log.info("Stopping at 1...");
 					System.exit(0);
 				}
 			}
