@@ -1,9 +1,12 @@
 package oracle;
 
+import csv.CSVUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -26,13 +29,13 @@ import org.junit.Test;
  *
  */
 public class Oracle {
-	
+
 	private static final Logger _log = Logger.getLogger("Oracle");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
-	
+
 	private Thread threadRegistry;
-	
+
 	private String projectDirectory = System.getProperty("user.dir");
 
 	/**
@@ -92,7 +95,7 @@ public class Oracle {
 
 		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
 	}
-	
+
 	private void startProcess(String fileName, boolean system, String desiredDirectory){
 		Process process = null;
 		try{
@@ -109,7 +112,7 @@ public class Oracle {
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
-	
+
 	private void startProcess(String fileName,boolean system, String jDirectory, long timeOut, TimeUnit unit){
 		Process process = null;
 		try{
@@ -126,7 +129,7 @@ public class Oracle {
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
-	
+
 	/**
 	 * Launch Databases.
 	 * 
@@ -188,8 +191,8 @@ public class Oracle {
 		else startProcess("./compile.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 
 	}
-	
-	
+
+
 
 	/**
 	 * Build the App which is generated successfully
@@ -277,7 +280,7 @@ public class Oracle {
 		}
 		return true; // default linux
 	}
-	
+
 	/**
 	 * Return stacktrace if the app doesn't compile or execute 
 	 * 
@@ -291,23 +294,23 @@ public class Oracle {
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
-		//CHECK IF APPLICATION FAILED TO START THEN false
+		//m1 Exceptions
 		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
 		//m2 Exceptions not find in m1 regex
 		Matcher m2 = Pattern.compile("(.*\\bException\\b.*)\\r?\\n(.*\\r?\\n)*(.*\\bat\\b.*)*(\\d{1,4}\\)\\r?\\n)").matcher(text);
 
 		String stacktraces = "";
-		
+
 		while(m1.find() | m2.find())
-			{
+		{
 			stacktraces = stacktraces + m1.toString();
 			stacktraces = stacktraces + m2.toString();
-			}
-		
+		}
+
 		return stacktraces;
 	}
-	
-	
+
+
 	/**
 	 * Launch initialization scripts:
 	 * 		- Start Uaa Server (in case of Uaa authentication)
@@ -317,22 +320,20 @@ public class Oracle {
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
 		// startUaaServer();
-		
+
 		// Start Jhipster Registry
 		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
-		
+
 		//launchDatabases(system);
 		_log.info("Oracle intialized !");
 	}
-	
-	
+
+
 	private void termination(){
 		threadRegistry.stop();
 	}
-	
-	
-	
+
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
@@ -340,9 +341,9 @@ public class Oracle {
 	public void genJHipsterVariants() throws Exception{
 		// False = Windows; True = Linux
 		Boolean system = getValueOfSystem();
-		
+
 		initialization(system);
-		
+
 		if (!system) writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
 
 		// LAUNCH DATABASES AT THE BEGINING
@@ -351,10 +352,20 @@ public class Oracle {
 		launchDatabases(system);
 		_log.info("Finish launch databases...");
 
+		//New array for file csv
+		List<String[]> array = new ArrayList<String[]>();
+		
 		// 1 -> weightFolder 
 		for (Integer i =1;i<=weightFolder;i++){
 
 			String jDirectory = "jhipster"+i;
+
+			//String generation used for the csv
+			String generation = "?";
+			//String build used for the csv
+			String build = "?";
+			//String build used for the csv
+			String stacktraces = "?";
 
 			if (!system)
 				//write .bat Scripts for windows
@@ -366,18 +377,26 @@ public class Oracle {
 			}
 
 			_log.info("Generate the App...");
-			generateApp(JHIPSTERS_DIRECTORY+"/"+jDirectory, system);
+			generateApp(jDirectory, system);
 			_log.info("App Generated...");
 
 			_log.info("Oracle generate "+i+" is done");
 
 			_log.info("Check the generation of the App...");
 			if(checkGenerateApp(jDirectory)){
+				//String used for the generation csv
+				generation ="OK";
+				
 				_log.info("Trying to compile the App...");
 				compileApp(jDirectory, system);
 			}
-			else _log.error("App Generation Failure...");
-				
+			else 
+			{
+				_log.error("App Generation Failure...");
+				//String used for the generation csv
+				generation ="KO";
+			}
+
 			boolean	checkGen = checkGenerateApp(jDirectory);
 			if (checkGenerateApp(jDirectory))
 			{
@@ -392,21 +411,32 @@ public class Oracle {
 			boolean	checkBuild = checkBuildApp(jDirectory);
 			if (checkGen & checkBuild)
 			{
+				//String build used for the csv
+				build = "OK";
+				stacktraces = "Nothing";
 				_log.info("Build Success... Launch tests of the App...");
 				testGenerateApp(jDirectory,system);
 			}	
 			else
 			{
+				//String build used for the csv
+				build = "OK";
 				_log.info("App Build Failure... Extract Stacktraces");
-				String stacktraces = extractStacktraces(jDirectory);
+				stacktraces = extractStacktraces(jDirectory);
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
-			
+
 			_log.info("Writing into jhipster.csv");
+			
+			//New line for file csv
+			String[] line = {jDirectory,generation,build,stacktraces};
+			//add line to Array
+			array.add(line);
 
 		}
-		
+
 		termination();
+		CSVUtils.writeToCSVList("jhipster.csv",array);
 	}
 }
