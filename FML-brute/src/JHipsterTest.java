@@ -500,14 +500,15 @@ public class JHipsterTest extends FMLTest{
 					new ScriptsBuilder().generateCompileScript(jConf, jDirectory);
 					new ScriptsBuilder().generateBuildScript(jConf, jDirectory);
 					new ScriptsBuilder().generateTestScript(jConf, jDirectory);
+					new ScriptsBuilder().generateKillScript(jDirectory);
 				}
 				
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==1){
-					_log.info("Stopping at 1...");
+				if(i==5){
+					_log.info("Stopping at 5...");
 					System.exit(0);
 				}
 			}
