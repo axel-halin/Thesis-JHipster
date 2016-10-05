@@ -116,13 +116,19 @@ public class Oracle {
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
 			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 			process = processBuilder.start();
-			process.waitFor(timeOut, unit);
+			
+			while(	System.nanoTime()+TimeUnit.SECONDS.toNanos(timeOut) > System.nanoTime()
+					&& process.isAlive()){
+				process.waitFor();
+			}
+			process.destroyForcibly();
+			process.destroy();
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
 		} finally{
-			try{process.destroy();}
+			try{process.destroyForcibly(); process.destroy();}
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}

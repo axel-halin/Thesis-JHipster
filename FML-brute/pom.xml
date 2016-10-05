@@ -24,5 +24,11 @@
       <version>2.6.2</version>
       <scope>compile</scope>
     </dependency>
+	<!-- OpenCSV: Parser/Reader for csv files-->
+	<dependency>
+     <groupId>com.opencsv</groupId>
+     <artifactId>opencsv</artifactId>
+     <version>3.7</version>
+  	</dependency>
 </dependencies>
 </project>
