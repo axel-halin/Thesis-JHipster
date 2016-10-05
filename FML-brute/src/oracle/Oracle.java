@@ -263,6 +263,58 @@ public class Oracle {
 
 		return stacktraces;
 	}
+	
+	/**
+	 * Return the time of building   
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 */
+	private String extractTimeBuild(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
+
+		//m1 TimeBuild TODO
+		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
+
+		String timebuild = "NOTHING";
+
+		while(m1.find())
+		{
+			return timebuild = m1.toString();
+		}
+
+		return timebuild;
+	}
+
+	/**
+	 * Return the time of building   
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 */
+	private String extractMemoryBuild(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
+
+		//m1 TimeBuild TODO
+		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
+
+		String memoryBuild = "NOTHING";
+
+		while(m1.find())
+		{
+			return memoryBuild = m1.toString();
+		}
+
+		return memoryBuild;
+	}
 
 
 	/**
@@ -305,12 +357,12 @@ public class Oracle {
 
 			String jDirectory = "jhipster"+i;
 
-			//String generation used for the csv
+			//Strings used for the csv
 			String generation = "?";
-			//String build used for the csv
 			String build = "?";
-			//String build used for the csv
 			String stacktraces = "?";
+			String buildTime = "?";
+			String buildMemory = "?";
 
 			if (!system)
 				//write .bat Scripts for windows
@@ -359,15 +411,19 @@ public class Oracle {
 				//String build used for the csv
 				build = "OK";
 				stacktraces = "Nothing";
+				buildTime = extractTimeBuild(jDirectory);
+				buildMemory = extractMemoryBuild(jDirectory);
 				_log.info("Build Success... Launch tests of the App...");
 				testGenerateApp(jDirectory,system);
 			}	
 			else
 			{
 				//String build used for the csv
-				build = "OK";
+				build = "KO";
 				_log.info("App Build Failure... Extract Stacktraces");
 				stacktraces = extractStacktraces(jDirectory);
+				buildTime = extractTimeBuild(jDirectory);
+				buildMemory = extractMemoryBuild(jDirectory);
 			}	
 
 			_log.info("Oracle Tests "+i+" is done");
