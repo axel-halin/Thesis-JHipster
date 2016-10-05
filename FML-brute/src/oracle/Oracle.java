@@ -55,47 +55,6 @@ public class Oracle {
 		}
 	}
 
-	/**
-	 * Creates the script to launch all databases 
-	 * 
-	 */
-	private void writeScriptDatabases(){
-		String buildScript = "#!/bin/bash\n\n";
-
-		//CASSANDRA
-		buildScript += "echo 'Cassandra!'\n";
-		buildScript += "services cassandra start\n";
-		buildScript += "cqlsh -f src/main/resources/config/cql/create-keyspace.cql\n";
-		buildScript += "cqlsh -f src/main/resources/config/cql/changelog/00000000000000_create-tables.cql\n";
-		buildScript += "cqlsh -f src/main/resources/config/cql/changelog/00000000000001_insert_default_users.cql\n";
-
-		//MONGODB
-		buildScript += "echo 'MongoDB!'\n";
-		buildScript += "services mongodb start\n";
-
-		// ORACLE TODO
-
-		//POSTGRE
-		buildScript += "echo 'Postgres!'\n";
-		buildScript += "services pgservice start\n";
-		buildScript += "psql -U postgres <<EOF\n";
-		buildScript += "create role jhipster login;\n";
-		buildScript += "create database jhipster;\n";
-		buildScript += "\\q\n";
-		buildScript += "EOF\n";
-
-		//MARIADB + MYSQL
-		buildScript += "echo 'MariaDB-SQL!'\n";
-		buildScript += "services mysql start\n";
-		buildScript += "mysql -u root <<EOF\n";
-		buildScript += "SET SESSION sql_mode = 'ANSI';\n";
-		buildScript += "create database if not exists jhipster;\n";
-		buildScript += "\\q\n";
-		buildScript += "EOF\n";
-
-		Files.writeStringIntoFile("launchDatabases.sh", buildScript);
-	}
-
 	private void startProcess(String fileName, boolean system, String desiredDirectory){
 		Process process = null;
 		try{
@@ -119,28 +78,21 @@ public class Oracle {
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
 			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 			process = processBuilder.start();
-			process.waitFor(timeOut, unit);
+			
+			while(	System.nanoTime()+TimeUnit.SECONDS.toNanos(timeOut) > System.nanoTime()
+					&& process.isAlive()){
+				process.waitFor();
+			}
+			process.destroyForcibly();
+			process.destroy();
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
 		} finally{
-			try{process.destroy();}
+			try{process.destroyForcibly(); process.destroy();}
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
-	}
-
-	/**
-	 * Launch Databases.
-	 * 
-	 * @param system boolean type of the system (linux then true, else false)
-	 * @throws InterruptedException 
-	 * @throws IOException 
-	 */
-	private void launchDatabases(boolean system){
-		// for windows add script bashgit.bat launch bashgit and execute generate.sh
-		if (!system) startProcess("bashgitlaunchDatabases.bat", system, "");
-		else startProcess("./launchDatabases.sh", system, "");
 	}
 
 	/**
@@ -395,14 +347,6 @@ public class Oracle {
 		Boolean system = getValueOfSystem();
 
 		initialization(system);
-
-		if (!system) writeScriptBat("bashgitlaunchDatabases.bat","launchDatabases.sh","");
-
-		// LAUNCH DATABASES AT THE BEGINING
-		writeScriptDatabases();
-		_log.info("Launch Databases...");
-		launchDatabases(system);
-		_log.info("Finish launch databases...");
 
 		//New array for file csv
 		List<String[]> array = new ArrayList<String[]>();
