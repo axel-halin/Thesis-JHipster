@@ -78,17 +78,17 @@ public class Oracle {
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
 			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 			process = processBuilder.start();
-			
-			while(	System.nanoTime()+TimeUnit.SECONDS.toNanos(timeOut) > System.nanoTime()
-					&& process.isAlive()){
-				process.waitFor();
-			}
-			process.destroyForcibly();
-			process.destroy();
+
+			if(!process.waitFor(timeOut, unit)) {
+			    //timeout - kill the process. 
+			    process.destroyForcibly();
+			}	
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
+			if (process!=null) {System.err.println("trying to kill"); process.destroy(); }
+			else System.err.println("Process interupted but null...");
 		} finally{
 			try{process.destroyForcibly(); process.destroy();}
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
@@ -106,7 +106,7 @@ public class Oracle {
 	private void generateApp(String jDirectory,boolean system) throws InterruptedException, IOException{
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
 		if (!system) startProcess(getjDirectory(jDirectory) + "bashgitgenerate.bat", system, jDirectory);
-		else startProcess("./generate.sh",system,jDirectory+"/");
+		else startProcess("./generate.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 	}
 
 	/**
@@ -156,7 +156,9 @@ public class Oracle {
 	private void buildApp(String jDirectory, boolean system) throws InterruptedException{
 		// for windows add script bashgit.bat launch bashgit and execute build.sh
 		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
-		else startProcess("./build.sh", system, jDirectory, 200, TimeUnit.SECONDS);
+		else startProcess("./build.sh", system, jDirectory, 150, TimeUnit.SECONDS);
+		
+		startProcess("./killServer.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
