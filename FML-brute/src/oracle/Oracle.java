@@ -35,6 +35,7 @@ public class Oracle {
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
 
 	private Thread threadRegistry;
+	private Thread threadUAA;
 
 	private String projectDirectory = System.getProperty("user.dir");
 
@@ -325,18 +326,26 @@ public class Oracle {
 	 */
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
-		// TODO startUaaServer();
 
 		// Start Jhipster Registry
 		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
 
+		// Let Jhipster Registry initiate before attempting to launch UAA Server...
+		try{Thread.sleep(4000);}
+		catch(Exception e){_log.error(e.getMessage());}
+		
+		// TODO startUaaServer();
+		threadUAA = new Thread(new ThreadUAA(system, projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
+		threadUAA.start();
+		
 		_log.info("Oracle intialized !");
 	}
 
 
 	private void termination(){
 		threadRegistry.stop();
+		threadUAA.stop();
 	}
 
 	/**
