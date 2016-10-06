@@ -497,6 +497,7 @@ public class JHipsterTest extends FMLTest{
 				new ScriptsBuilder().generateYoJhipsterScript(jConf, jDirectory);
 				if (!jConf.applicationType.equals("clientApp"))
 				{
+					new ScriptsBuilder().generateKillScript(jDirectory);
 					new ScriptsBuilder().generateCompileScript(jConf, jDirectory);
 					new ScriptsBuilder().generateBuildScript(jConf, jDirectory);
 					new ScriptsBuilder().generateTestScript(jConf, jDirectory);
@@ -506,8 +507,8 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==30){
-					_log.info("Stopping at 30...");
+				if(i==5){
+					_log.info("Stopping at 5...");
 					System.exit(0);
 				}
 			}

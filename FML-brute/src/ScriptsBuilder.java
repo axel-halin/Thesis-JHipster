@@ -8,13 +8,21 @@ import org.eclipse.xtext.util.Files;
 /**
  * All Scripts related methods
  * 
- * @author Axel
+ * @author Axel Halin
  */
 public class ScriptsBuilder {
 
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String PROPERTIES_FILE = "System.properties";
 	
+	
+	/**
+	 * Generates the script to generate the JHipster application.\n
+	 * This script varies depending on the application type (see JHipster's Sub-Generators)
+	 * 
+	 * @param jconf JHipster Configuration to generate;
+	 * @param jDirectory Name of the directory (jhipster+id) in which the script will be placed.
+	 */
 	public void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		
@@ -64,6 +72,12 @@ public class ScriptsBuilder {
 	//TODO
 	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){}
 	
+	public void generateKillScript(String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		
+		script += "fuser -k  8080/tcp";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
+	}
 	
 	public static String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";

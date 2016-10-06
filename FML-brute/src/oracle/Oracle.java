@@ -88,8 +88,6 @@ public class Oracle {
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
 			_log.error("InterruptedException: "+e.getMessage());
-			if (process!=null) {System.err.println("trying to kill"); process.destroy(); }
-			else System.err.println("Process interupted but null...");
 		} finally{
 			try{process.destroyForcibly(); process.destroy();}
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
@@ -279,7 +277,7 @@ public class Oracle {
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
 		//m1 TimeBuild TODO
-		Matcher m1 = Pattern.compile("((.*?)Total time").matcher(text);
+		Matcher m1 = Pattern.compile("(.*?)Total time").matcher(text);
 
 		String timebuild = "NOTHING";
 
@@ -321,10 +319,11 @@ public class Oracle {
 
 
 	/**
-	 * Launch initialization scripts:
+	 * Launch initialization scripts:\n
 	 * 		- Start Uaa Server (in case of Uaa authentication)
 	 * 		- Start Jhipster-Registry (in case of Microservices)
-	 * 		- Launch Databases
+	 *  
+	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
@@ -346,8 +345,8 @@ public class Oracle {
 
 
 	private void termination(){
-		threadRegistry.stop();
-		threadUAA.stop();
+		threadRegistry.interrupt();
+		threadUAA.interrupt();
 	}
 
 	/**
