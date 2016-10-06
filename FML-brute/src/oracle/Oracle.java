@@ -279,12 +279,13 @@ public class Oracle {
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
 		//m1 TimeBuild TODO
-		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
+		Matcher m1 = Pattern.compile("((.*?)Total time").matcher(text);
 
 		String timebuild = "NOTHING";
 
 		while(m1.find())
 		{
+			System.out.println(m1.toString());
 			return timebuild = m1.toString();
 		}
 
@@ -305,12 +306,13 @@ public class Oracle {
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
 		//m1 TimeBuild TODO
-		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
+		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
 
 		String memoryBuild = "NOTHING";
 
 		while(m1.find())
 		{
+			System.out.println(m1.toString());
 			return memoryBuild = m1.toString();
 		}
 
@@ -326,7 +328,7 @@ public class Oracle {
 	 */
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
-
+		
 		// Start Jhipster Registry
 		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
@@ -335,7 +337,7 @@ public class Oracle {
 		try{Thread.sleep(4000);}
 		catch(Exception e){_log.error(e.getMessage());}
 		
-		// TODO startUaaServer();
+		// Start UAA Server
 		threadUAA = new Thread(new ThreadUAA(system, projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
 		threadUAA.start();
 		
@@ -440,13 +442,12 @@ public class Oracle {
 			_log.info("Writing into jhipster.csv");
 			
 			//New line for file csv
-			String[] line = {jDirectory,generation,build,stacktraces};
+			String[] line = {jDirectory,generation,build,stacktraces,buildTime,buildMemory};
 			//add line to Array
 			array.add(line);
 
 		}
-
-		termination();
 		CSVUtils.writeToCSVList("jhipster.csv",array);
+		termination();
 	}
 }

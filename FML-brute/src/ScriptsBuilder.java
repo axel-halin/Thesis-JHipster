@@ -65,13 +65,6 @@ public class ScriptsBuilder {
 	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){}
 	
 	
-	public void generateKillScript(String jDirectory){
-		String script = "#!/bin/bash\n\n";
-		
-		script += "fuser -k  8080/tcp";
-		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killServer.sh", script);
-	}
-	
 	public static String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
 	}
