@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
  * Thread to handle JHipster Registry
  * 
  * @author Axel Halin
+ * @author Nuttinck Alexandre
  */
 public class ThreadRegistry implements Runnable {
 	private static final Logger _log = Logger.getLogger("ThreadRegistry");
@@ -28,10 +29,17 @@ public class ThreadRegistry implements Runnable {
 	@Override
 	public void run(){
 		try{
-			ProcessBuilder processBuilder = new ProcessBuilder("./mvnw");
-			if(SYSTEM) processBuilder.directory(new File(PATH));
+			if (SYSTEM)
+			{ProcessBuilder processBuilder = new ProcessBuilder("./mvnw");
+			processBuilder.directory(new File(PATH));
 			process = processBuilder.start();
-			process.waitFor();
+			process.waitFor();}
+			else
+			{ProcessBuilder processBuilder = new ProcessBuilder("bashgitMvn");
+			processBuilder.directory(new File(PATH));
+			process = processBuilder.start();
+			process.waitFor();}
+			
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
 		} catch(InterruptedException e){
