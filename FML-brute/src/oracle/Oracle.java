@@ -16,6 +16,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 /**
  * Extension of previous work from Mathieu ACHER, Inria Rennes-Bretagne Atlantique.
  * 
@@ -143,7 +146,24 @@ public class Oracle {
 
 	}
 
+	/**
+	 * Check the App is compile successfully
+	 * 
+	 * @param jDirectory Name of the folder
+	 */
+	private boolean checkCompileApp(String jDirectory) throws FileNotFoundException{
+		String text = "";
 
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "compile.log");
+
+		//CHECK IF BUILD FAILED THEN false
+		Matcher m1 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
+		Matcher m2 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
+
+		while(m1.find() | m2.find()) return false;
+		return true;
+	}
 
 	/**
 	 * Build the App which is generated successfully
@@ -186,7 +206,7 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @throws InterruptedException 
 	 */
-	private void testGenerateApp(String jDirectory, boolean system) throws InterruptedException{
+	private void testsApp(String jDirectory, boolean system) throws InterruptedException{
 		if(!system) startProcess(getjDirectory(jDirectory)+"bashgittest.bat", system, jDirectory);
 		else startProcess("./test.sh", system, jDirectory);
 	}
@@ -235,17 +255,17 @@ public class Oracle {
 	}
 
 	/**
-	 * Return stacktrace if the app doesn't compile or execute 
+	 * Return stacktraces
 	 * 
 	 * @param jDirectory Name of the folder
 	 * @return String of stacktraces
 	 * 
 	 */
-	private String extractStacktraces(String jDirectory) throws FileNotFoundException{
+	private String extractStacktraces(String jDirectory, String log) throws FileNotFoundException{
 		String text = "";
 
 		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + log);
 
 		//m1 Exceptions
 		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
@@ -291,7 +311,7 @@ public class Oracle {
 	}
 
 	/**
-	 * Return the time of building   
+	 * Return the memory used   
 	 * 
 	 * @param jDirectory Name of the folder
 	 * @return String of time of building
@@ -359,8 +379,8 @@ public class Oracle {
 
 		initialization(system);
 
-		//New array for file csv
-		List<String[]> array = new ArrayList<String[]>();
+		//Create CSV file.
+		CSVUtils.createCSVFile("jhipster.csv");
 		
 		// 1 -> weightFolder 
 		for (Integer i =1;i<=weightFolder;i++){
@@ -369,14 +389,52 @@ public class Oracle {
 
 			//Strings used for the csv
 			String generation = "?";
+			String stacktracesGen = "?";
+			String compile = "?";
+			String stacktracesCompile = "?";
 			String build = "?";
-			String stacktraces = "?";
+			String stacktracesBuild = "?";
 			String buildTime = "?";
 			String buildMemory = "?";
+			//jsonStrings
+			String applicationType = "X";
+			String authenticationType = "X";
+			String hibernateCache = "X";
+			String clusteredHttpSession = "X";
+			String websocket = "X";
+			String databaseType= "X";
+			String devDatabaseType= "X";
+			String prodDatabaseType= "X";
+			String searchEngine= "X";
+			String enableSocialSignIn= "X";
+			String useSass= "X";
+			String enableTranslation = "X";
+			String testFrameworks ="X";
+			
+			
+			//Get Json strings used for the csv
+			JsonParser jsonParser = new JsonParser();
+			JsonObject objectGen = jsonParser.parse(Files.readFileIntoString(getjDirectory(jDirectory)+".yo-rc.json")).getAsJsonObject();
+			JsonObject object = (JsonObject) objectGen.get("generator-jhipster");
+			
+			if (object.get("applicationType") != null) applicationType = object.get("applicationType").toString();
+			if (object.get("authenticationType") != null) authenticationType = object.get("authenticationType").toString();
+			if (object.get("hibernateCache") != null) hibernateCache = object.get("hibernateCache").toString();
+			if (object.get("clusteredHttpSession") != null) clusteredHttpSession = object.get("clusteredHttpSession").toString();
+			if (object.get("websocket") != null) websocket = object.get("websocket").toString();
+			if (object.get("databaseType") != null) databaseType = object.get("databaseType").toString();
+			if (object.get("devDatabaseType") != null) devDatabaseType = object.get("devDatabaseType").toString();
+			if (object.get("prodDatabaseType") != null) prodDatabaseType = object.get("prodDatabaseType").toString();
+			if (object.get("searchEngine") != null) searchEngine = object.get("buildTool").toString();
+			if (object.get("enableSocialSignIn") != null) enableSocialSignIn = object.get("enableSocialSignIn").toString();
+			if (object.get("useSass") != null) useSass = object.get("useSass").toString();
+			if (object.get("enableTranslation") != null) enableTranslation = object.get("enableTranslation").toString();
+			if (object.get("testFrameworks") != null) testFrameworks = object.get("testFrameworks").toString();
 
 			if (!system)
 				//write .bat Scripts for windows
 			{
+				writeScriptBat("bashgitkillServer.bat","killServer.sh",jDirectory);
 				writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
 				writeScriptBat("bashgitcompile.bat","compile.sh",jDirectory);
 				writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
@@ -390,9 +448,11 @@ public class Oracle {
 			_log.info("Oracle generate "+i+" is done");
 
 			_log.info("Check the generation of the App...");
-			if(checkGenerateApp(jDirectory)){
+			boolean	checkGen = checkGenerateApp(jDirectory);
+			if(checkGen){
 				//String used for the generation csv
 				generation ="OK";
+				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 				
 				_log.info("Trying to compile the App...");
 				compileApp(jDirectory, system);
@@ -402,51 +462,59 @@ public class Oracle {
 				_log.error("App Generation Failure...");
 				//String used for the generation csv
 				generation ="KO";
+				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 			}
-
-			boolean	checkGen = checkGenerateApp(jDirectory);
-			if (checkGenerateApp(jDirectory))
+			
+			boolean	checkCompile = checkCompileApp(jDirectory);
+			if(checkGen && checkCompile){
+				//String used for the generation csv
+				compile ="OK";
+				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+				
+				_log.info("Trying to build the App...");
+				buildApp(jDirectory, system);
+			}
+			else 
 			{
-				_log.info("App Checked Success...-> build of the app");
-				buildApp(jDirectory,system);
-			}	
-			else _log.info("App generation Failure...");
-
-			_log.info("Oracle checkAndBuild "+i+" is done");
+				_log.error("App Compile Failure...");
+				//String used for the generation csv
+				compile ="KO";
+				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+			}
 
 			_log.info("Check the build ...");
 			boolean	checkBuild = checkBuildApp(jDirectory);
-			if (checkGen & checkBuild)
+			if (checkGen & checkCompile & checkBuild)
 			{
 				//String build used for the csv
 				build = "OK";
-				stacktraces = "Nothing";
+				stacktracesBuild = extractStacktraces(jDirectory,"build.log");
 				buildTime = extractTimeBuild(jDirectory);
 				buildMemory = extractMemoryBuild(jDirectory);
+				
 				_log.info("Build Success... Launch tests of the App...");
-				testGenerateApp(jDirectory,system);
+				testsApp(jDirectory,system);
 			}	
 			else
 			{
 				//String build used for the csv
 				build = "KO";
 				_log.info("App Build Failure... Extract Stacktraces");
-				stacktraces = extractStacktraces(jDirectory);
-				buildTime = extractTimeBuild(jDirectory);
-				buildMemory = extractMemoryBuild(jDirectory);
+				stacktracesBuild = extractStacktraces(jDirectory,"build.log");
+				buildTime = "KO";
+				buildMemory = "KO";
 			}	
 
-			_log.info("Oracle Tests "+i+" is done");
+			//_log.info("Oracle Tests "+i+" is done");
 
 			_log.info("Writing into jhipster.csv");
 			
 			//New line for file csv
-			String[] line = {jDirectory,generation,build,stacktraces,buildTime,buildMemory};
-			//add line to Array
-			array.add(line);
+			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory};
 
+			//write into CSV file
+			CSVUtils.writeNewLineCSV("jhipster.csv",line);
 		}
-		CSVUtils.writeToCSVList("jhipster.csv",array);
 		termination();
 	}
 }
