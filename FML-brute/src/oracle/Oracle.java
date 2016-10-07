@@ -157,7 +157,7 @@ public class Oracle {
 		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
 		else startProcess("./build.sh", system, jDirectory, 150, TimeUnit.SECONDS);
 		
-		startProcess("./killServer.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
+		startProcess("./killScript.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
@@ -333,12 +333,15 @@ public class Oracle {
 		threadRegistry.start();
 
 		// Let Jhipster Registry initiate before attempting to launch UAA Server...
-		try{Thread.sleep(4000);}
+		try{Thread.sleep(30000);}
 		catch(Exception e){_log.error(e.getMessage());}
 		
 		// Start UAA Server
 		threadUAA = new Thread(new ThreadUAA(system, projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
 		threadUAA.start();
+		
+		try{Thread.sleep(5000);}
+		catch(Exception e){_log.error(e.getMessage());}
 		
 		_log.info("Oracle intialized !");
 	}
