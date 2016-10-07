@@ -48,13 +48,14 @@ public class JhipsterConfiguration {
 					;
 			
 			String strTestFrameworks = "[";
+			if(testFrameworks!=null){
 			for (int i = 0; i < testFrameworks.length; i++) {
 				strTestFrameworks += testFrameworks[i];
 				if (i < (testFrameworks.length - 1))
 					strTestFrameworks += ",";
 			}
 			strTestFrameworks += "]";
-			
+			}
 			return r + " " + strTestFrameworks;
 		}
 		

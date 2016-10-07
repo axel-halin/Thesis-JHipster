@@ -478,8 +478,8 @@ public class JHipsterTest extends FMLTest{
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
 			
 			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
-			if(jConf.devDatabaseType.equals("oracle") || jConf.prodDatabaseType.equals("oracle") 
-				|| jConf.devDatabaseType.equals("H2") || jConf.applicationType.endsWith("App")){}
+			if(jConf.applicationType.endsWith("App") ||jConf.devDatabaseType.equals("oracle") 
+				|| jConf.prodDatabaseType.equals("oracle") || jConf.devDatabaseType.equals("H2") ){}
 			else{
 				i++;
 				String jDirectory = "jhipster" + i;
@@ -502,7 +502,7 @@ public class JHipsterTest extends FMLTest{
 					new ScriptsBuilder().generateBuildScript(jConf, jDirectory);
 					new ScriptsBuilder().generateTestScript(jConf, jDirectory);
 				}
-				
+								
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");

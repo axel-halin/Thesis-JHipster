@@ -76,8 +76,8 @@ public class ScriptsBuilder {
 	 */
 	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
-		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test";
-		// TODO Gradle ??
+		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
+		else script += "./gradlew clean test >> test.log 2>&1\n";
 		
 		// KarmaJS is provided by default
 		script += "gulp test >> testKarmaJS.log 2>&1\n";
@@ -98,6 +98,12 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
 	}
 	
+	
+	/**
+	 * Generates a script to kill the server running on port 8080 into killScript.sh.
+	 * 
+	 * @param jDirectory Directory where to write the script.
+	 */
 	public void generateKillScript(String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		
@@ -152,6 +158,12 @@ public class ScriptsBuilder {
 	}
 
 	
+	/**
+	 * Retrieve all properties from specified property file.
+	 * 
+	 * @param propFileName Property file to retrieve
+	 * @return All properties included in propFileName
+	 */
 	private Properties getProperties(String propFileName) {
 		InputStream inputStream = null;
 		Properties prop = new Properties();
