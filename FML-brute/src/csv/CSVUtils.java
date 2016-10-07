@@ -25,7 +25,7 @@ public class CSVUtils {
 	   */
 	   public static void createCSVFile(String filename) throws IOException {
 			CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
-			String[] heads = {"JHipsterRegister","applicationType","authenticationType","hibernateCache","clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType","searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate","Log-Gen","Compile","Log-Compile","Build","Log-Build", "TimeBuild", "Memory", "Tests" };
+			String[] heads = {"JHipsterRegister","applicationType","authenticationType","hibernateCache","clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType","searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate","Log-Gen","Compile","Log-Compile","Build","Log-Build", "TimeToBuild(seconds)", "Memory", "Tests" };
 			writer.writeNext(heads);
 			writer.close();
 		}

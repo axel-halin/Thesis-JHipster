@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -296,15 +294,14 @@ public class Oracle {
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
 
-		//m1 TimeBuild TODO
-		Matcher m1 = Pattern.compile("(.*?)Total time").matcher(text);
+		Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
 
-		String timebuild = "NOTHING";
+		String timebuild = "NOTFIND";
 
 		while(m1.find())
 		{
 			System.out.println(m1.toString());
-			return timebuild = m1.toString();
+			return timebuild = m1.group(1).toString();
 		}
 
 		return timebuild;
@@ -322,15 +319,13 @@ public class Oracle {
 
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
-
-		//m1 TimeBuild TODO
+		//TODO
 		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
 
-		String memoryBuild = "NOTHING";
+		String memoryBuild = "NOTFIND";
 
 		while(m1.find())
 		{
-			System.out.println(m1.toString());
 			return memoryBuild = m1.toString();
 		}
 
