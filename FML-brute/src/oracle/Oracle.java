@@ -365,8 +365,8 @@ public class Oracle {
 		//New array for file csv
 		List<String[]> array = new ArrayList<String[]>();
 		
-		// 1 -> weightFolder 
-		for (Integer i =1;i<=weightFolder;i++){
+		// 1 -> weightFolder -1 (UAA directory...)
+		for (Integer i =1;i<=weightFolder-1;i++){
 
 			String jDirectory = "jhipster"+i;
 
