@@ -15,7 +15,6 @@ public class ScriptsBuilder {
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String PROPERTIES_FILE = "System.properties";
 	
-	
 	/**
 	 * Generates the script to generate the JHipster application.\n
 	 * This script varies depending on the application type (see JHipster's Sub-Generators)
@@ -69,8 +68,35 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "build.sh", script);
 	}
 	
-	//TODO
-	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){}
+	/**
+	 * Generate script used to run tests on the configuration and write it in test.sh.
+	 * 
+	 * @param jconf Configuration on which tests are run.
+	 * @param jDirectory Directory where to write the script.
+	 */
+	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test";
+		// TODO Gradle ??
+		
+		// KarmaJS is provided by default
+		script += "gulp test >> testKarmaJS.log 2>&1\n";
+		for(String testFramework : jconf.testFrameworks){
+			switch(testFramework){
+				case "gatling": if(jconf.buildTool.equals("maven"))
+									script += "./mvnw gatling:execute";
+								else
+									script += "./gradlew gatlingRun -x cleanResources";
+								script += " >> testGatling.log 2>&1\n";
+								break;
+				case "protractor": 	// TODO Server App must be running!
+									script += "gulp protractor >> testProtractor.log 2>&1\n";
+									break;
+				case "cucumber": break; // Already tested in ./mvnw clean test
+			}
+		}
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
+	}
 	
 	public void generateKillScript(String jDirectory){
 		String script = "#!/bin/bash\n\n";
