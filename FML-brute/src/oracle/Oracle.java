@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -208,7 +206,7 @@ public class Oracle {
 	 */
 	private void testsApp(String jDirectory, boolean system) throws InterruptedException{
 		if(!system) startProcess(getjDirectory(jDirectory)+"bashgittest.bat", system, jDirectory);
-		else startProcess("./test.sh", system, jDirectory);
+		else startProcess("./test.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**

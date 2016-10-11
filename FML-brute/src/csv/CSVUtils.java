@@ -1,7 +1,6 @@
 package csv;
 
 import java.io.IOException;
-import java.util.List;
 
 import au.com.bytecode.opencsv.CSVWriter;
 
