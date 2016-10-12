@@ -510,15 +510,6 @@ public class Oracle {
 	}
 	
 	/**
-	 * Test Gatling 3.6.1. 
-	 */
-	@Test
-	public void testGatling() throws Exception{
-
-		System.out.println(extractProtractor("Jhipster1"));
-	}
-
-	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	@Test
