@@ -157,97 +157,11 @@ public class JHipsterTest extends FMLTest{
 			jhipsterConf.useSass = Boolean.parseBoolean(isIncluded("LibSass", strConfs));
 		
 		
-		// If internationalization support (we limit ourselves to english for now)
-		// TODO support languages
-		/*if (jhipsterConf.enableTranslation){
-			jhipsterConf.nativeLanguage = "en";
-			//jhipsterConf.languages = "en";
-		}*/
+		// If internationalization support (we limit ourselves to English for now)
 		jhipsterConf.enableTranslation = false;
 		
 		return jhipsterConf;
-	}
-	
-	
-	/**
-	 * Creates the script to generate JHipster application based on the yo-rc.json and to run it.
-	 * 
-	 * @param conf JHipster configuration to be generated.
-	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void writeScript(JhipsterConfiguration conf, String jDirectory){
-		String buildScript = "#!/bin/bash\n\n"
-							+ "ofolder=`pwd`\n" 
-							+ "yo jhipster >> jhipsteryo.log 2>&1\n";
-		// Need to create database (keyspace) and schema + insert data.
-		if(conf.databaseType.equals("cassandra")){
-			buildScript += "echo 'Cassandra!'\n";
-			buildScript += "sudo services cassandra start\n";
-			buildScript += "sudo cqlsh -f src/main/resources/config/cql/create-keyspace.cql\n";
-			buildScript += "sudo cqlsh -f src/main/resources/config/cql/changelog/00000000000000_create-tables.cql\n";
-			buildScript += "sudo cqlsh -f src/main/resources/config/cql/changelog/00000000000001_insert_default_users.cql\n";
-		}
-		// Juste check that mongodb service is started.
-		if(conf.databaseType.equals("mongodb")){
-			buildScript += "echo 'MongoDB!'\n";
-			buildScript += "sudo service mongodb start\n";
-		}
-
-		if(conf.devDatabaseType.equals("oracle") || conf.prodDatabaseType.equals("oracle")){
-			
-		}
-		
-		if(conf.devDatabaseType.equals("postgresql") || conf.prodDatabaseType.equals("postgresql")){
-			buildScript += "service pgservice start\n";
-			buildScript += "psql -U postgres\n";
-			buildScript += "create role \"jhipster-fou\" login;\n";
-			buildScript += "create database \"jhipster-fou\";\n";
-			buildScript += "\\q\n";
-		}
-		
-		if(conf.devDatabaseType.equals("mariadb") || conf.prodDatabaseType.equals("mariadb")){
-			buildScript += "service mysql start\n";
-			buildScript += "mysql -u root\n";
-			buildScript += "SET SESSION sql_mode = 'ANSI';\n";
-			buildScript += "create database if not exists \"jhipster-fou\";\n";
-			buildScript += "\\q\n";
-		}
-		
-		if(conf.devDatabaseType.equals("mysql") || conf.prodDatabaseType.equals("mysql")){
-			buildScript += "service mysql start >> jhipster-database.log\n";
-			buildScript += "mysql -u root >> jhipster-database.log\n";
-			buildScript += "SET SESSION sql_mode = 'ANSI'; >> jhipster-database.log \n";
-			buildScript += "create database if not exists \"jhipster-fou\"; >> jhipster-database.log\n";
-			buildScript += "\\q\n";
-		}
-		
-		// Microservices need Jhipster-registry to be running
-		if(!conf.applicationType.equals("monolith") & !conf.applicationType.endsWith("App")){
-			
-		}
-		
-		if(conf.buildTool.equals("maven")){
-			buildScript += "./mvnw >> jhipsterbuild.log 2>&1\n";
-		}
-		else{
-			buildScript += "./gradlew >> jhipsterbuild.log 2>&1\n";
-		}
-		
-		for(String s : conf.testFrameworks){
-			switch (s){
-				case "gatling":
-									break;
-				case "cucumber":
-									break;
-				case "protractor":	
-									break;
-			}
-		}
-		
-		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
-	}
-	
+	}	
 	
 	/**
 	 * Parsing of JHipster's configuration in JSON.
@@ -270,7 +184,12 @@ public class JHipsterTest extends FMLTest{
 		return gson.toJson(jhipsterConf);	
 	}
 
-	
+	/**
+	 * Transform "false" String in "no"
+	 * 
+	 * @param s String to transform
+	 * @return "no" if s = "false"; s otherwise.
+	 */
 	private String falseByNo(String s) {
 		if (s.equals("false")) return "no";
 		return s;
@@ -419,26 +338,16 @@ public class JHipsterTest extends FMLTest{
 		return node.toCNF().getChildren().length;
 	}
 	
+	/**
+	 * Generate the DIMAC file corresponding to the Feature Model.
+	 * 
+	 * @param fmvJhipster Feature Model
+	 */
 	private void generateDimacs(FeatureModelVariable fmvJhipster){
 		String dimacsHipster = fmvJhipster.convert(org.xtext.example.mydsl.fml.FMFormat.DIMACS);
-		
 		Node n = new SATFMLFormula(fmvJhipster).getNode();
 		Files.writeStringIntoFile(DIMACS_FILENAME, dimacsHipster.replace("XXXXXX", "" + nbClauses(n)));
 	}
-	
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void generateClientAppScript(String jDirectory){
-		String buildScript = "#!/bin/bash\n\n"
-				+ "ofolder=`pwd`\n" 
-				+ "yo jhipster:client >> jhipsteryo.log 2>&1\n";
-		
-		buildScript += "gulp test >> test.log\n";
-		
-		Files.writeStringIntoFile(getjDirectory(jDirectory) + "buildAndTest.sh", buildScript);
-	}
-	
 
 	/**
 	 * Generates all variants of JHipster 3.6.1 to test them afterwards. 
