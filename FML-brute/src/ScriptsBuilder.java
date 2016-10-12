@@ -15,6 +15,30 @@ public class ScriptsBuilder {
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String PROPERTIES_FILE = "System.properties";
 	
+	
+	public void generateScripts(JhipsterConfiguration jconf, String jDirectory){
+		generateYoJhipsterScript(jconf, jDirectory);
+		generateKillScript(jDirectory);
+		generateCompileScript(jconf, jDirectory);
+		generateBuildScript(jconf, jDirectory);
+		generateTestScript(jconf, jDirectory);
+		if (getProperties(PROPERTIES_FILE).getProperty("useDocker").equals("true"))
+			generateDockerScripts(jconf, jDirectory);
+	}
+	
+	
+	public void generateStopDatabaseScript(String jDirectory){
+		Properties property = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n"
+						+ property.getProperty("mysqlStop")
+						+ property.getProperty("cassandraStop")
+						+ property.getProperty("mongodbStop")
+						+ property.getProperty("postgreStop");
+		
+		Files.writeStringIntoFile(jDirectory+"/stopDB.sh", script);
+	}
+
+	
 	/**
 	 * Generates the script to generate the JHipster application.\n
 	 * This script varies depending on the application type (see JHipster's Sub-Generators)
@@ -22,7 +46,7 @@ public class ScriptsBuilder {
 	 * @param jconf JHipster Configuration to generate;
 	 * @param jDirectory Name of the directory (jhipster+id) in which the script will be placed.
 	 */
-	public void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
+	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		
 		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
@@ -35,7 +59,7 @@ public class ScriptsBuilder {
 	}
 	
 	
-	public void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
+	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
 		else script+="./gradlew compileJava";
@@ -45,7 +69,7 @@ public class ScriptsBuilder {
 	}
 	
 	
-	public void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
+	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";	
 		
 		switch (jconf.prodDatabaseType){
@@ -74,7 +98,7 @@ public class ScriptsBuilder {
 	 * @param jconf Configuration on which tests are run.
 	 * @param jDirectory Directory where to write the script.
 	 */
-	public void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
+	private void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
 		else script += "./gradlew clean test >> test.log 2>&1\n";
@@ -98,20 +122,65 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
 	}
 	
+	/**
+	 * Generates the scripts related to the use of Docker.
+	 * 
+	 * @param jconf
+	 * @param jDirectory
+	 */
+	private void generateDockerScripts(JhipsterConfiguration jconf, String jDirectory){
+		if(jconf.buildTool.equals("maven")) generateDockerPackage(jDirectory, true);
+		else generateDockerPackage(jDirectory, false);
+		generateDockerStartScript(jDirectory);
+		generateDockerStopScript(jDirectory);
+	}					
+		
+	
+	/**
+	 * Generate the script to package the application so that it can be launched via Docker.
+	 * 
+	 * @param jDirectory Directory of the script.
+	 * @param maven True if the configuration uses Maven, False otherwise (Gradle)
+	 */
+	private void generateDockerPackage(String jDirectory, boolean maven){
+		Properties properties = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n";
+		script += properties.getProperty("dockerDropDB");
+		if(maven) script += properties.getProperty("mavenDockerPackage");
+		else script += properties.getProperty("gradleDockerPackage");
+		script+=">> dockerPackage.log 2>&1";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerPackage.sh", script);
+	}
+	
+	private void generateDockerStartScript(String jDirectory){
+		Properties properties = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n"
+						+ properties.getProperty("dockerStart")
+						+ ">> build.log 2>&1";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStart.sh", script);
+	}
+	
+	private void generateDockerStopScript(String jDirectory){
+		Properties properties = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n"
+						+ properties.getProperty("dockerStop")
+						+ ">> dockerStop.log 2>&1";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStop.sh", script);
+	}
 	
 	/**
 	 * Generates a script to kill the server running on port 8080 into killScript.sh.
 	 * 
 	 * @param jDirectory Directory where to write the script.
 	 */
-	public void generateKillScript(String jDirectory){
+	private void generateKillScript(String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		
 		script += "fuser -k  8080/tcp";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
 	}
 	
-	public static String getjDirectory(String jDirectory) {
+	private static String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
 	}
 	
