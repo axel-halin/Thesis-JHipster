@@ -31,5 +31,4 @@ public class ThreadUAA implements Runnable{
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
-
 }

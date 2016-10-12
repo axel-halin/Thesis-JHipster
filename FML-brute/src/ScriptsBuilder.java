@@ -15,7 +15,12 @@ public class ScriptsBuilder {
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String PROPERTIES_FILE = "System.properties";
 	
-	
+	/**
+	 * Generate all necessary script to generate/compile/run/test the application.
+	 * 
+	 * @param jconf Jhipster's Configuration
+	 * @param jDirectory Directory of the configuration
+	 */
 	public void generateScripts(JhipsterConfiguration jconf, String jDirectory){
 		generateYoJhipsterScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
@@ -24,8 +29,31 @@ public class ScriptsBuilder {
 		generateTestScript(jconf, jDirectory);
 		if (getProperties(PROPERTIES_FILE).getProperty("useDocker").equals("true"))
 			generateDockerScripts(jconf, jDirectory);
+		if (getProperties(PROPERTIES_FILE).getProperty("system").equals("false")){
+			writeScriptBat("bashgitkillServer.bat","killServer.sh",jDirectory);
+			writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
+			writeScriptBat("bashgitcompile.bat","compile.sh",jDirectory);
+			writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
+			writeScriptBat("bashgittest.bat","test.sh",jDirectory);
+		}
 	}
 	
+	/**
+	 * @param nameScriptBat Name of the Script .bat
+	 * @param nameScriptSh Name of the Sript .sh
+	 * @param jDirectory Name of the folder
+	 */
+	private void writeScriptBat(String nameScriptBat,String nameScriptSh,String jDirectory)
+	{
+		if (nameScriptBat != "bashgitlaunchDatabases.bat"){
+			String buildScript = "cd "+getjDirectory(jDirectory)+"\n"; 
+			buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
+			Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
+		} else{
+			String buildScript =  "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
+			Files.writeStringIntoFile("bashgitlaunchDatabases.bat", buildScript);
+		}
+	}
 	
 	public void generateStopDatabaseScript(String jDirectory){
 		Properties property = getProperties(PROPERTIES_FILE);

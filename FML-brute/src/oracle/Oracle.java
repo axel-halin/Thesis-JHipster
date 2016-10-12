@@ -39,24 +39,6 @@ public class Oracle {
 	private Thread threadRegistry;
 	private Thread threadUAA;
 
-
-	/**
-	 * @param nameScriptBat Name of the Script .bat
-	 * @param nameScriptSh Name of the Sript .sh
-	 * @param jDirectory Name of the folder
-	 */
-	private void writeScriptBat(String nameScriptBat,String nameScriptSh,String jDirectory)
-	{
-		if (nameScriptBat != "bashgitlaunchDatabases.bat"){
-			String buildScript = "cd "+getjDirectory(jDirectory)+"\n"; 
-			buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
-			Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
-		} else{
-			String buildScript =  "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
-			Files.writeStringIntoFile("bashgitlaunchDatabases.bat", buildScript);
-		}
-	}
-
 	private void startProcess(String fileName, boolean system, String desiredDirectory){
 		Process process = null;
 		try{
@@ -457,6 +439,8 @@ public class Oracle {
 
 	// TODO Add Windows Support ?
 	private void dockerCompose(String jDirectory, Boolean system){
+		// Stop the previous App (in case it still runs)
+		startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 		// Package the App
 		startProcess("./dockerPackage.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 		// Run the App
@@ -468,13 +452,10 @@ public class Oracle {
 	private Properties getProperties(String propFileName) {
 		InputStream inputStream = null;
 		Properties prop = new Properties();
-
 		try {
 			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
 			if (inputStream != null) prop.load(inputStream);
 			else throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-			
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);
 		} finally {
@@ -554,82 +535,67 @@ public class Oracle {
 			if (object.get("enableTranslation") != null) enableTranslation = object.get("enableTranslation").toString();
 			if (object.get("testFrameworks") != null) testFrameworks = object.get("testFrameworks").toString();
 
-			if (!system)
-				//write .bat Scripts for windows
-			{
-				writeScriptBat("bashgitkillServer.bat","killServer.sh",jDirectory);
-				writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
-				writeScriptBat("bashgitcompile.bat","compile.sh",jDirectory);
-				writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
-				writeScriptBat("bashgittest.bat","test.sh",jDirectory);
-			}
-
 			_log.info("Generating the App...");
 			generateApp(jDirectory, system);
 			_log.info("Generation done!");
 
 
 			_log.info("Checking the generation of the App...");
-			boolean	checkGen = checkGenerateApp(jDirectory);
-			if(checkGen){
-				//String used for the generation csv
+			
+			if(checkGenerateApp(jDirectory)){
 				generation ="OK";
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 
-				_log.info("Trying to compile the App...");
+				_log.info("Generation complete ! Trying to compile the App...");
 				compileApp(jDirectory, system);
-			}
-			else 
-			{
-				_log.error("App Generation Failure...");
-				//String used for the generation csv
+
+				if(checkCompileApp(jDirectory)){
+					compile ="OK";
+					stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+
+					_log.info("Compilation success ! Trying to build the App...");
+					Properties properties = getProperties("System.properties");
+					if(properties.getProperty("useDocker").equals("true"))
+						dockerCompose(jDirectory, system);
+					else buildApp(jDirectory, system);
+					
+					if(checkBuildApp(jDirectory))
+					{
+						//String build used for the csv
+						build = "OK";
+						stacktracesBuild = extractStacktraces(jDirectory,"build.log");
+						buildTime = extractTimeBuild(jDirectory);
+						buildMemory = extractMemoryBuild(jDirectory);
+
+						_log.info("Build Success... Launch tests of the App...");
+						// TODO Redeploy the app
+						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+						thread.start();
+
+						Thread.sleep(50000);
+						testsApp(jDirectory,system);
+						thread.interrupt();
+						// Stop the App
+						startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+					} else{
+						//String build used for the csv
+						build = "KO";
+						_log.info("App Build Failure... Extract Stacktraces");
+						stacktracesBuild = extractStacktraces(jDirectory,"build.log");
+						buildTime = "KO";
+						buildMemory = "KO";
+					}	
+				} else{
+					_log.error("App Compilation Failed ...");
+					compile ="KO";
+					stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+				}
+			} else{
+				_log.error("App Generation Failed...");
 				generation ="KO";
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 			}
-
-			boolean	checkCompile = checkCompileApp(jDirectory);
-			if(checkGen && checkCompile){
-				//String used for the generation csv
-				compile ="OK";
-				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
-
-				_log.info("Trying to build the App...");
-				Properties properties = getProperties("System.properties");
-				if(properties.getProperty("useDocker").equals("true"))
-					dockerCompose(jDirectory, system);
-				else buildApp(jDirectory, system);
-			}
-			else 
-			{
-				_log.error("App Compile Failure...");
-				//String used for the generation csv
-				compile ="KO";
-				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
-			}
-
-			_log.info("Check the build ...");
-			boolean	checkBuild = checkBuildApp(jDirectory);
-			if (checkGen & checkCompile & checkBuild)
-			{
-				//String build used for the csv
-				build = "OK";
-				stacktracesBuild = extractStacktraces(jDirectory,"build.log");
-				buildTime = extractTimeBuild(jDirectory);
-				buildMemory = extractMemoryBuild(jDirectory);
-
-				_log.info("Build Success... Launch tests of the App...");
-				testsApp(jDirectory,system);
-			}	
-			else
-			{
-				//String build used for the csv
-				build = "KO";
-				_log.info("App Build Failure... Extract Stacktraces");
-				stacktracesBuild = extractStacktraces(jDirectory,"build.log");
-				buildTime = "KO";
-				buildMemory = "KO";
-			}	
-
+			
 			//extract From Tests
 			resultsTest= extractResultsTest(jDirectory);
 			cucumber= extractCucumber(jDirectory);
@@ -644,6 +610,8 @@ public class Oracle {
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
 		}
-		termination();
+		
+		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
+			termination();
 	}
 }
