@@ -35,6 +35,7 @@ public class JHipsterTest extends FMLTest{
 	private final static Logger _log = Logger.getLogger("JHipsterTest");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String DIMACS_FILENAME = "models/model.dimacs";
+	private static final String PROJECTDIRECTORY = System.getProperty("user.dir");
 	
 	/**
 	 * Modeling of JHipster's Feature Model to FeatureIDE notation.
@@ -469,6 +470,8 @@ public class JHipsterTest extends FMLTest{
 		_log.info("Generating DIMACS...");
 		generateDimacs(getFMJHipster());
 		
+		new ScriptsBuilder().generateStopDatabaseScript(PROJECTDIRECTORY);
+		
 		int i = 0;
 		for (Variable configuration : confs){
 
@@ -494,21 +497,13 @@ public class JHipsterTest extends FMLTest{
 				_log.info("JSON generated...");
 				
 				_log.info("Generating scripts...");
-				new ScriptsBuilder().generateYoJhipsterScript(jConf, jDirectory);
-				if (!jConf.applicationType.equals("clientApp"))
-				{
-					new ScriptsBuilder().generateKillScript(jDirectory);
-					new ScriptsBuilder().generateCompileScript(jConf, jDirectory);
-					new ScriptsBuilder().generateBuildScript(jConf, jDirectory);
-					new ScriptsBuilder().generateTestScript(jConf, jDirectory);
-				}
-								
+				new ScriptsBuilder().generateScripts(jConf, jDirectory);
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==5){
-					_log.info("Stopping at 5...");
+				if(i==30){
+					_log.info("Stopping at 30...");
 					System.exit(0);
 				}
 			}

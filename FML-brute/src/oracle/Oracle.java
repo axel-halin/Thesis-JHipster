@@ -34,11 +34,11 @@ public class Oracle {
 	private static final Logger _log = Logger.getLogger("Oracle");
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
-
+	private static final String projectDirectory = System.getProperty("user.dir");
+	
 	private Thread threadRegistry;
 	private Thread threadUAA;
 
-	private String projectDirectory = System.getProperty("user.dir");
 
 	/**
 	 * @param nameScriptBat Name of the Script .bat
@@ -137,11 +137,9 @@ public class Oracle {
 	 * @param system boolean type of the system (linux then true, else false)
 	 */
 	private void compileApp(String jDirectory, boolean system){
-
 		// for windows add script bashgit.bat launch bashgit and execute generate.sh
 		if (!system) {startProcess(getjDirectory(jDirectory) + "bashgitcompile.bat", system, jDirectory);}
 		else startProcess("./compile.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
-
 	}
 
 	/**
@@ -174,7 +172,7 @@ public class Oracle {
 		// for windows add script bashgit.bat launch bashgit and execute build.sh
 		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
 		else startProcess("./build.sh", system, jDirectory, 150, TimeUnit.SECONDS);
-		
+		// Kill server after timeout
 		startProcess("./killScript.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
@@ -226,30 +224,8 @@ public class Oracle {
 	 * @throws IOException 
 	 */
 	private boolean getValueOfSystem() {
-		InputStream inputStream = null;
-
-		try {
-			Properties prop = new Properties();
-			String propFileName = "System.properties";
-
-			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-
-			if (inputStream != null) {
-				prop.load(inputStream);
-			} else {
-				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-			}
-
-			Boolean system = Boolean.parseBoolean(prop.getProperty("system"));
-
-			return system;
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} finally {
-			try{inputStream.close();}
-			catch (IOException e){e.printStackTrace();}
-		}
-		return true; // default linux
+		Properties properties = getProperties("System.properties");
+		return Boolean.parseBoolean(properties.getProperty("system"));
 	}
 
 	/**
@@ -319,7 +295,7 @@ public class Oracle {
 
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
-		//TODO
+		
 		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
 
 		String memoryBuild = "NOTFIND";
@@ -343,6 +319,10 @@ public class Oracle {
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
 		
+		Properties properties = getProperties("System.properties");
+		if(properties.getProperty("useDocker").equals("true"))
+			startProcess("./stopDB.sh",system,"");
+		
 		// Start Jhipster Registry
 		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
@@ -361,12 +341,43 @@ public class Oracle {
 		_log.info("Oracle intialized !");
 	}
 
-
+	/**
+	 * Terminate the Oracle by ending JHipster Registry and UAA servers.
+	 */
 	private void termination(){
 		threadRegistry.interrupt();
 		threadUAA.interrupt();
 	}
 
+	// TODO Add Windows Support ?
+	private void dockerCompose(String jDirectory, Boolean system){
+		// Package the App
+		startProcess("./dockerPackage.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+		// Run the App
+		startProcess("./dockerStart.sh",system,jDirectory, 100, TimeUnit.SECONDS);
+		// Stop the App
+		startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+	}
+	
+	private Properties getProperties(String propFileName) {
+		InputStream inputStream = null;
+		Properties prop = new Properties();
+
+		try {
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+			if (inputStream != null) prop.load(inputStream);
+			else throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} finally {
+			try{inputStream.close();}
+			catch (IOException e){e.printStackTrace();}
+		}
+		return prop; // default linux
+	}
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
@@ -375,7 +386,9 @@ public class Oracle {
 		// False = Windows; True = Linux
 		Boolean system = getValueOfSystem();
 
-		initialization(system);
+		// Init only if not Docker
+		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
+			initialization(system);
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
@@ -383,6 +396,8 @@ public class Oracle {
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
 
+			_log.info("Starting treatment of JHipster n° "+i);
+			
 			String jDirectory = "jhipster"+i;
 
 			//Strings used for the csv
@@ -439,13 +454,12 @@ public class Oracle {
 				writeScriptBat("bashgittest.bat","test.sh",jDirectory);
 			}
 
-			_log.info("Generate the App...");
+			_log.info("Generating the App...");
 			generateApp(jDirectory, system);
-			_log.info("App Generated...");
+			_log.info("Generation done!");
 
-			_log.info("Oracle generate "+i+" is done");
 
-			_log.info("Check the generation of the App...");
+			_log.info("Checking the generation of the App...");
 			boolean	checkGen = checkGenerateApp(jDirectory);
 			if(checkGen){
 				//String used for the generation csv
@@ -470,7 +484,10 @@ public class Oracle {
 				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
 				
 				_log.info("Trying to build the App...");
-				buildApp(jDirectory, system);
+				Properties properties = getProperties("System.properties");
+				if(properties.getProperty("useDocker").equals("true"))
+					dockerCompose(jDirectory, system);
+				else buildApp(jDirectory, system);
 			}
 			else 
 			{
@@ -502,8 +519,6 @@ public class Oracle {
 				buildTime = "KO";
 				buildMemory = "KO";
 			}	
-
-			//_log.info("Oracle Tests "+i+" is done");
 
 			_log.info("Writing into jhipster.csv");
 			
