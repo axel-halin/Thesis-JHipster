@@ -425,7 +425,7 @@ public class Oracle {
 	 */
 	private String extractGatling(String jDirectory) throws FileNotFoundException{
 		String text = "";
-		
+
 		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testGatling.log");
 
@@ -435,10 +435,35 @@ public class Oracle {
 
 		while(m1.find())
 		{
-			System.out.println(m1.toString());
 			return resultsTests = m1.group(1).toString();
 		}
 
+		return resultsTests;
+	}
+
+	/**
+	 * Return results from tests gulp protractor
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 * TODO Create sequence of tests for gatling.
+	 */
+	private String extractProtractor(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testProtractor.log");
+
+		Matcher m1 = Pattern.compile("(.*?) specs, (.*?) failures").matcher(text);
+		
+		String resultsTests = "NOTFIND";
+
+		while(m1.find())
+			{
+			return resultsTests = m1.group().toString();
+			}
+		
 		return resultsTests;
 	}
 
@@ -475,6 +500,15 @@ public class Oracle {
 	private void termination(){
 		threadRegistry.interrupt();
 		threadUAA.interrupt();
+	}
+
+	/**
+	 * Test Gatling 3.6.1. 
+	 */
+	@Test
+	public void testGatling() throws Exception{
+
+		System.out.println(extractProtractor("Jhipster1"));
 	}
 
 	/**
@@ -523,6 +557,7 @@ public class Oracle {
 			String cucumber= "X";
 			String karmaJS= "X";
 			String gatling = "X";
+			String protractor = "X";
 
 			//Get Json strings used for the csv
 			JsonParser jsonParser = new JsonParser();
@@ -622,13 +657,17 @@ public class Oracle {
 			cucumber= extractCucumber(jDirectory);
 			karmaJS= extractKarmaJS(jDirectory);
 			gatling = extractGatling(jDirectory);
+			protractor = extractProtractor(jDirectory);
 
 			//_log.info("Oracle Tests "+i+" is done");
 
 			_log.info("Writing into jhipster.csv");
 
 			//New line for file csv
-			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory,resultsTest,cucumber,karmaJS,gatling};
+			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+					websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+					generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory,
+					resultsTest,cucumber,karmaJS,gatling,protractor};
 
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
