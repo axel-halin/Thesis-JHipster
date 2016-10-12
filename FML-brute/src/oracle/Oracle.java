@@ -82,8 +82,8 @@ public class Oracle {
 			process = processBuilder.start();
 
 			if(!process.waitFor(timeOut, unit)) {
-			    //timeout - kill the process. 
-			    process.destroyForcibly();
+				//timeout - kill the process. 
+				process.destroyForcibly();
 			}	
 		} catch(IOException e){
 			_log.error("IOException: "+e.getMessage());
@@ -174,7 +174,7 @@ public class Oracle {
 		// for windows add script bashgit.bat launch bashgit and execute build.sh
 		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
 		else startProcess("./build.sh", system, jDirectory, 150, TimeUnit.SECONDS);
-		
+
 		startProcess("./killScript.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
@@ -280,7 +280,7 @@ public class Oracle {
 
 		return stacktraces;
 	}
-	
+
 	/**
 	 * Return the time of building   
 	 * 
@@ -332,6 +332,116 @@ public class Oracle {
 		return memoryBuild;
 	}
 
+	/**
+	 * Return results from tests ./mvnw clean test | ./gradlew clean test  
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 */
+	private String extractResultsTest(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "test.log");
+
+		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
+		Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
+		Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
+		Matcher m4 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.UserServiceIntTest").matcher(text);
+		Matcher m5 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AccountResourceIntTest").matcher(text);
+		Matcher m6 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AuditResourceIntTest").matcher(text);
+		Matcher m7 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.UserResourceIntTest").matcher(text);
+
+		String resultsTests = "NOTFIND";
+
+		while(m1.find()|m2.find()|m3.find()|m4.find()|m5.find()|m6.find()|m7.find())
+		{
+			return resultsTests = m1.group().toString() +"\n"+ m2.group().toString() +"\n"+
+					m3.group().toString() +"\n"+ m4.group().toString() +"\n"+ m5.group().toString() +"\n"+
+					m6.group().toString() +"\n"+ m7.group().toString();
+		}
+
+		return resultsTests;
+	}
+
+	/**
+	 * Return results from tests ./mvnw clean test | ./gradlew clean test -> cucumber
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 */
+	private String extractCucumber(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "test.log");
+
+		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
+
+		String resultsTests = "NOTFIND";
+
+		while(m1.find())
+		{
+			return resultsTests = m1.group().toString();
+		}
+
+		return resultsTests;
+	}
+
+	/**
+	 * Return results from : gulp test 
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 */
+	private String extractKarmaJS(String jDirectory) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testKarmaJS.log");
+
+		Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
+
+		String resultsTests = "SUCCESS";
+
+		while(m1.find())
+		{
+			return resultsTests = m1.group().toString();
+		}
+
+		return resultsTests;
+	}
+
+	/**
+	 * Return results from tests ./mvnw gatling:execute	| ./gradlew gatlingRun -x cleanResources
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
+	 * 
+	 * TODO Create sequence of tests for gatling.
+	 */
+	private String extractGatling(String jDirectory) throws FileNotFoundException{
+		String text = "";
+		
+		//extract log
+		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testGatling.log");
+
+		Matcher m1 = Pattern.compile("(.*?)").matcher(text);
+
+		String resultsTests = "NOTFIND";
+
+		while(m1.find())
+		{
+			System.out.println(m1.toString());
+			return resultsTests = m1.group(1).toString();
+		}
+
+		return resultsTests;
+	}
+
 
 	/**
 	 * Launch initialization scripts:\n
@@ -342,7 +452,7 @@ public class Oracle {
 	 */
 	private void initialization(final Boolean system){
 		_log.info("Starting intialization scripts...");
-		
+
 		// Start Jhipster Registry
 		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
@@ -350,14 +460,14 @@ public class Oracle {
 		// Let Jhipster Registry initiate before attempting to launch UAA Server...
 		try{Thread.sleep(30000);}
 		catch(Exception e){_log.error(e.getMessage());}
-		
+
 		// Start UAA Server
 		threadUAA = new Thread(new ThreadUAA(system, projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
 		threadUAA.start();
-		
+
 		try{Thread.sleep(5000);}
 		catch(Exception e){_log.error(e.getMessage());}
-		
+
 		_log.info("Oracle intialized !");
 	}
 
@@ -379,7 +489,7 @@ public class Oracle {
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
-		
+
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
 
@@ -408,13 +518,17 @@ public class Oracle {
 			String useSass= "X";
 			String enableTranslation = "X";
 			String testFrameworks ="X";
-			
-			
+			//Tests part
+			String resultsTest= "X";
+			String cucumber= "X";
+			String karmaJS= "X";
+			String gatling = "X";
+
 			//Get Json strings used for the csv
 			JsonParser jsonParser = new JsonParser();
 			JsonObject objectGen = jsonParser.parse(Files.readFileIntoString(getjDirectory(jDirectory)+".yo-rc.json")).getAsJsonObject();
 			JsonObject object = (JsonObject) objectGen.get("generator-jhipster");
-			
+
 			if (object.get("applicationType") != null) applicationType = object.get("applicationType").toString();
 			if (object.get("authenticationType") != null) authenticationType = object.get("authenticationType").toString();
 			if (object.get("hibernateCache") != null) hibernateCache = object.get("hibernateCache").toString();
@@ -451,7 +565,7 @@ public class Oracle {
 				//String used for the generation csv
 				generation ="OK";
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
-				
+
 				_log.info("Trying to compile the App...");
 				compileApp(jDirectory, system);
 			}
@@ -462,13 +576,13 @@ public class Oracle {
 				generation ="KO";
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 			}
-			
+
 			boolean	checkCompile = checkCompileApp(jDirectory);
 			if(checkGen && checkCompile){
 				//String used for the generation csv
 				compile ="OK";
 				stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
-				
+
 				_log.info("Trying to build the App...");
 				buildApp(jDirectory, system);
 			}
@@ -489,7 +603,7 @@ public class Oracle {
 				stacktracesBuild = extractStacktraces(jDirectory,"build.log");
 				buildTime = extractTimeBuild(jDirectory);
 				buildMemory = extractMemoryBuild(jDirectory);
-				
+
 				_log.info("Build Success... Launch tests of the App...");
 				testsApp(jDirectory,system);
 			}	
@@ -503,12 +617,18 @@ public class Oracle {
 				buildMemory = "KO";
 			}	
 
+			//extract From Tests
+			resultsTest= extractResultsTest(jDirectory);
+			cucumber= extractCucumber(jDirectory);
+			karmaJS= extractKarmaJS(jDirectory);
+			gatling = extractGatling(jDirectory);
+
 			//_log.info("Oracle Tests "+i+" is done");
 
 			_log.info("Writing into jhipster.csv");
-			
+
 			//New line for file csv
-			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory};
+			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory,resultsTest,cucumber,karmaJS,gatling};
 
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
