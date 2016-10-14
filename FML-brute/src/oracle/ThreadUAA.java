@@ -7,11 +7,9 @@ import org.apache.log4j.Logger;
 
 public class ThreadUAA implements Runnable{
 	private final Logger _log = Logger.getLogger("ThreadUAA");
-	private final Boolean SYSTEM;
 	private final String PATH;
 	
-	public ThreadUAA(Boolean system, String path){
-		this.SYSTEM = system;
+	public ThreadUAA(String path){
 		this.PATH = path;
 	}
 	
@@ -19,7 +17,7 @@ public class ThreadUAA implements Runnable{
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder("./mvnw");
-			if(SYSTEM) processBuilder.directory(new File(PATH));
+			processBuilder.directory(new File(PATH));
 			process = processBuilder.start();
 			process.waitFor();
 		} catch(IOException e){

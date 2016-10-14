@@ -39,11 +39,11 @@ public class Oracle {
 	private Thread threadRegistry;
 	private Thread threadUAA;
 
-	private void startProcess(String fileName, boolean system, String desiredDirectory){
+	private void startProcess(String fileName, String desiredDirectory){
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
-			if(system) processBuilder.directory(new File(projectDirectory + "/" + desiredDirectory));
+			processBuilder.directory(new File(projectDirectory + "/" + desiredDirectory));
 			process = processBuilder.start();
 			process.waitFor();
 		} catch(IOException e){
@@ -56,11 +56,11 @@ public class Oracle {
 		}
 	}
 
-	private void startProcess(String fileName,boolean system, String jDirectory, long timeOut, TimeUnit unit){
+	private void startProcess(String fileName, String jDirectory, long timeOut, TimeUnit unit){
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
-			if(system) processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+			processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 			process = processBuilder.start();
 
 			if(!process.waitFor(timeOut, unit)) {
@@ -85,10 +85,8 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 * @throws IOException 
 	 */
-	private void generateApp(String jDirectory,boolean system) throws InterruptedException, IOException{
-		// for windows add script bashgit.bat launch bashgit and execute generate.sh
-		if (!system) startProcess(getjDirectory(jDirectory) + "bashgitgenerate.bat", system, jDirectory);
-		else startProcess("./generate.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+	private void generateApp(String jDirectory) throws InterruptedException, IOException{
+		startProcess("./generate.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 	}
 
 	/**
@@ -118,10 +116,8 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @param system boolean type of the system (linux then true, else false)
 	 */
-	private void compileApp(String jDirectory, boolean system){
-		// for windows add script bashgit.bat launch bashgit and execute generate.sh
-		if (!system) {startProcess(getjDirectory(jDirectory) + "bashgitcompile.bat", system, jDirectory);}
-		else startProcess("./compile.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
+	private void compileApp(String jDirectory){
+		startProcess("./compile.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
@@ -150,12 +146,10 @@ public class Oracle {
 	 * @param system boolean type of the system (linux then true, else false)
 	 * @throws InterruptedException 
 	 */
-	private void buildApp(String jDirectory, boolean system) throws InterruptedException{
-		// for windows add script bashgit.bat launch bashgit and execute build.sh
-		if (!system) startProcess(getjDirectory(jDirectory)+"bashgitbuild.bat", system, jDirectory, 200, TimeUnit.SECONDS);
-		else startProcess("./build.sh", system, jDirectory, 150, TimeUnit.SECONDS);
+	private void buildApp(String jDirectory) throws InterruptedException{
+		startProcess("./build.sh", jDirectory, 150, TimeUnit.SECONDS);
 		// Kill server after timeout
-		startProcess("./killScript.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
+		startProcess("./killScript.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
@@ -185,8 +179,7 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 */
 	private void testsApp(String jDirectory, boolean system) throws InterruptedException{
-		if(!system) startProcess(getjDirectory(jDirectory)+"bashgittest.bat", system, jDirectory);
-		else startProcess("./test.sh", system, JHIPSTERS_DIRECTORY+"/"+jDirectory);
+		startProcess("./test.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
@@ -298,11 +291,10 @@ public class Oracle {
 	 * 
 	 */
 	private String extractResultsTest(String jDirectory) throws FileNotFoundException{
+
 		String text = "";
-
-		//extract log
 		text = Files.readFileIntoString(getjDirectory(jDirectory) + "test.log");
-
+		
 		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
 		Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
 		Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
@@ -433,11 +425,11 @@ public class Oracle {
 	 *  
 	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
-	private void initialization(final Boolean system){
+	private void initialization(){
 		_log.info("Starting intialization scripts...");
 
 		// Start Jhipster Registry
-		threadRegistry = new Thread(new ThreadRegistry(system, projectDirectory+"/JHipster-Registry/"));
+		threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
 		threadRegistry.start();
 
 		// Let Jhipster Registry initiate before attempting to launch UAA Server...
@@ -445,7 +437,7 @@ public class Oracle {
 		catch(Exception e){_log.error(e.getMessage());}
 
 		// Start UAA Server
-		threadUAA = new Thread(new ThreadUAA(system, projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
+		threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
 		threadUAA.start();
 
 		try{Thread.sleep(5000);}
@@ -463,15 +455,13 @@ public class Oracle {
 	}
 
 	// TODO Add Windows Support ?
-	private void dockerCompose(String jDirectory, Boolean system){
-		// Stop the previous App (in case it still runs)
-		startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+	private void dockerCompose(String jDirectory){
 		// Package the App
-		startProcess("./dockerPackage.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+		startProcess("./dockerPackage.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 		// Run the App
-		startProcess("./dockerStart.sh",system,jDirectory, 100, TimeUnit.SECONDS);
+		startProcess("./dockerStart.sh",jDirectory, 150, TimeUnit.SECONDS);
 		// Stop the App
-		startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+		startProcess("./dockerStop.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 	}
 	
 	private Properties getProperties(String propFileName) {
@@ -495,12 +485,10 @@ public class Oracle {
 	 */
 	@Test
 	public void genJHipsterVariants() throws Exception{
-		// False = Windows; True = Linux
-		Boolean system = getValueOfSystem();
 
 		// Init only if not Docker
 		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
-			initialization(system);
+			initialization();
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
@@ -562,7 +550,7 @@ public class Oracle {
 			if (object.get("testFrameworks") != null) testFrameworks = object.get("testFrameworks").toString();
 
 			_log.info("Generating the App...");
-			generateApp(jDirectory, system);
+			generateApp(jDirectory);
 			_log.info("Generation done!");
 
 
@@ -573,7 +561,7 @@ public class Oracle {
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 
 				_log.info("Generation complete ! Trying to compile the App...");
-				compileApp(jDirectory, system);
+				compileApp(jDirectory);
 
 				if(checkCompileApp(jDirectory)){
 					compile ="OK";
@@ -582,8 +570,8 @@ public class Oracle {
 					_log.info("Compilation success ! Trying to build the App...");
 					Properties properties = getProperties("System.properties");
 					if(properties.getProperty("useDocker").equals("true"))
-						dockerCompose(jDirectory, system);
-					else buildApp(jDirectory, system);
+						dockerCompose(jDirectory);
+					else buildApp(jDirectory);
 					
 					if(checkBuildApp(jDirectory))
 					{
@@ -595,14 +583,14 @@ public class Oracle {
 
 						_log.info("Build Success... Launch tests of the App...");
 						// TODO Redeploy the app
-						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+/*						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 						thread.start();
 
 						Thread.sleep(50000);
 						testsApp(jDirectory,system);
 						thread.interrupt();
 						// Stop the App
-						startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+						startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");*/
 					} else{
 						//String build used for the csv
 						build = "KO";
@@ -623,11 +611,11 @@ public class Oracle {
 			}
 			
 			//extract From Tests
-			resultsTest= extractResultsTest(jDirectory);
+			/*resultsTest= extractResultsTest(jDirectory);
 			cucumber= extractCucumber(jDirectory);
 			karmaJS= extractKarmaJS(jDirectory);
 			gatling = extractGatling(jDirectory);
-			protractor = extractProtractor(jDirectory);
+			protractor = extractProtractor(jDirectory);*/
 
 			_log.info("Writing into jhipster.csv");
 
