@@ -23,36 +23,16 @@ public class ScriptsBuilder {
 	 */
 	public void generateScripts(JhipsterConfiguration jconf, String jDirectory){
 		generateYoJhipsterScript(jconf, jDirectory);
-		generateKillScript(jDirectory);
-		generateCompileScript(jconf, jDirectory);
-		generateBuildScript(jconf, jDirectory);
-		generateTestScript(jconf, jDirectory);
+		generateCompileScript(jconf, jDirectory);		
+		generateUnitTestScript(jconf, jDirectory);
 		if (getProperties(PROPERTIES_FILE).getProperty("useDocker").equals("true"))
-			generateDockerScripts(jconf, jDirectory);
-		if (getProperties(PROPERTIES_FILE).getProperty("system").equals("false")){
-			writeScriptBat("bashgitkillServer.bat","killServer.sh",jDirectory);
-			writeScriptBat("bashgitgenerate.bat","generate.sh",jDirectory);
-			writeScriptBat("bashgitcompile.bat","compile.sh",jDirectory);
-			writeScriptBat("bashgitbuild.bat","build.sh",jDirectory);
-			writeScriptBat("bashgittest.bat","test.sh",jDirectory);
+			generateDockerScripts(jconf, jDirectory);			
+		else { 
+			generateBuildScript(jconf, jDirectory);
+			generateKillScript(jDirectory);
 		}
-	}
-	
-	/**
-	 * @param nameScriptBat Name of the Script .bat
-	 * @param nameScriptSh Name of the Sript .sh
-	 * @param jDirectory Name of the folder
-	 */
-	private void writeScriptBat(String nameScriptBat,String nameScriptSh,String jDirectory)
-	{
-		if (nameScriptBat != "bashgitlaunchDatabases.bat"){
-			String buildScript = "cd "+getjDirectory(jDirectory)+"\n"; 
-			buildScript += "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
-			Files.writeStringIntoFile(getjDirectory(jDirectory) + nameScriptBat, buildScript);
-		} else{
-			String buildScript =  "\"C:/Program Files/Git/bin/sh.exe\" --login ./" + nameScriptSh;
-			Files.writeStringIntoFile("bashgitlaunchDatabases.bat", buildScript);
-		}
+				
+		if (jconf.testFrameworks.length>0) generateTestScript(jconf, jDirectory);
 	}
 	
 	public void generateStopDatabaseScript(String jDirectory){
@@ -128,11 +108,7 @@ public class ScriptsBuilder {
 	 */
 	private void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
-		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
-		else script += "./gradlew clean test >> test.log 2>&1\n";
 		
-		// KarmaJS is provided by default
-		script += "gulp test >> testKarmaJS.log 2>&1\n";
 		for(String testFramework : jconf.testFrameworks){
 			switch(testFramework){
 				case "gatling": if(jconf.buildTool.equals("maven"))
@@ -150,6 +126,16 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
 	}
 	
+	private void generateUnitTestScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
+		else script += "./gradlew clean test >> test.log 2>&1\n";
+		// KarmaJS is provided by default
+		script += "gulp test >> testKarmaJS.log 2>&1\n";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"unitTest.sh", script);
+	}
+		
+		
 	/**
 	 * Generates the scripts related to the use of Docker.
 	 * 
@@ -157,42 +143,48 @@ public class ScriptsBuilder {
 	 * @param jDirectory
 	 */
 	private void generateDockerScripts(JhipsterConfiguration jconf, String jDirectory){
-		if(jconf.buildTool.equals("maven")) generateDockerPackage(jDirectory, true);
-		else generateDockerPackage(jDirectory, false);
-		generateDockerStartScript(jDirectory);
-		generateDockerStopScript(jDirectory);
+		if(jconf.buildTool.equals("maven")) generateDockerStartScript(jDirectory, true);
+		else generateDockerStartScript(jDirectory, false);
+		generateDockerStopScript(jconf, jDirectory);
 	}					
 		
-	
-	/**
-	 * Generate the script to package the application so that it can be launched via Docker.
-	 * 
-	 * @param jDirectory Directory of the script.
-	 * @param maven True if the configuration uses Maven, False otherwise (Gradle)
-	 */
-	private void generateDockerPackage(String jDirectory, boolean maven){
+	private void generateDockerStartScript(String jDirectory, boolean maven){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n";
-		script += properties.getProperty("dockerDropDB");
+		// Packaging
 		if(maven) script += properties.getProperty("mavenDockerPackage");
 		else script += properties.getProperty("gradleDockerPackage");
-		script+=">> dockerPackage.log 2>&1";
-		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerPackage.sh", script);
-	}
-	
-	private void generateDockerStartScript(String jDirectory){
-		Properties properties = getProperties(PROPERTIES_FILE);
-		String script = "#!/bin/bash\n\n"
-						+ properties.getProperty("dockerStart")
-						+ ">> build.log 2>&1";
+		script+= " >> dockerPackage.log 2>&1\n";
+		// Docker-compose
+		script += properties.getProperty("dockerStart")
+					+ " >> build.log 2>&1\n";
+						
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStart.sh", script);
 	}
 	
-	private void generateDockerStopScript(String jDirectory){
+	private void generateDockerStopScript(JhipsterConfiguration jconf, String jDirectory){
 		Properties properties = getProperties(PROPERTIES_FILE);
+		// Stop main container
 		String script = "#!/bin/bash\n\n"
 						+ properties.getProperty("dockerStop")
-						+ ">> dockerStop.log 2>&1";
+						+ " >> dockerStop.log 2>&1\n";
+		// Stop database container
+		switch (jconf.prodDatabaseType){
+			case "mysql": 	script += properties.getProperty("dockerStopMysql");
+							break;
+			case "mongodb": script += properties.getProperty("dockerStopMongo");
+							break;
+			case "cassandra": 	script += properties.getProperty("dockerStopCassandra");
+								break;
+			case "postgresql": 	script += properties.getProperty("dockerStopPostgre");
+								break;
+			case "mariadb":		script += properties.getProperty("dockerStopMaria");
+								break;
+		}
+		script += " >> dockerStop.log 2>&1\n";
+		// Remove all Docker images
+		script += properties.getProperty("dockerRemoveAll") + " >> dockerStop.log 2>&1\n";
+		
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStop.sh", script);
 	}
 	

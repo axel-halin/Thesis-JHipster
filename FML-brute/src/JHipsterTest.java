@@ -375,7 +375,7 @@ public class JHipsterTest extends FMLTest{
 		_log.info("Extracting configurations...");
 		Set<Variable> confs = fmvJhipster.configs();
 		_log.info("Extraction done !");
-		
+				
 		_log.info("Generating DIMACS...");
 		generateDimacs(getFMJHipster());
 		

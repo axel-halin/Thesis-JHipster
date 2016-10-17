@@ -36,6 +36,8 @@ public class Oracle {
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
 	private static final String projectDirectory = System.getProperty("user.dir");
 	
+	private static ResultChecker resultChecker = null;
+	
 	private Thread threadRegistry;
 	private Thread threadUAA;
 
@@ -152,25 +154,7 @@ public class Oracle {
 		startProcess("./killScript.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
-	/**
-	 * Check the App is build successfully
-	 * 
-	 * @param jDirectory Name of the folder
-	 */
-	private boolean checkBuildApp(String jDirectory) throws FileNotFoundException{
-		String text = "";
 
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
-
-		//CHECK IF BUILD FAILED THEN false
-		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
-		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
-		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-
-		while(m.find() | m2.find() | m3.find()) return false;
-		return true;
-	}
 
 	/**
 	 * Launch Tests on the App is build successfully
@@ -192,219 +176,6 @@ public class Oracle {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
 	}
 
-	/**
-	 * Return stacktraces
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of stacktraces
-	 * 
-	 */
-	private String extractStacktraces(String jDirectory, String log) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + log);
-
-		//m1 Exceptions
-		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
-		//m2 Exceptions not find in m1 regex
-		Matcher m2 = Pattern.compile("(.*\\bException\\b.*)\\r?\\n(.*\\r?\\n)*(.*\\bat\\b.*)*(\\d{1,4}\\)\\r?\\n)").matcher(text);
-
-		String stacktraces = "";
-
-		while(m1.find() | m2.find())
-		{
-			stacktraces = stacktraces + m1.toString();
-			stacktraces = stacktraces + m2.toString();
-		}
-
-		return stacktraces;
-	}
-
-	/**
-	 * Return the time of building   
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 */
-	private String extractTimeBuild(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
-
-		Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
-
-		String timebuild = "NOTFIND";
-
-		while(m1.find())
-		{
-			System.out.println(m1.toString());
-			return timebuild = m1.group(1).toString();
-		}
-
-		return timebuild;
-	}
-
-	/**
-	 * Return the memory used   
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 */
-	private String extractMemoryBuild(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "build.log");
-		
-		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
-
-		String memoryBuild = "NOTFIND";
-
-		while(m1.find())
-		{
-			return memoryBuild = m1.toString();
-		}
-
-		return memoryBuild;
-	}
-
-	/**
-	 * Return results from tests ./mvnw clean test | ./gradlew clean test  
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 */
-	private String extractResultsTest(String jDirectory) throws FileNotFoundException{
-
-		String text = "";
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "test.log");
-		
-		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
-		Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
-		Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
-		Matcher m4 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.UserServiceIntTest").matcher(text);
-		Matcher m5 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AccountResourceIntTest").matcher(text);
-		Matcher m6 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AuditResourceIntTest").matcher(text);
-		Matcher m7 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.UserResourceIntTest").matcher(text);
-
-		String resultsTests = "NOTFIND";
-
-		while(m1.find()|m2.find()|m3.find()|m4.find()|m5.find()|m6.find()|m7.find())
-		{
-			return resultsTests = m1.group().toString() +"\n"+ m2.group().toString() +"\n"+
-					m3.group().toString() +"\n"+ m4.group().toString() +"\n"+ m5.group().toString() +"\n"+
-					m6.group().toString() +"\n"+ m7.group().toString();
-		}
-
-		return resultsTests;
-	}
-
-	/**
-	 * Return results from tests ./mvnw clean test | ./gradlew clean test -> cucumber
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 */
-	private String extractCucumber(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "test.log");
-
-		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
-
-		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group().toString();
-		}
-
-		return resultsTests;
-	}
-
-	/**
-	 * Return results from : gulp test 
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 */
-	private String extractKarmaJS(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testKarmaJS.log");
-
-		Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
-
-		String resultsTests = "SUCCESS";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group().toString();
-		}
-
-		return resultsTests;
-	}
-
-	/**
-	 * Return results from tests ./mvnw gatling:execute	| ./gradlew gatlingRun -x cleanResources
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 * TODO Create sequence of tests for gatling.
-	 */
-	private String extractGatling(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testGatling.log");
-
-		Matcher m1 = Pattern.compile("(.*?)").matcher(text);
-
-		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group(1).toString();
-		}
-
-		return resultsTests;
-	}
-
-	/**
-	 * Return results from tests gulp protractor
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @return String of time of building
-	 * 
-	 * TODO Create sequence of tests for gatling.
-	 */
-	private String extractProtractor(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "testProtractor.log");
-
-		Matcher m1 = Pattern.compile("(.*?) specs, (.*?) failures").matcher(text);
-		
-		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-			{
-			return resultsTests = m1.group().toString();
-			}
-		
-		return resultsTests;
-	}
 
 
 	/**
@@ -453,7 +224,7 @@ public class Oracle {
 
 	private void dockerCompose(String jDirectory){
 		// Run the App
-		startProcess("./dockerStart.sh",jDirectory, 165, TimeUnit.SECONDS);
+		startProcess("./dockerStart.sh",jDirectory, 250, TimeUnit.SECONDS);
 	}
 	
 	private Properties getProperties(String propFileName) {
@@ -485,10 +256,10 @@ public class Oracle {
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
-
 			_log.info("Starting treatment of JHipster n° "+i);
 			
 			String jDirectory = "jhipster"+i;
+			resultChecker = new ResultChecker(getjDirectory(jDirectory));
 
 			//Strings used for the csv
 			String generation = "?";
@@ -548,14 +319,14 @@ public class Oracle {
 			
 			if(checkGenerateApp(jDirectory)){
 				generation ="OK";
-				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
+				stacktracesGen = resultChecker.extractStacktraces("generate.log");
 
 				_log.info("Generation complete ! Trying to compile the App...");
 				compileApp(jDirectory);
 
 				if(checkCompileApp(jDirectory)){
 					compile ="OK";
-					stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+					stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
 					_log.info("Compilation success ! Trying to build the App...");
 					Properties properties = getProperties("System.properties");
@@ -563,13 +334,13 @@ public class Oracle {
 						dockerCompose(jDirectory);
 					else buildApp(jDirectory);
 					
-					if(checkBuildApp(jDirectory))
+					if(resultChecker.checkBuildApp("build.log"))
 					{
 						//String build used for the csv
 						build = "OK";
-						stacktracesBuild = extractStacktraces(jDirectory,"build.log");
-						buildTime = extractTimeBuild(jDirectory);
-						buildMemory = extractMemoryBuild(jDirectory);
+						stacktracesBuild = resultChecker.extractStacktraces("build.log");
+						buildTime = resultChecker.extractTimeBuild("build.log");
+						buildMemory = resultChecker.extractMemoryBuild("build.log");
 
 						_log.info("Build Success... Launch tests of the App...");
 						// TODO Redeploy the app
@@ -585,28 +356,28 @@ public class Oracle {
 						//String build used for the csv
 						build = "KO";
 						_log.info("App Build Failure... Extract Stacktraces");
-						stacktracesBuild = extractStacktraces(jDirectory,"build.log");
+						stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						buildTime = "KO";
 						buildMemory = "KO";
 					}	
 				} else{
 					_log.error("App Compilation Failed ...");
 					compile ="KO";
-					stacktracesCompile = extractStacktraces(jDirectory,"compile.log");
+					stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 				}
 			} else{
 				_log.error("App Generation Failed...");
 				generation ="KO";
-				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
+				stacktracesGen = resultChecker.extractStacktraces("generate.log");
 			}
 			
 			//extract From Tests TODO: Handle file not found in methods
 			try{
-				resultsTest= extractResultsTest(jDirectory);
-				cucumber= extractCucumber(jDirectory);
-				karmaJS= extractKarmaJS(jDirectory);
-				gatling = extractGatling(jDirectory);
-				protractor = extractProtractor(jDirectory);
+				resultsTest= resultChecker.extractResultsTest("test.log");
+				cucumber= resultChecker.extractCucumber("testProtractor.log");
+				karmaJS= resultChecker.extractKarmaJS("testKarmaJS.log");
+				gatling = resultChecker.extractGatling("testGatling.log");
+				protractor = resultChecker.extractProtractor("testProtractor.log");
 			} catch(Exception e){
 				_log.error(e.getMessage());
 			}
