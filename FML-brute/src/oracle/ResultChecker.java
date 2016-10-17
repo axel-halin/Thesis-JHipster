@@ -10,6 +10,7 @@ import org.eclipse.xtext.util.Files;
  * Handle all the necessary checks on the output logs.
  * 
  * @author Axel Halin
+ * @author Alexandre Nuttinck
  */
 public class ResultChecker {
 	private String path = null;
@@ -40,6 +41,23 @@ public class ResultChecker {
 
 		while(m.find() | m2.find() | m3.find()) return false;
 		return true;
+	}
+	
+	/**
+	 * Check the build result when using Docker.
+	 * 
+	 * @param fileName Log file containing the result of the build.
+	 * @return True if the app successfully built; False otherwise.
+	 */
+	public boolean checkDockerBuild(String fileName){
+		try{
+			String text = Files.readFileIntoString(fileName);
+			Matcher m = Pattern.compile("((.*?) Application 'jhipster' is running!)").matcher(text);
+			while (m.find()) return true;
+			return false;
+		} catch (Exception e){
+			return false;
+		}
 	}
 	
 	/**
