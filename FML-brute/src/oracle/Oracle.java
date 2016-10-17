@@ -193,17 +193,6 @@ public class Oracle {
 	}
 
 	/**
-	 * Return the value of the system 
-	 * 
-	 * @return true if linux else false for windows
-	 * @throws IOException 
-	 */
-	private boolean getValueOfSystem() {
-		Properties properties = getProperties("System.properties");
-		return Boolean.parseBoolean(properties.getProperty("system"));
-	}
-
-	/**
 	 * Return stacktraces
 	 * 
 	 * @param jDirectory Name of the folder
@@ -428,21 +417,25 @@ public class Oracle {
 	private void initialization(){
 		_log.info("Starting intialization scripts...");
 
-		// Start Jhipster Registry
-		threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
-		threadRegistry.start();
-
-		// Let Jhipster Registry initiate before attempting to launch UAA Server...
-		try{Thread.sleep(30000);}
-		catch(Exception e){_log.error(e.getMessage());}
-
-		// Start UAA Server
-		threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
-		threadUAA.start();
-
-		try{Thread.sleep(5000);}
-		catch(Exception e){_log.error(e.getMessage());}
-
+		// If not Docker --> Launch everything manually
+		if(getProperties("System.properties").getProperty("useDocker").equals("false")){
+			// Start Jhipster Registry
+			threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
+			threadRegistry.start();
+	
+			// Let Jhipster Registry initiate before attempting to launch UAA Server...
+			try{Thread.sleep(30000);}
+			catch(Exception e){_log.error(e.getMessage());}
+	
+			// Start UAA Server
+			threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
+			threadUAA.start();
+	
+			try{Thread.sleep(5000);}
+			catch(Exception e){_log.error(e.getMessage());}
+		} else{
+			startProcess("./stopDB.sh","");
+		}
 		_log.info("Oracle intialized !");
 	}
 
@@ -454,14 +447,13 @@ public class Oracle {
 		threadUAA.interrupt();
 	}
 
-	// TODO Add Windows Support ?
+	private void cleanUp(String jDirectory){
+		startProcess("./dockerStop.sh", getjDirectory(jDirectory));
+	}
+
 	private void dockerCompose(String jDirectory){
-		// Package the App
-		startProcess("./dockerPackage.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 		// Run the App
-		startProcess("./dockerStart.sh",jDirectory, 150, TimeUnit.SECONDS);
-		// Stop the App
-		startProcess("./dockerStop.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
+		startProcess("./dockerStart.sh",jDirectory, 165, TimeUnit.SECONDS);
 	}
 	
 	private Properties getProperties(String propFileName) {
@@ -486,9 +478,7 @@ public class Oracle {
 	@Test
 	public void genJHipsterVariants() throws Exception{
 
-		// Init only if not Docker
-		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
-			initialization();
+		initialization();
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
@@ -610,13 +600,17 @@ public class Oracle {
 				stacktracesGen = extractStacktraces(jDirectory,"generate.log");
 			}
 			
-			//extract From Tests
-			/*resultsTest= extractResultsTest(jDirectory);
-			cucumber= extractCucumber(jDirectory);
-			karmaJS= extractKarmaJS(jDirectory);
-			gatling = extractGatling(jDirectory);
-			protractor = extractProtractor(jDirectory);*/
-
+			//extract From Tests TODO: Handle file not found in methods
+			try{
+				resultsTest= extractResultsTest(jDirectory);
+				cucumber= extractCucumber(jDirectory);
+				karmaJS= extractKarmaJS(jDirectory);
+				gatling = extractGatling(jDirectory);
+				protractor = extractProtractor(jDirectory);
+			} catch(Exception e){
+				_log.error(e.getMessage());
+			}
+			
 			_log.info("Writing into jhipster.csv");
 
 			//New line for file csv
@@ -627,6 +621,11 @@ public class Oracle {
 
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
+			
+			if(getProperties("System.properties").getProperty("useDocker").equals("true")){
+				_log.info("Cleaning up...");
+				cleanUp(jDirectory);
+			}
 		}
 		
 		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
