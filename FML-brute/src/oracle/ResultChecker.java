@@ -262,11 +262,9 @@ public class ResultChecker {
 		//extract log
 		text = Files.readFileIntoString(path+fileName);
 
-		//m1 Exceptions
-		Matcher m1 = Pattern.compile(".+Exception[^\\n]+\\n(\\t+\\Qat \\E.+\\s+)+").matcher(text);
-		//m2 Exceptions not find in m1 regex
-		Matcher m2 = Pattern.compile("(.*\\bException\\b.*)\\r?\\n(.*\\r?\\n)*(.*\\bat\\b.*)*(\\d{1,4}\\)\\r?\\n)").matcher(text);
-
+		Matcher m1 = Pattern.compile("(Exception(.*?)\\n)").matcher(text);
+		Matcher m2 = Pattern.compile("(Caused by(.*?)\\n)").matcher(text);
+		
 		String stacktraces = "";
 
 		while(m1.find() | m2.find())
