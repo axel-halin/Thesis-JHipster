@@ -25,10 +25,9 @@ public class ScriptsBuilder {
 		generateYoJhipsterScript(jconf, jDirectory);
 		generateCompileScript(jconf, jDirectory);		
 		generateUnitTestScript(jconf, jDirectory);
-		generateDockerScripts(jconf, jDirectory);			 
+		generateDockerScripts(jconf, jDirectory);			
 		generateBuildScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
-		}
 				
 		if (jconf.testFrameworks.length>0) generateTestScript(jconf, jDirectory);
 	}
@@ -155,7 +154,7 @@ public class ScriptsBuilder {
 		script+= " >> dockerPackage.log 2>&1\n";
 		// Docker-compose
 		script += properties.getProperty("dockerStart")
-					+ " >> buildWithDocker.log 2>&1\n";
+					+ " >> buildDocker.log 2>&1\n";
 						
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStart.sh", script);
 	}
