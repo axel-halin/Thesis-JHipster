@@ -247,6 +247,17 @@ public class Oracle {
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	@Test
+	public void testJHipsterVariants() throws Exception{
+		
+		resultChecker = new ResultChecker(getjDirectory("jhipster4"));
+		System.out.println(resultChecker.extractStacktraces("build.log"));
+		
+	}
+	
+	/**
+	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
+	 */
+	@Test
 	public void genJHipsterVariants() throws Exception{
 
 		initialization();
@@ -260,16 +271,25 @@ public class Oracle {
 			
 			String jDirectory = "jhipster"+i;
 			resultChecker = new ResultChecker(getjDirectory(jDirectory));
+			
+			//boolean docker needed to build with and without docker.  
+			//boolean docker = false;
 
 			//Strings used for the csv
 			String generation = "?";
+			String generationTime = "?";
 			String stacktracesGen = "?";
 			String compile = "?";
+			String compileTime = "?";
 			String stacktracesCompile = "?";
 			String build = "?";
 			String stacktracesBuild = "?";
 			String buildTime = "?";
 			String buildMemory = "?";
+			String buildWithDocker = "?";
+			String stacktracesBuildWithDocker = "?";
+			String buildTimeWithDocker = "?";
+			String buildMemoryWithDocker = "?";
 			//jsonStrings
 			String applicationType = "X";
 			String authenticationType = "X";
@@ -310,8 +330,10 @@ public class Oracle {
 			if (object.get("enableTranslation") != null) enableTranslation = object.get("enableTranslation").toString();
 			if (object.get("testFrameworks") != null) testFrameworks = object.get("testFrameworks").toString();
 
-			_log.info("Generating the App...");
+			_log.info("Generating the App..."); 
+			long millis = System.currentTimeMillis() % 1000;
 			generateApp(jDirectory);
+			long millisAfterGenerate = System.currentTimeMillis() % 1000;
 			_log.info("Generation done!");
 
 
@@ -319,6 +341,11 @@ public class Oracle {
 			
 			if(checkGenerateApp(jDirectory)){
 				generation ="OK";
+				// Time to Generate
+				
+				// TODO NEED VERIFICATION
+				Long generationTimeLong = millisAfterGenerate - millis;
+				generationTime = generationTimeLong.toString();
 				stacktracesGen = resultChecker.extractStacktraces("generate.log");
 
 				_log.info("Generation complete ! Trying to compile the App...");
@@ -326,32 +353,59 @@ public class Oracle {
 
 				if(checkCompileApp(jDirectory)){
 					compile ="OK";
+					compileTime = resultChecker.extractTime("compile.log");
 					stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
 					_log.info("Compilation success ! Trying to build the App...");
-					Properties properties = getProperties("System.properties");
-					if(properties.getProperty("useDocker").equals("true"))
-						dockerCompose(jDirectory);
-					else buildApp(jDirectory);
+					//Properties properties = getProperties("System.properties");
+					//if(properties.getProperty("useDocker").equals("true"))
+					//dockerCompose(jDirectory);
+					//else buildApp(jDirectory);
+					
+					_log.info("Trying to build the App with Docker...");
+					//build WITH docker
+					dockerCompose(jDirectory);
+					
+					if(resultChecker.checkBuildApp("buildWithDocker.log"))
+					{
+						//String build used for the csv
+						buildWithDocker = "OK";
+						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildWithDocker.log");
+						buildTimeWithDocker = resultChecker.extractTime("buildWithDocker.log");
+						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildWithDocker.log");
+						// TODO Redeploy the app
+						/*						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
+												thread.start();
+
+												Thread.sleep(50000);
+												testsApp(jDirectory,system);
+												thread.interrupt();
+												// Stop the App
+												startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");*/
+						_log.info("Build Success... Launch tests of the App...");
+
+					} else{
+						//String build used for the csv
+						build = "KO";
+						_log.info("App Build Failure... Extract Stacktraces");
+						stacktracesBuild = resultChecker.extractStacktraces("buildWithDocker.log");
+						buildTime = "KO";
+						buildMemory = "KO";
+					}	
+					
+					_log.info("Trying to build the App without Docker...");
+					//build WITHOUT docker
+					buildApp(jDirectory);
 					
 					if(resultChecker.checkBuildApp("build.log"))
 					{
 						//String build used for the csv
 						build = "OK";
 						stacktracesBuild = resultChecker.extractStacktraces("build.log");
-						buildTime = resultChecker.extractTimeBuild("build.log");
+						buildTime = resultChecker.extractTime("build.log");
 						buildMemory = resultChecker.extractMemoryBuild("build.log");
 
 						_log.info("Build Success... Launch tests of the App...");
-						// TODO Redeploy the app
-/*						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-						thread.start();
-
-						Thread.sleep(50000);
-						testsApp(jDirectory,system);
-						thread.interrupt();
-						// Stop the App
-						startProcess("./dockerStop.sh",system,JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");*/
 					} else{
 						//String build used for the csv
 						build = "KO";
@@ -383,23 +437,37 @@ public class Oracle {
 			}
 			
 			_log.info("Writing into jhipster.csv");
-
-			//New line for file csv
-			String[] line = {jDirectory,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+			
+			//WITH DOCKER
+			String docker = "true";
+			
+			//New line for file csv With Docker
+			String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-					generation,stacktracesGen,compile,stacktracesCompile,build,stacktracesBuild,buildTime,buildMemory,
+					generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,buildMemoryWithDocker,
 					resultsTest,cucumber,karmaJS,gatling,protractor};
-
+			
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
 			
-			if(getProperties("System.properties").getProperty("useDocker").equals("true")){
-				_log.info("Cleaning up...");
-				cleanUp(jDirectory);
-			}
+			//WITHOUT DOCKER
+			 docker = "false";
+			
+			//New line for file csv without Docker
+			String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+					websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+					generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build,stacktracesBuild,buildTime,buildMemory,
+					resultsTest,cucumber,karmaJS,gatling,protractor};
+
+			//write into CSV file
+			CSVUtils.writeNewLineCSV("jhipster.csv",line2);
+			
+
+			_log.info("Cleaning up...");
+			cleanUp(jDirectory);
 		}
 		
-		if(getProperties("System.properties").getProperty("useDocker").equals("false"))
+			_log.info("Termination...");
 			termination();
 	}
 }

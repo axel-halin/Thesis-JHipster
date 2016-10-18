@@ -24,13 +24,14 @@ public class ResultChecker {
 	}
 	
 	/**
-	 * Check if the App is built successfully
+	 * Check the App is build successfully
 	 * 
-	 * @param fileName Name of the log file
+	 * @param jDirectory Name of the folder
 	 */
 	public boolean checkBuildApp(String fileName) throws FileNotFoundException{
 		String text = "";
 
+		//extract log
 		text = Files.readFileIntoString(path+fileName);
 
 		//CHECK IF BUILD FAILED THEN false
@@ -60,23 +61,31 @@ public class ResultChecker {
 	}
 	
 	/**
-	 * Return the time of building   
+	 * Return the time from log fils (compile.log, build.log)
 	 * 
-	 * @param fileName Name of the log file
-	 * @return String of the time of building
+	 * @param jDirectory Name of the folder
+	 * @return String of time of building
 	 * 
 	 */
-	public String extractTimeBuild(String fileName) throws FileNotFoundException{
+	public String extractTime(String fileName) throws FileNotFoundException{
 		String text = "";
 
 		//extract log
 		text = Files.readFileIntoString(path+fileName);
 
 		Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
+		Matcher m2 = Pattern.compile("Total time: (.*?) secs").matcher(text);
 
 		String timebuild = "NOTFIND";
 
-		while(m1.find()) return timebuild = m1.group(1).toString();
+		while(m1.find())
+		{
+			return timebuild = m1.group(1).toString();
+		}
+		while(m2.find())
+		{
+			return timebuild = m2.group(1).toString();
+		}
 
 		return timebuild;
 	}
@@ -84,7 +93,7 @@ public class ResultChecker {
 	/**
 	 * Return the memory used   
 	 * 
-	 * @param fileName Name of the folder
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 */
@@ -98,7 +107,10 @@ public class ResultChecker {
 
 		String memoryBuild = "NOTFIND";
 
-		while(m1.find()) return memoryBuild = m1.toString();
+		while(m1.find())
+		{
+			return memoryBuild = m1.toString();
+		}
 
 		return memoryBuild;
 	}
@@ -107,7 +119,7 @@ public class ResultChecker {
 	/**
 	 * Return results from tests ./mvnw clean test | ./gradlew clean test  
 	 * 
-	 * @param fileName Name of the log file
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 */
@@ -141,7 +153,7 @@ public class ResultChecker {
 	/**
 	 * Return results from tests ./mvnw clean test | ./gradlew clean test -> cucumber
 	 * 
-	 * @param fileName Name of the log file
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 */
@@ -166,7 +178,7 @@ public class ResultChecker {
 	/**
 	 * Return results from : gulp test 
 	 * 
-	 * @param fileName Name of the folder
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 */
@@ -191,7 +203,7 @@ public class ResultChecker {
 	/**
 	 * Return results from tests ./mvnw gatling:execute	| ./gradlew gatlingRun -x cleanResources
 	 * 
-	 * @param fileName Name of the folder
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 * TODO Create sequence of tests for gatling.
@@ -217,7 +229,7 @@ public class ResultChecker {
 	/**
 	 * Return results from tests gulp protractor
 	 * 
-	 * @param fileName Name of the folder
+	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
 	 * TODO Create sequence of tests for gatling.
@@ -232,7 +244,10 @@ public class ResultChecker {
 		
 		String resultsTests = "NOTFIND";
 
-		while(m1.find()) return resultsTests = m1.group().toString();
+		while(m1.find())
+			{
+			return resultsTests = m1.group().toString();
+			}
 		
 		return resultsTests;
 	}
@@ -241,7 +256,7 @@ public class ResultChecker {
 	/**
 	 * Return stacktraces
 	 * 
-	 * @param fileName Name of the folder
+	 * @param jDirectory Name of the folder
 	 * @return String of stacktraces
 	 * 
 	 */
