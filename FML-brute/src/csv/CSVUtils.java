@@ -24,10 +24,10 @@ public class CSVUtils {
 	   */
 	   public static void createCSVFile(String filename) throws IOException {
 			CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
-			String[] heads = {"JHipsterRegister","applicationType","authenticationType","hibernateCache",
+			String[] heads = {"JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
 					"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
 					"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
-					"Log-Gen","Compile","Log-Compile","Build","Log-Build", "TimeToBuild(seconds)", "Memory", 
+					"Log-Gen","TimeToGenerate(secs)","Compile","Log-Compile","TimeToCompile(secs)","Build","Log-Build", "TimeToBuild(secs)", "Memory", 
 					"TestsResult", "Cucumber","KarmaJS","Gatling","Protractor" };
 			writer.writeNext(heads);
 			writer.close();

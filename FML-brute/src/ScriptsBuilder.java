@@ -25,21 +25,13 @@ public class ScriptsBuilder {
 		generateYoJhipsterScript(jconf, jDirectory);
 		generateCompileScript(jconf, jDirectory);		
 		generateUnitTestScript(jconf, jDirectory);
-		if (getProperties(PROPERTIES_FILE).getProperty("useDocker").equals("true"))
-			generateDockerScripts(jconf, jDirectory);			
-		else { 
-			generateBuildScript(jconf, jDirectory);
-			generateKillScript(jDirectory);
-		}
+		generateDockerScripts(jconf, jDirectory);			
+		generateBuildScript(jconf, jDirectory);
+		generateKillScript(jDirectory);
 				
 		if (jconf.testFrameworks.length>0) generateTestScript(jconf, jDirectory);
 	}
 	
-	/**
-	 * Generate the script to stop all databases services.
-	 * 
-	 * @param jDirectory Directory where the script must be generated.
-	 */
 	public void generateStopDatabaseScript(String jDirectory){
 		Properties property = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n"
@@ -71,12 +63,7 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
 	}
 	
-	/**
-	 * Generate the script to compile the JHipster application.
-	 * 
-	 * @param jconf Configuration of JHipster
-	 * @param jDirectory Directory where the script must be generated
-	 */
+	
 	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
@@ -86,12 +73,7 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"compile.sh", script);
 	}
 	
-	/**
-	 * Generate the script to build the application without the use of Docker.
-	 * 
-	 * @param jconf JHipster configuration to build.
-	 * @param jDirectory Directory where the script must be generated.
-	 */
+	
 	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";	
 		
@@ -141,12 +123,6 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
 	}
 	
-	/**
-	 * Generate the script to run the unit test(s) of the application.
-	 * 
-	 * @param jconf JHipster configuration to test
-	 * @param jDirectory Directory where the script must be generated
-	 */
 	private void generateUnitTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
@@ -160,8 +136,8 @@ public class ScriptsBuilder {
 	/**
 	 * Generates the scripts related to the use of Docker.
 	 * 
-	 * @param jconf JHipster configuration
-	 * @param jDirectory Directory where the scripts must be generated.
+	 * @param jconf
+	 * @param jDirectory
 	 */
 	private void generateDockerScripts(JhipsterConfiguration jconf, String jDirectory){
 		if(jconf.buildTool.equals("maven")) generateDockerStartScript(jDirectory, true);
@@ -169,12 +145,6 @@ public class ScriptsBuilder {
 		generateDockerStopScript(jconf, jDirectory);
 	}					
 		
-	/**
-	 * Generate the script used to package and deploy an application via Docker.
-	 * 
-	 * @param jDirectory Directory where the script must be generated.
-	 * @param maven True if the application uses Maven; False otherwise.
-	 */
 	private void generateDockerStartScript(String jDirectory, boolean maven){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n";
@@ -184,17 +154,11 @@ public class ScriptsBuilder {
 		script+= " >> dockerPackage.log 2>&1\n";
 		// Docker-compose
 		script += properties.getProperty("dockerStart")
-					+ " >> build.log 2>&1\n";
+					+ " >> buildDocker.log 2>&1\n";
 						
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStart.sh", script);
 	}
 	
-	/**
-	 * Generate the script used to stop the application via Docker and to remove all containers/images.
-	 * 
-	 * @param jconf JHipster configuration
-	 * @param jDirectory Directory where the script must be generated.
-	 */
 	private void generateDockerStopScript(JhipsterConfiguration jconf, String jDirectory){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		// Stop main container
@@ -217,7 +181,6 @@ public class ScriptsBuilder {
 		script += " >> dockerStop.log 2>&1\n";
 		// Remove all Docker images
 		script += properties.getProperty("dockerRemoveAll") + " >> dockerStop.log 2>&1\n";
-		script += properties.getProperty("dockerRemoveImages") + " >> dockerStop.log 2>&1\n";
 		
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStop.sh", script);
 	}
@@ -254,11 +217,6 @@ public class ScriptsBuilder {
 				+ properties.getProperty("mysqlCloseConnexion");
 	}
 	
-	/**
-	 * Get the script handling the initialization of a Cassandra database.
-	 * 
-	 * @return The script handling the initialization of a Cassandra database.
-	 */
 	private String getCassandraScript(){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		
@@ -268,21 +226,12 @@ public class ScriptsBuilder {
 				+ properties.getProperty("cassandraInsertUsers");
 	}
 	
-	/**
-	 * Get the script handling the initialization of a Mongodb database.
-	 * 
-	 * @return The script to initialize a MongoDB database.
-	 */
+	
 	private String getMongodbScript(){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		return properties.getProperty("mongodbService");
 	}
 	
-	/**
-	 * Get the script handling the initialization of a PostgreSQL database.
-	 * 
-	 * @return The script used to create the PostgreSQL database.
-	 */
 	private String getPostgreScript(){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		
