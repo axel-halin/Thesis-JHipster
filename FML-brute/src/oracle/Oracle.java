@@ -176,8 +176,6 @@ public class Oracle {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
 	}
 
-
-
 	/**
 	 * Launch initialization scripts:\n
 	 * 		- Start Uaa Server (in case of Uaa authentication)
