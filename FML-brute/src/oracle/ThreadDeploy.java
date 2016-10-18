@@ -5,6 +5,11 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Thread used to deploy (via Docker or not, depending on the file) an application.
+ * 
+ * @author Axel Halin
+ */
 public class ThreadDeploy implements Runnable{
 	private static final Logger _log = Logger.getLogger("ThreadDeploy");
 	private final Boolean system;

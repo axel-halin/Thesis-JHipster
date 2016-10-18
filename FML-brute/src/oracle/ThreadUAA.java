@@ -5,6 +5,11 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
+/**
+ * Handle the deployment of UAA Server.
+ * 
+ * @author Axel Halin
+ */
 public class ThreadUAA implements Runnable{
 	private final Logger _log = Logger.getLogger("ThreadUAA");
 	private final String PATH;

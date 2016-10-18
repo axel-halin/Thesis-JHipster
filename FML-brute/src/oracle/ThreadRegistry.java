@@ -6,7 +6,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 /**
- * Thread to handle JHipster Registry
+ * Thread to handle the deploymnent of JHipster Registry
  * 
  * @author Axel Halin
  * @author Nuttinck Alexandre
@@ -24,6 +24,9 @@ public class ThreadRegistry implements Runnable {
 		this.process.destroy();
 	}
 	
+	/**
+	 * Create a process to run the JHipster Registry
+	 */
 	@Override
 	public void run(){
 		try{
