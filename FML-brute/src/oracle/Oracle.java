@@ -154,7 +154,15 @@ public class Oracle {
 		startProcess("./killScript.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
-
+	/**
+	 * Launch UnitTests on the App is compiled successfully
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @throws InterruptedException 
+	 */
+	private void unitTestsApp(String jDirectory) throws InterruptedException{
+		startProcess("./unitTest.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
+	}
 
 	/**
 	 * Launch Tests on the App is build successfully
@@ -162,8 +170,18 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @throws InterruptedException 
 	 */
-	private void testsApp(String jDirectory, boolean system) throws InterruptedException{
+	private void testsApp(String jDirectory) throws InterruptedException{
 		startProcess("./test.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
+	}
+	
+	/**
+	 * Launch Tests on the App is build successfully
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @throws InterruptedException 
+	 */
+	private void testsAppDocker(String jDirectory) throws InterruptedException{
+		startProcess("./testDocker.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
 	/**
@@ -221,22 +239,6 @@ public class Oracle {
 	private void dockerCompose(String jDirectory){
 		// Run the App
 		startProcess("./dockerStart.sh",jDirectory, 250, TimeUnit.SECONDS);
-	}
-
-	private Properties getProperties(String propFileName) {
-		InputStream inputStream = null;
-		Properties prop = new Properties();
-		try {
-			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
-			if (inputStream != null) prop.load(inputStream);
-			else throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
-		} catch (Exception e) {
-			System.out.println("Exception: " + e);
-		} finally {
-			try{inputStream.close();}
-			catch (IOException e){e.printStackTrace();}
-		}
-		return prop; // default linux
 	}
 
 	/**
@@ -324,8 +326,6 @@ public class Oracle {
 			if(checkGenerateApp(jDirectory)){
 				generation ="OK";
 				// Time to Generate
-
-				// TODO NEED VERIFICATION
 				Long generationTimeLong = millisAfterGenerate - millis;
 				Double generationTimeDouble = generationTimeLong/1000.0;
 				generationTime = generationTimeDouble.toString();
@@ -338,6 +338,12 @@ public class Oracle {
 					compile ="OK";
 					compileTime = resultChecker.extractTime("compile.log");
 					stacktracesCompile = resultChecker.extractStacktraces("compile.log");
+					
+					_log.info("Compilation success ! Launch Unit Tests...");
+					unitTestsApp(jDirectory);
+					
+					resultsTest = resultChecker.extractResultsTest("test.log");
+					karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
 
 					_log.info("Compilation success ! Trying to build the App...");
 
@@ -359,6 +365,17 @@ public class Oracle {
 						*/
 
 						_log.info("Build Success... Launch tests of the App...");
+						
+						testsAppDocker(jDirectory);
+
+						try{
+							//cucumber= resultChecker.extractCucumber("testDockerProtractor.log");
+							//gatling = resultChecker.extractGatling("testDockerGatling.log");
+							//protractor = resultChecker.extractProtractor("testDockerProtractor.log");
+						} catch(Exception e){
+							_log.error(e.getMessage());
+						}
+						
 
 					} else{
 						//String build used for the csv
@@ -385,6 +402,16 @@ public class Oracle {
 						buildMemory = resultChecker.extractMemoryBuild("build.log");
 
 						_log.info("Build Success... Launch tests of the App...");
+						testsApp(jDirectory);
+						
+						try{
+							//cucumber= resultChecker.extractCucumber("testProtractor.log");
+							//gatling = resultChecker.extractGatling("testGatling.log");
+							//protractor = resultChecker.extractProtractor("testProtractor.log");
+						} catch(Exception e){
+							_log.error(e.getMessage());
+						}
+						
 					} else{
 						//String build used for the csv
 						build = "KO";
@@ -403,17 +430,6 @@ public class Oracle {
 				_log.error("App Generation Failed...");
 				generation ="KO";
 				stacktracesGen = resultChecker.extractStacktraces("generate.log");
-			}
-
-			//extract From Tests TODO: Handle file not found in methods
-			try{
-				resultsTest= resultChecker.extractResultsTest("test.log");
-				cucumber= resultChecker.extractCucumber("testProtractor.log");
-				karmaJS= resultChecker.extractKarmaJS("testKarmaJS.log");
-				gatling = resultChecker.extractGatling("testGatling.log");
-				protractor = resultChecker.extractProtractor("testProtractor.log");
-			} catch(Exception e){
-				_log.error(e.getMessage());
 			}
 
 			_log.info("Writing into jhipster.csv");
