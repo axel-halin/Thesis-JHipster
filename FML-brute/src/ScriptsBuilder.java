@@ -215,6 +215,7 @@ public class ScriptsBuilder {
 		script += " >> dockerStop.log 2>&1\n";
 		// Remove all Docker images
 		script += properties.getProperty("dockerRemoveAll") + " >> dockerStop.log 2>&1\n";
+		script += properties.getProperty("dockerRemoveImages") + " >> dockerStop.log 2>&1\n";
 		
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStop.sh", script);
 	}

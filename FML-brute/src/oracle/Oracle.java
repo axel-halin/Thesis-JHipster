@@ -183,26 +183,27 @@ public class Oracle {
 	 *  
 	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
-	private void initialization(){
+	private void initialization(boolean docker){
 		_log.info("Starting intialization scripts...");
-
-		// Start Jhipster Registry
-		threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
-		threadRegistry.start();
-
-		// Let Jhipster Registry initiate before attempting to launch UAA Server...
-		try{Thread.sleep(30000);}
-		catch(Exception e){_log.error(e.getMessage());}
-
-		// Start UAA Server
-		threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
-		threadUAA.start();
-
-		try{Thread.sleep(5000);}
-		catch(Exception e){_log.error(e.getMessage());}
-
-		// STOP DB FOR DOCKER
-		startProcess("./stopDB.sh","");
+		if(!docker){
+			// Start Jhipster Registry
+			threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
+			threadRegistry.start();
+	
+			// Let Jhipster Registry initiate before attempting to launch UAA Server...
+			try{Thread.sleep(30000);}
+			catch(Exception e){_log.error(e.getMessage());}
+	
+			// Start UAA Server
+			threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
+			threadUAA.start();
+	
+			try{Thread.sleep(5000);}
+			catch(Exception e){_log.error(e.getMessage());}
+		} else{
+			// STOP DB FOR DOCKER
+			startProcess("./stopDB.sh","");
+		}
 		_log.info("Oracle intialized !");
 	}
 
@@ -220,7 +221,7 @@ public class Oracle {
 
 	private void dockerCompose(String jDirectory){
 		// Run the App
-		startProcess("./dockerStart.sh",jDirectory, 250, TimeUnit.SECONDS);
+		startProcess("./dockerStart.sh",jDirectory, 350, TimeUnit.SECONDS);
 	}
 
 	private Properties getProperties(String propFileName) {
@@ -245,7 +246,7 @@ public class Oracle {
 	@Test
 	public void genJHipsterVariants() throws Exception{
 
-		initialization();
+		//initialization();
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
@@ -342,10 +343,16 @@ public class Oracle {
 					_log.info("Compilation success ! Trying to build the App...");
 
 					_log.info("Trying to build the App with Docker...");
+					
+					initialization(true);
+					
+					ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log");
+					t1.start();
 					//build WITH docker
 					dockerCompose(jDirectory);
-
-					if(resultChecker.checkBuildApp("buildDocker.log"))
+					t1.done();
+					
+					if(resultChecker.checkDockerBuild("buildDocker.log"))
 					{
 						//String build used for the csv
 						buildWithDocker = "OK";
