@@ -4,8 +4,6 @@ import csv.CSVUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -255,7 +253,7 @@ public class Oracle {
 		CSVUtils.createCSVFile("jhipster.csv");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =1;i<=weightFolder-1;i++){
+		for (Integer i =1;i<=3-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
@@ -346,6 +344,7 @@ public class Oracle {
 					
 					resultsTest = resultChecker.extractResultsTest("test.log");
 					karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
+					cucumber= resultChecker.extractCucumber("test.log");
 
 					_log.info("Compilation success ! Trying to build the App...");
 
@@ -377,7 +376,6 @@ public class Oracle {
 						testsAppDocker(jDirectory);
 
 						try{
-							//cucumber= resultChecker.extractCucumber("testDockerProtractor.log");
 							//gatling = resultChecker.extractGatling("testDockerGatling.log");
 							//protractor = resultChecker.extractProtractor("testDockerProtractor.log");
 						} catch(Exception e){
@@ -413,7 +411,6 @@ public class Oracle {
 						testsApp(jDirectory);
 						
 						try{
-							//cucumber= resultChecker.extractCucumber("testProtractor.log");
 							//gatling = resultChecker.extractGatling("testGatling.log");
 							//protractor = resultChecker.extractProtractor("testProtractor.log");
 						} catch(Exception e){
