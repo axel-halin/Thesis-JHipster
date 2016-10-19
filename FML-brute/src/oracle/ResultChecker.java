@@ -167,7 +167,7 @@ public class ResultChecker {
 		String text = "";
 
 		//extract log
-		text = Files.readFileIntoString(fileName);
+		text = Files.readFileIntoString(path+fileName);
 
 		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
 
