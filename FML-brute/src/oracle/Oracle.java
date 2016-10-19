@@ -364,13 +364,13 @@ public class Oracle {
 					//build WITH docker
 					dockerCompose(jDirectory);
 					
-					if(resultChecker.checkBuildApp("buildWithDocker.log"))
+					if(resultChecker.checkBuildApp("buildDocker.log"))
 					{
 						//String build used for the csv
 						buildWithDocker = "OK";
-						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildWithDocker.log");
-						buildTimeWithDocker = resultChecker.extractTime("buildWithDocker.log");
-						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildWithDocker.log");
+						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
+						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildDocker.log");
 						// TODO Redeploy the app
 						/*						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
 												thread.start();
@@ -386,7 +386,7 @@ public class Oracle {
 						//String build used for the csv
 						build = "KO";
 						_log.info("App Build Failure... Extract Stacktraces");
-						stacktracesBuild = resultChecker.extractStacktraces("buildWithDocker.log");
+						stacktracesBuild = resultChecker.extractStacktraces("buildDocker.log");
 						buildTime = "KO";
 						buildMemory = "KO";
 					}	

@@ -46,7 +46,7 @@ public class JHipsterTest extends FMLTest{
 	 */
 	private FeatureModelVariable getFMJHipster() throws Exception {
 		return FM ("jhipster", "FM ( jhipster :  Base ; Base : "
-				+ "[InternationalizationSupport] [Database] [Authentication] Generator [Libsass] [SpringWebSockets] [SocialLogin] [ClusteredSession] [TestingFrameworks] [BackEnd] ; "
+				+ "[InternationalizationSupport] [Database] [Authentication] Generator [Libsass] [SpringWebSockets] [SocialLogin] [ClusteredSession] TestingFrameworks [BackEnd] ; "
 				+ "Authentication : (HTTPSession | Uaa | OAuth2 | JWT) ; "
 				//TODO
 //				+ "TestingFrameworks : [Gatling] [Protractor] [Cucumber] ; "

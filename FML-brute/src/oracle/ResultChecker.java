@@ -23,24 +23,30 @@ public class ResultChecker {
 		this.path = path;
 	}
 	
+	public String getPath(){return path;}
+	
 	/**
 	 * Check the App is build successfully
 	 * 
 	 * @param jDirectory Name of the folder
 	 */
-	public boolean checkBuildApp(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		//CHECK IF BUILD FAILED THEN false
-		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
-		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
-		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-
-		while(m.find() | m2.find() | m3.find()) return false;
-		return true;
+	public boolean checkBuildApp(String fileName){
+		try{
+			String text = "";
+	
+			//extract log
+			text = Files.readFileIntoString(path+fileName);
+	
+			//CHECK IF BUILD FAILED THEN false
+			Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
+			Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
+			Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
+	
+			while(m.find() | m2.find() | m3.find()) return false;
+			return true;
+		} catch (Exception e){
+			return false;
+		}
 	}
 	
 	/**
