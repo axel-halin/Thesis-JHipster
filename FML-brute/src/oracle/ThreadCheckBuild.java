@@ -17,7 +17,7 @@ import org.eclipse.xtext.util.Files;
  * 
  * @author Axel Halin
  */
-public class ThreadCheckBuild implements Runnable {
+public class ThreadCheckBuild extends Thread {
 	
 	private static final Logger _log = Logger.getLogger("ThreadCheckBuild");
 	
@@ -34,6 +34,11 @@ public class ThreadCheckBuild implements Runnable {
 		this.USE_DOCKER = useDocker;
 		this.LOG_FILE = logFile;
 	}
+	
+	public void done(){
+		isDone = true;
+	}
+	
 	
 	/**
 	 * Start a process to run the test included in TEST_FILE.
@@ -71,7 +76,7 @@ public class ThreadCheckBuild implements Runnable {
 			
 			// Read Log File (handle file not found exception)
 			try{
-				logs = Files.readFileIntoString(LOG_FILE);
+				logs = Files.readFileIntoString(PATH+LOG_FILE);
 			} catch (Exception e){
 				_log.error("Exeception: "+e.getMessage());
 			}
@@ -110,8 +115,9 @@ public class ThreadCheckBuild implements Runnable {
 		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(logs);
 		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(logs);
 		Matcher m4 = Pattern.compile("((.*?)docker_jhipster-app_1 exited with code)").matcher(logs);
+		Matcher m5 = Pattern.compile("((.*?)bind: address already in use)").matcher(logs);
 		
-		while(m4.find() | m.find() | m2.find() | m3.find()) return true;
+		while(m4.find() | m5.find() | m.find() | m2.find() | m3.find()) return true;
 		return false;
 	}
 	
