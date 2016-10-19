@@ -36,6 +36,7 @@ public class JHipsterTest extends FMLTest{
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final String DIMACS_FILENAME = "models/model.dimacs";
 	private static final String PROJECTDIRECTORY = System.getProperty("user.dir");
+	private static final ScriptsBuilder SCRIPT_BUILDER = new ScriptsBuilder();
 	
 	/**
 	 * Modeling of JHipster's Feature Model to FeatureIDE notation.
@@ -47,33 +48,43 @@ public class JHipsterTest extends FMLTest{
 		return FM ("jhipster", "FM ( jhipster :  Base ; Base : "
 				+ "[InternationalizationSupport] [Database] [Authentication] Generator [Libsass] [SpringWebSockets] [SocialLogin] [ClusteredSession] [TestingFrameworks] [BackEnd] ; "
 				+ "Authentication : (HTTPSession | Uaa | OAuth2 | JWT) ; "
-				+ "TestingFrameworks : [Gatling] [Protractor] [Cucumber] ; "
-				+ "Generator : (Server | Application | Client) ; "
-				+ "Server : (MicroserviceApplication | UaaServer | ServerApp) ; "
+				//TODO
+//				+ "TestingFrameworks : [Gatling] [Protractor] [Cucumber] ; "
+				+ "TestingFrameworks : Gatling Protractor Cucumber ; "
+			//	+ "Generator : (Server | Application | Client) ; "
+				+ "Generator : (Server | Application) ; "
+				//+ "Server : (MicroserviceApplication | UaaServer | ServerApp) ; "
+				+ "Server : (MicroserviceApplication | UaaServer) ; "
 				+ "Application : (MicroserviceGateway | Monolithic) ; "
 				+ "Database : (SQL | Cassandra | MongoDB) ; "
 				+ "SQL: Development [Hibernate2ndLvlCache] Production [ElasticSearch] ; "
-				+ "Development : (Oracle12c | H2 | PostgreSQLDev | MariaDBDev | MySql) ; "
-				+ "H2 : (DiskBased | InMemory) ; "
+//				+ "Development : (Oracle12c | H2 | PostgreSQLDev | MariaDBDev | MySql) ; "
+				+ "Development : (PostgreSQLDev | MariaDBDev | MySql) ; "
+//				+ "H2 : (DiskBased | InMemory) ; "
 				+ "Hibernate2ndLvlCache : (HazelCast | EhCache) ; " 
 				+ "Production : (MySQL | Oracle | MariaDB | PostgreSQL) ; "
 				+ "BackEnd : (Gradle | Maven) ; "
 				// Constraints
 				+ "(OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB) ; "
-				+ "SocialLogin -> ((HTTPSession | JWT) & (ServerApp | Monolithic) & (SQL | MongoDB)) ; "
+				//+ "SocialLogin -> ((HTTPSession | JWT) & (ServerApp | Monolithic) & (SQL | MongoDB)) ; "
+				+ "SocialLogin -> ((HTTPSession | JWT) & (Monolithic) & (SQL | MongoDB)) ; "
 				+ "UaaServer -> Uaa ; "
-				+ "Oracle -> (H2 | Oracle12c) ; "
+//				+ "Oracle -> (H2 | Oracle12c) ; "
 				+ "(!OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB | Cassandra) ; "
 				+ "Server -> !Protractor ; "
-				+ "MySQL -> (H2 | MySql) ; "
+//				+ "MySQL -> (H2 | MySql) ; "
+				+ "MySQL -> (MySql) ; "
 				+ "(MicroserviceApplication | MicroserviceGateway) -> (JWT | Uaa) ; "
 				+ "Monolithic -> (JWT | HTTPSession | OAuth2) ; "
-				+ "MariaDB -> (H2 | MariaDBDev) ; "
-				+ "PostgreSQL -> (H2 | PostgreSQLDev) ; "
+//				+ "MariaDB -> (H2 | MariaDBDev) ; "
+				+ "MariaDB -> (MariaDBDev) ; "
+//				+ "PostgreSQL -> (H2 | PostgreSQLDev) ; "
+				+ "PostgreSQL -> (PostgreSQLDev) ; "
 				+ "(Server | Application) -> (BackEnd & Authentication) ; "
 				+ "(SpringWebSockets | ClusteredSession) -> Application ; "
-				+ "Client -> (!Gatling & !Cucumber & !BackEnd & !Authentication) ; "
-				+ "Libsass -> (Application | Client) ; "
+				//+ "Client -> (!Gatling & !Cucumber & !BackEnd & !Authentication) ; "
+				//+ "Libsass -> (Application | Client) ; "
+				+ "Libsass -> (Application) ; "
 				+ " )");
 	}
 	
@@ -354,8 +365,7 @@ public class JHipsterTest extends FMLTest{
 	 */
 	@Test
 	public void testJHipsterGeneration() throws Exception{
-		
-		
+				
 		_log.info("Extracting Feature Model...");
 		FeatureModelVariable fmvJhipster = getFMJHipster();
 		
@@ -379,7 +389,7 @@ public class JHipsterTest extends FMLTest{
 		_log.info("Generating DIMACS...");
 		generateDimacs(getFMJHipster());
 		
-		new ScriptsBuilder().generateStopDatabaseScript(PROJECTDIRECTORY);
+		SCRIPT_BUILDER.generateStopDatabaseScript(PROJECTDIRECTORY);
 		
 		int i = 0;
 		for (Variable configuration : confs){
@@ -406,13 +416,13 @@ public class JHipsterTest extends FMLTest{
 				_log.info("JSON generated...");
 				
 				_log.info("Generating scripts...");
-				new ScriptsBuilder().generateScripts(jConf, jDirectory);
+				SCRIPT_BUILDER.generateScripts(jConf, jDirectory);
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==30){
-					_log.info("Stopping at 30...");
+				if(i==10){
+					_log.info("Stopping at 10...");
 					System.exit(0);
 				}
 			}
