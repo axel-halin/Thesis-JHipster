@@ -26,7 +26,7 @@ public class ThreadCheckBuild extends Thread {
 	private final String LOG_FILE;// buildDocker.log
 	
 	private static volatile boolean isDone = false;
-	private static final String TEST_FILE = "test.sh";
+	private static final String TEST_FILE = "./test.sh";
 	
 	
 	public ThreadCheckBuild(String path, boolean useDocker, String logFile){
@@ -82,18 +82,23 @@ public class ThreadCheckBuild extends Thread {
 			}
 			
 			// Check if build success or failure
+			_log.info("Checking logs...");
 			buildSuccess = checkBuildSuccess(logs);
 			if (!buildSuccess) buildFailed = checkBuildFailure(logs);
+			_log.info("Result: "+buildSuccess+"; "+buildFailed);
 			
 			if(buildSuccess){
+				_log.info("Build successful ! Trying to run tests...");
 				// if success: run Tests
 				startProcess(TEST_FILE);
+				_log.info("All done ! Killing the server...");
 				// Then kill server
 				killServer();
 				isDone = true;
 			}
 			
 			if(buildFailed){
+				_log.info("Build failed... Killing the server now...");
 				// Kill
 				killServer();
 				isDone = true;
@@ -104,7 +109,7 @@ public class ThreadCheckBuild extends Thread {
 	
 	
 	private boolean checkBuildSuccess(String logs){
-		Matcher m = Pattern.compile("((.*?) Application 'jhipster' is running!)").matcher(logs);
+		Matcher m = Pattern.compile("((.*?)Application 'jhipster' is running!)").matcher(logs);
 		while (m.find()) return true;
 		return false;
 	}
