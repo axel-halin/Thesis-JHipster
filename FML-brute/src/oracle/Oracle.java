@@ -1,9 +1,12 @@
 package oracle;
 
 import csv.CSVUtils;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -238,22 +241,22 @@ public class Oracle {
 	private void dockerCompose(String jDirectory){
 		// Run the App
 		startProcess("./dockerStart.sh",jDirectory, 350, TimeUnit.SECONDS);
-	}
-
+	}	
+	
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	@Test
 	public void genJHipsterVariants() throws Exception{
-
+		
 		//initialization();
 
 		//Create CSV file.
 		CSVUtils.createCSVFile("jhipster.csv");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =1;i<=3-1;i++){
+		for (Integer i =1;i<=weightFolder-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
@@ -294,6 +297,7 @@ public class Oracle {
 			String karmaJS= "X";
 			String gatling = "X";
 			String protractor = "X";
+			StringBuilder imageSize = new StringBuilder();
 
 			//Get Json strings used for the csv
 			JsonParser jsonParser = new JsonParser();
@@ -351,13 +355,13 @@ public class Oracle {
 					_log.info("Trying to build the App with Docker...");
 					
 					initialization(true);
-					
-					ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log");
+					imageSize = new StringBuilder();
+					ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize);
 					t1.start();
 					//build WITH docker
 					dockerCompose(jDirectory);
 					t1.done();
-					
+										
 					if(resultChecker.checkDockerBuild("buildDocker.log"))
 					{
 						//String build used for the csv
@@ -365,24 +369,6 @@ public class Oracle {
 						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildDocker.log");
-
-						// TODO Redeploy the app
-						/*						Thread thread = new Thread(new ThreadDeploy(system,"./dockerStart.sh",projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-												thread.start();
-						*/
-
-						_log.info("Build Success... Launch tests of the App...");
-						
-						testsAppDocker(jDirectory);
-
-						try{
-							//gatling = resultChecker.extractGatling("testDockerGatling.log");
-							//protractor = resultChecker.extractProtractor("testDockerProtractor.log");
-						} catch(Exception e){
-							_log.error(e.getMessage());
-						}
-						
-
 					} else{
 						//String build used for the csv
 						build = "KO";
@@ -446,7 +432,7 @@ public class Oracle {
 			String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 					generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,buildMemoryWithDocker,
-					resultsTest,cucumber,karmaJS,gatling,protractor};
+					imageSize.toString(),resultsTest,cucumber,karmaJS,gatling,protractor};
 
 			//write into CSV file
 			CSVUtils.writeNewLineCSV("jhipster.csv",line);
