@@ -198,7 +198,7 @@ public class ResultChecker {
 
 		Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
 
-		String resultsTests = "SUCCESS";
+		String resultsTests = "OK";
 
 		while(m1.find())
 		{
@@ -281,8 +281,8 @@ public class ResultChecker {
 
 		while(m1.find() | m2.find())
 		{
-			stacktraces = stacktraces + m1.toString();
-			stacktraces = stacktraces + m2.toString();
+			stacktraces = stacktraces + m1.group().toString();
+			stacktraces = stacktraces + m2.group().toString();
 		}
 
 		return stacktraces;
