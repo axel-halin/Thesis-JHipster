@@ -146,31 +146,31 @@ public class ResultChecker {
 
 		while(m1.find())
 		{
-			resultsTests = m1.group().toString() +"\n";
+			resultsTests = resultsTests + m1.group().toString() +"\n";
 		}
 		while(m2.find())
 		{
-			resultsTests = m2.group().toString() +"\n";
+			resultsTests = resultsTests + m2.group().toString() +"\n";
 		}
 		while(m3.find())
 		{
-			resultsTests = m3.group().toString() +"\n";
+			resultsTests = resultsTests + m3.group().toString() +"\n";
 		}
 		while(m4.find())
 		{
-			resultsTests = m4.group().toString() +"\n";
+			resultsTests = resultsTests + m4.group().toString() +"\n";
 		}
 		while(m5.find())
 		{
-			resultsTests = m5.group().toString() +"\n";
+			resultsTests = resultsTests + m5.group().toString() +"\n";
 		}
 		while(m6.find())
 		{
-			resultsTests = m6.group().toString() +"\n";
+			resultsTests = resultsTests + m6.group().toString() +"\n";
 		}
 		while(m7.find())
 		{
-			resultsTests = m7.group().toString();
+			resultsTests = resultsTests + m7.group().toString();
 		}
 
 
