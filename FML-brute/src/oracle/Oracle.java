@@ -370,6 +370,7 @@ public class Oracle {
 						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildDocker.log");
+						testsAppDocker(jDirectory);
 					} else{
 						//String build used for the csv
 						build = "KO";
