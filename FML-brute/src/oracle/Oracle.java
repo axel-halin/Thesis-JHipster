@@ -407,7 +407,6 @@ public class Oracle {
 						} catch(Exception e){
 							_log.error(e.getMessage());
 						}
-						
 					} else{
 						//String build used for the csv
 						build = "KO";
@@ -416,7 +415,6 @@ public class Oracle {
 						buildTime = "KO";
 						buildMemory = "KO";
 					}	
-
 				} else{
 					_log.error("App Compilation Failed ...");
 					compile ="KO";
@@ -457,6 +455,5 @@ public class Oracle {
 
 		_log.info("Termination...");
 		termination();
-
 	}
 }

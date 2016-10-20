@@ -142,8 +142,10 @@ public class ResultChecker {
 		Matcher m6 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AuditResourceIntTest").matcher(text);
 		Matcher m7 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.UserResourceIntTest").matcher(text);
 
-		String resultsTests = "NOTFIND";
+		String resultsTests = "";
 
+		
+		
 		while(m1.find()|m2.find()|m3.find()|m4.find()|m5.find()|m6.find()|m7.find())
 		{
 			return resultsTests = m1.group().toString() +"\n"+ m2.group().toString() +"\n"+
