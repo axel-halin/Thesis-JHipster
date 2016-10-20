@@ -243,7 +243,17 @@ public class Oracle {
 		// Run the App
 		startProcess("./dockerStart.sh",jDirectory, 350, TimeUnit.SECONDS);
 	}	
-	
+
+	/**
+	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
+	 */
+	@Test
+	public void testJHipsterVariants() throws Exception{
+		resultChecker = new ResultChecker(getjDirectory("jhipster1"));
+		if (checkGenerateApp("jhipster1"))
+				{		String stacktracesGen = resultChecker.extractStacktraces("generate.log");}
+	}
+
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -370,14 +380,23 @@ public class Oracle {
 						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildDocker.log");
+						
+						_log.info("Build Success... Launch tests of the App Docker...");
 						testsAppDocker(jDirectory);
+						
+						try{
+							gatling = resultChecker.extractGatling("testDockerGatling.log");
+							protractor = resultChecker.extractProtractor("testDockerProtractor.log");
+						} catch(Exception e){
+							_log.error(e.getMessage());
+						}
 					} else{
 						//String build used for the csv
-						build = "KO";
+						buildWithDocker = "KO";
 						_log.info("App Build Failure... Extract Stacktraces");
-						stacktracesBuild = resultChecker.extractStacktraces("buildDocker.log");
-						buildTime = "KO";
-						buildMemory = "KO";
+						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+						buildTimeWithDocker = "KO";
+						buildMemoryWithDocker = "KO";
 					}	
 					_log.info("Cleaning up... Docker");
 					cleanUp(jDirectory);
@@ -403,8 +422,8 @@ public class Oracle {
 						testsApp(jDirectory);
 						
 						try{
-							//gatling = resultChecker.extractGatling("testGatling.log");
-							//protractor = resultChecker.extractProtractor("testProtractor.log");
+							gatling = resultChecker.extractGatling("testGatling.log");
+							protractor = resultChecker.extractProtractor("testProtractor.log");
 						} catch(Exception e){
 							_log.error(e.getMessage());
 						}
