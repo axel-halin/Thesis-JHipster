@@ -390,6 +390,7 @@ public class JHipsterTest extends FMLTest{
 		generateDimacs(getFMJHipster());
 		
 		SCRIPT_BUILDER.generateStopDatabaseScript(PROJECTDIRECTORY);
+		SCRIPT_BUILDER.generateStartDatabaseScript(PROJECTDIRECTORY);
 		
 		int i = 0;
 		for (Variable configuration : confs){

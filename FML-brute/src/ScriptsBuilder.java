@@ -48,6 +48,16 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(jDirectory+"/stopDB.sh", script);
 	}
 
+	public void generateStartDatabaseScript(String jDirectory){
+		Properties property = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n"
+						+ property.getProperty("mysqlServie")
+						+ property.getProperty("cassandraService")
+						+ property.getProperty("mongodbService")
+						+ property.getProperty("postgreService");
+		Files.writeStringIntoFile(jDirectory+"/startDB.sh", script);
+	}
+	
 	
 	/**
 	 * Generates the script to generate the JHipster application.\n
