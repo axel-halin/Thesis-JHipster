@@ -29,7 +29,9 @@ public class ScriptsBuilder {
 		generateBuildScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
 				
-		if (jconf.testFrameworks.length>0) generateTestScript(jconf, jDirectory);
+		if (jconf.testFrameworks.length>0) 
+			generateTestScript(jconf, jDirectory);
+			generateTestDockerScript(jconf, jDirectory);
 	}
 	
 	/**
@@ -146,6 +148,32 @@ public class ScriptsBuilder {
 			}
 		}
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
+	}
+	
+	/**
+	 * Generate script used to run tests on the configuration and write it in testDocker.sh.
+	 * 
+	 * @param jconf Configuration on which tests are run.
+	 * @param jDirectory Directory where to write the script.
+	 */
+	private void generateTestDockerScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		
+		for(String testFramework : jconf.testFrameworks){
+			switch(testFramework){
+				case "gatling": if(jconf.buildTool.equals("maven"))
+									script += "./mvnw gatling:execute";
+								else
+									script += "./gradlew gatlingRun -x cleanResources";
+								script += " >> testDockerGatling.log 2>&1\n";
+								break;
+				case "protractor": 	// TODO Server App must be running!
+									script += "gulp protractor >> testDockerProtractor.log 2>&1\n";
+									break;
+				case "cucumber": break; // Already tested in ./mvnw clean test
+			}
+		}
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"testDocker.sh", script);
 	}
 	
 	/**
