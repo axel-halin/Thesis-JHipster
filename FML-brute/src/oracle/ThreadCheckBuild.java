@@ -81,22 +81,19 @@ public class ThreadCheckBuild extends Thread {
 			// Read Log File (handle file not found exception)
 			try{
 				logs = Files.readFileIntoString(PATH+LOG_FILE);
+				// Check if build success or failure
+				buildSuccess = checkBuildSuccess(logs);
+				if (!buildSuccess) buildFailed = checkBuildFailure(logs);
 			} catch (Exception e){
 				_log.error("Exeception: "+e.getMessage());
 			}
-			
-			// Check if build success or failure
-			_log.info("Checking logs...");
-			buildSuccess = checkBuildSuccess(logs);
-			if (!buildSuccess) buildFailed = checkBuildFailure(logs);
-			_log.info("Result: "+buildSuccess+"; "+buildFailed);
 			
 			if(buildSuccess){
 				_log.info("Build successful ! Trying to run tests...");
 				// if success: run Tests
 				startProcess(TEST_FILE);
 				//Extract docker images size
-				imageSize.append(extractDockerImageSize("jhipster"));
+				if (USE_DOCKER) imageSize.append(extractDockerImageSize("jhipster"));
 				_log.info("All done ! Killing the server...");
 				// Then kill server
 				killServer();

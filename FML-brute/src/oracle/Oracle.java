@@ -150,9 +150,7 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 */
 	private void buildApp(String jDirectory) throws InterruptedException{
-		startProcess("./build.sh", jDirectory, 150, TimeUnit.SECONDS);
-		// Kill server after timeout
-		startProcess("./killScript.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
+		startProcess("./build.sh", jDirectory, 350, TimeUnit.SECONDS);
 	}
 
 	/**
@@ -205,6 +203,9 @@ public class Oracle {
 	private void initialization(boolean docker){
 		_log.info("Starting intialization scripts...");
 		if(!docker){
+			// Start database services
+			startProcess("./startDB.sh","");
+			
 			// Start Jhipster Registry
 			threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
 			threadRegistry.start();
@@ -377,14 +378,18 @@ public class Oracle {
 						buildTime = "KO";
 						buildMemory = "KO";
 					}	
-
 					_log.info("Cleaning up... Docker");
 					cleanUp(jDirectory);
-
+					
+					// Building without Docker
+					initialization(false);
+					ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize);
+					t2.start();
 					_log.info("Trying to build the App without Docker...");
 					//build WITHOUT docker
 					buildApp(jDirectory);
-
+					t2.done();
+					
 					if(resultChecker.checkBuildApp("build.log"))
 					{
 						//String build used for the csv

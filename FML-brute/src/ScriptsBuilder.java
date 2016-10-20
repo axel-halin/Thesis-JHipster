@@ -51,7 +51,7 @@ public class ScriptsBuilder {
 	public void generateStartDatabaseScript(String jDirectory){
 		Properties property = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n"
-						+ property.getProperty("mysqlServie")
+						+ property.getProperty("mysqlService")
 						+ property.getProperty("cassandraService")
 						+ property.getProperty("mongodbService")
 						+ property.getProperty("postgreService");
