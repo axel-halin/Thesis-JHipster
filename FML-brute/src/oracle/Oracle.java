@@ -263,20 +263,19 @@ public class Oracle {
 			resultChecker = new ResultChecker(getjDirectory(jDirectory));
 
 			//Strings used for the csv
-			String generation = "?";
-			String generationTime = "?";
-			String stacktracesGen = "?";
-			String compile = "?";
-			String compileTime = "?";
-			String stacktracesCompile = "?";
-			String build = "?";
-			String stacktracesBuild = "?";
-			String buildTime = "?";
-			String buildMemory = "?";
-			String buildWithDocker = "?";
-			String stacktracesBuildWithDocker = "?";
-			String buildTimeWithDocker = "?";
-			String buildMemoryWithDocker = "?";
+			String generation = "X";
+			String generationTime = "X";
+			String stacktracesGen = "X";
+			String compile = "X";
+			String compileTime = "X";
+			String compileMemory = "X";
+			String stacktracesCompile = "X";
+			String build = "X";
+			String stacktracesBuild = "X";
+			String buildTime = "X";
+			String buildWithDocker = "X";
+			String stacktracesBuildWithDocker = "X";
+			String buildTimeWithDocker = "X";
 			//jsonStrings
 			String applicationType = "X";
 			String authenticationType = "X";
@@ -297,6 +296,8 @@ public class Oracle {
 			String karmaJS= "X";
 			String gatling = "X";
 			String protractor = "X";
+			String gatlingDocker = "X";
+			String protractorDocker = "X";
 			StringBuilder imageSize = new StringBuilder();
 
 			//Get Json strings used for the csv
@@ -351,6 +352,7 @@ public class Oracle {
 					if(checkCompileApp(jDirectory)){
 						compile ="OK";
 						compileTime = resultChecker.extractTime("compile.log");
+						compileMemory = resultChecker.extractMemoryBuild("compile.log");
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
 						_log.info("Compilation success ! Launch Unit Tests...");
@@ -378,14 +380,13 @@ public class Oracle {
 							buildWithDocker = "OK";
 							stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 							buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
-							buildMemoryWithDocker = resultChecker.extractMemoryBuild("buildDocker.log");
 
 							_log.info("Build Success... Launch tests of the App Docker...");
 							testsAppDocker(jDirectory);
 
 							try{
-								gatling = resultChecker.extractGatling("testDockerGatling.log");
-								protractor = resultChecker.extractProtractor("testDockerProtractor.log");
+								gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
+								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 							} catch(Exception e){
 								_log.error(e.getMessage());
 							}
@@ -395,7 +396,8 @@ public class Oracle {
 							_log.info("App Build Failure... Extract Stacktraces");
 							stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 							buildTimeWithDocker = "KO";
-							buildMemoryWithDocker = "KO";
+							gatlingDocker = "KO";
+							protractorDocker = "KO";
 						}	
 						_log.info("Cleaning up... Docker");
 						cleanUp(jDirectory);
@@ -415,7 +417,6 @@ public class Oracle {
 							build = "OK";
 							stacktracesBuild = resultChecker.extractStacktraces("build.log");
 							buildTime = resultChecker.extractTime("build.log");
-							buildMemory = resultChecker.extractMemoryBuild("build.log");
 
 							_log.info("Build Success... Launch tests of the App...");
 							testsApp(jDirectory);
@@ -432,11 +433,14 @@ public class Oracle {
 							_log.info("App Build Failure... Extract Stacktraces");
 							stacktracesBuild = resultChecker.extractStacktraces("build.log");
 							buildTime = "KO";
-							buildMemory = "KO";
+							gatling = "KO";
+							protractor = "KO";
 						}	
 					} else{
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
+						compileTime = "KO";
+						compileMemory = "KO";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 					}
 				} else{
@@ -453,8 +457,8 @@ public class Oracle {
 				//New line for file csv With Docker
 				String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,buildMemoryWithDocker,
-						imageSize.toString(),resultsTest,cucumber,karmaJS,gatling,protractor};
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,compileMemory,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,
+						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line);
@@ -465,8 +469,8 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build,stacktracesBuild,buildTime,buildMemory,
-						resultsTest,cucumber,karmaJS,gatling,protractor};
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,compileMemory,build,stacktracesBuild,buildTime,
+						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line2);
