@@ -268,7 +268,6 @@ public class Oracle {
 			String stacktracesGen = "X";
 			String compile = "X";
 			String compileTime = "X";
-			String compileMemory = "X";
 			String stacktracesCompile = "X";
 			String build = "X";
 			String stacktracesBuild = "X";
@@ -352,7 +351,6 @@ public class Oracle {
 					if(checkCompileApp(jDirectory)){
 						compile ="OK";
 						compileTime = resultChecker.extractTime("compile.log");
-						compileMemory = resultChecker.extractMemoryBuild("compile.log");
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
 						_log.info("Compilation success ! Launch Unit Tests...");
@@ -440,7 +438,6 @@ public class Oracle {
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
 						compileTime = "KO";
-						compileMemory = "KO";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 					}
 				} else{
@@ -457,7 +454,7 @@ public class Oracle {
 				//New line for file csv With Docker
 				String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,compileMemory,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,
 						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker};
 
 				//write into CSV file
@@ -469,7 +466,7 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,compileMemory,build,stacktracesBuild,buildTime,
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build,stacktracesBuild,buildTime,
 						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor};
 
 				//write into CSV file
