@@ -217,7 +217,7 @@ public class ScriptsBuilder {
 		// Packaging
 		if(maven) script += properties.getProperty("mavenDockerPackage");
 		else script += properties.getProperty("gradleDockerPackage");
-		script+= " >> dockerPackage.log 2>&1\n";
+		script+= " >> buildDocker.log 2>&1\n";
 		// Docker-compose
 		script += properties.getProperty("dockerStart")
 					+ " >> buildDocker.log 2>&1\n";
