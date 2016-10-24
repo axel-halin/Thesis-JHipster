@@ -1,9 +1,10 @@
 package oracle;
 
+import main.*;
 import csv.CSVUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -13,6 +14,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -198,26 +200,30 @@ public class Oracle {
 	 *  
 	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
-	private void initialization(boolean docker){
+	private void initialization(boolean docker, String applicationType, String authentication){
 		_log.info("Starting intialization scripts...");
 		if(!docker){
 			// Start database services
 			startProcess("./startDB.sh","");
 
-			// Start Jhipster Registry
-			threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
-			threadRegistry.start();
+			if (applicationType.equals("gateway") || applicationType.equals("microservice") || applicationType.equals("uaa")){
+				// Start Jhipster Registry
+				threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
+				threadRegistry.start();
+				
+				// Let Jhipster Registry initiate before attempting to launch UAA Server...
+				try{Thread.sleep(30000);}
+				catch(Exception e){_log.error(e.getMessage());}
+				
+				if(authentication.equals("uaa")){
+					// Start UAA Server
+					threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
+					threadUAA.start();
 
-			// Let Jhipster Registry initiate before attempting to launch UAA Server...
-			try{Thread.sleep(30000);}
-			catch(Exception e){_log.error(e.getMessage());}
-
-			// Start UAA Server
-			threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
-			threadUAA.start();
-
-			try{Thread.sleep(5000);}
-			catch(Exception e){_log.error(e.getMessage());}
+					try{Thread.sleep(5000);}
+					catch(Exception e){_log.error(e.getMessage());}
+				}
+			}
 		} else{
 			// STOP DB FOR DOCKER
 			startProcess("./stopDB.sh","");
@@ -364,7 +370,7 @@ public class Oracle {
 
 						_log.info("Trying to build the App with Docker...");
 
-						initialization(true);
+						initialization(true, applicationType, authenticationType);
 						imageSize = new StringBuilder();
 						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize);
 						t1.start();
@@ -401,7 +407,7 @@ public class Oracle {
 						cleanUp(jDirectory);
 
 						// Building without Docker
-						initialization(false);
+						initialization(false, applicationType, authenticationType);
 						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize);
 						t2.start();
 						_log.info("Trying to build the App without Docker...");
