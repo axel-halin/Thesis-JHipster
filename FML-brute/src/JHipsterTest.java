@@ -3,7 +3,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -50,10 +52,10 @@ public class JHipsterTest extends FMLTest{
 				+ "Authentication : (HTTPSession | Uaa | OAuth2 | JWT) ; "
 				//TODO
 //				+ "TestingFrameworks : [Gatling] [Protractor] [Cucumber] ; "
-				+ "TestingFrameworks : Gatling Protractor Cucumber ; "
-			//	+ "Generator : (Server | Application | Client) ; "
+				+ "TestingFrameworks : Gatling [Protractor] Cucumber ; "
+//				+ "Generator : (Server | Application | Client) ; "
 				+ "Generator : (Server | Application) ; "
-				//+ "Server : (MicroserviceApplication | UaaServer | ServerApp) ; "
+//				+ "Server : (MicroserviceApplication | UaaServer | ServerApp) ; "
 				+ "Server : (MicroserviceApplication | UaaServer) ; "
 				+ "Application : (MicroserviceGateway | Monolithic) ; "
 				+ "Database : (SQL | Cassandra | MongoDB) ; "
@@ -62,7 +64,8 @@ public class JHipsterTest extends FMLTest{
 				+ "Development : (PostgreSQLDev | MariaDBDev | MySql) ; "
 //				+ "H2 : (DiskBased | InMemory) ; "
 				+ "Hibernate2ndLvlCache : (HazelCast | EhCache) ; " 
-				+ "Production : (MySQL | Oracle | MariaDB | PostgreSQL) ; "
+//				+ "Production : (MySQL | Oracle | MariaDB | PostgreSQL) ; "
+				+ "Production : (MySQL | MariaDB | PostgreSQL) ; "
 				+ "BackEnd : (Gradle | Maven) ; "
 				// Constraints
 				+ "(OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB) ; "
@@ -72,6 +75,7 @@ public class JHipsterTest extends FMLTest{
 //				+ "Oracle -> (H2 | Oracle12c) ; "
 				+ "(!OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB | Cassandra) ; "
 				+ "Server -> !Protractor ; "
+				+ "!Server -> Protractor ; "
 //				+ "MySQL -> (H2 | MySql) ; "
 				+ "MySQL -> (MySql) ; "
 				+ "(MicroserviceApplication | MicroserviceGateway) -> (JWT | Uaa) ; "
@@ -392,8 +396,12 @@ public class JHipsterTest extends FMLTest{
 		SCRIPT_BUILDER.generateStopDatabaseScript(PROJECTDIRECTORY);
 		SCRIPT_BUILDER.generateStartDatabaseScript(PROJECTDIRECTORY);
 		
+		// Transform to list for shuffling
+		List<Variable> list = new ArrayList<Variable>(confs);
+		Collections.shuffle(list);	
+		
 		int i = 0;
-		for (Variable configuration : confs){
+		for (Variable configuration : list){
 
 			_log.info("Extracting features from the configuration...");
 			Set<String> strConfs = extractFeatures(configuration);
@@ -422,8 +430,8 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==10){
-					_log.info("Stopping at 10...");
+				if(i==300){
+					_log.info("Stopping at 300...");
 					System.exit(0);
 				}
 			}
