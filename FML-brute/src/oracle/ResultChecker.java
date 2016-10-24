@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 
 /**
@@ -14,6 +15,7 @@ import org.eclipse.xtext.util.Files;
  */
 public class ResultChecker {
 	private String path = null;
+	private static final Logger _log = Logger.getLogger("ResultChecker");
 
 	public ResultChecker(String path){
 		this.path = path;
@@ -73,26 +75,19 @@ public class ResultChecker {
 	 * @return String of time of building
 	 * 
 	 */
-	public String extractTime(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
-		Matcher m2 = Pattern.compile("Total time: (.*?) secs").matcher(text);
-
+	public String extractTime(String fileName){
 		String timebuild = "NOTFIND";
+		try{
+			String text = Files.readFileIntoString(path+fileName);
 
-		while(m1.find())
-		{
-			return timebuild = m1.group(1).toString();
-		}
-		while(m2.find())
-		{
-			return timebuild = m2.group(1).toString();
-		}
+			Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
+			Matcher m2 = Pattern.compile("Total time: (.*?) secs").matcher(text);
 
+			while(m1.find()) return timebuild = m1.group(1).toString();
+			while(m2.find()) return timebuild = m2.group(1).toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
 		return timebuild;
 	}
 
@@ -103,21 +98,15 @@ public class ResultChecker {
 	 * @return String of time of building
 	 * 
 	 */
-	public String extractMemoryBuild(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
-
+	public String extractMemoryBuild(String fileName){
 		String memoryBuild = "NOTFIND";
-
-		while(m1.find())
-		{
-			return memoryBuild = m1.toString();
+		try{
+			String text = Files.readFileIntoString(path+fileName);
+			Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
+			while(m1.find()) return memoryBuild = m1.toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return memoryBuild;
 	}
 
@@ -129,51 +118,29 @@ public class ResultChecker {
 	 * @return String of time of building
 	 * 
 	 */
-	public String extractResultsTest(String fileName) throws FileNotFoundException{
-
-		String text = "";
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
-		Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
-		Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
-		Matcher m4 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.UserServiceIntTest").matcher(text);
-		Matcher m5 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AccountResourceIntTest").matcher(text);
-		Matcher m6 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AuditResourceIntTest").matcher(text);
-		Matcher m7 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.UserResourceIntTest").matcher(text);
-
+	public String extractResultsTest(String fileName){
 		String resultsTests = "";
+		try{
+			String text = Files.readFileIntoString(path+fileName);
 
-		while(m1.find())
-		{
-			resultsTests = resultsTests + m1.group().toString() +"\n";
-		}
-		while(m2.find())
-		{
-			resultsTests = resultsTests + m2.group().toString() +"\n";
-		}
-		while(m3.find())
-		{
-			resultsTests = resultsTests + m3.group().toString() +"\n";
-		}
-		while(m4.find())
-		{
-			resultsTests = resultsTests + m4.group().toString() +"\n";
-		}
-		while(m5.find())
-		{
-			resultsTests = resultsTests + m5.group().toString() +"\n";
-		}
-		while(m6.find())
-		{
-			resultsTests = resultsTests + m6.group().toString() +"\n";
-		}
-		while(m7.find())
-		{
-			resultsTests = resultsTests + m7.group().toString();
-		}
+			Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
+			Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
+			Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
+			Matcher m4 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.UserServiceIntTest").matcher(text);
+			Matcher m5 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AccountResourceIntTest").matcher(text);
+			Matcher m6 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.AuditResourceIntTest").matcher(text);
+			Matcher m7 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.web.rest.UserResourceIntTest").matcher(text);
 
-
+			while(m1.find()) resultsTests = resultsTests + m1.group().toString() +"\n";
+			while(m2.find()) resultsTests = resultsTests + m2.group().toString() +"\n";
+			while(m3.find()) resultsTests = resultsTests + m3.group().toString() +"\n";
+			while(m4.find()) resultsTests = resultsTests + m4.group().toString() +"\n";
+			while(m5.find()) resultsTests = resultsTests + m5.group().toString() +"\n";
+			while(m6.find()) resultsTests = resultsTests + m6.group().toString() +"\n";
+			while(m7.find()) resultsTests = resultsTests + m7.group().toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
 		return resultsTests;
 	}
 
@@ -186,21 +153,15 @@ public class ResultChecker {
 	 * @return String of time of building
 	 * 
 	 */
-	public String extractCucumber(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
-
+	public String extractCucumber(String fileName){
 		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group().toString();
+		try{
+			String text = Files.readFileIntoString(path+fileName);
+			Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
+			while(m1.find()) return resultsTests = m1.group().toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 
@@ -211,21 +172,15 @@ public class ResultChecker {
 	 * @return String of time of building
 	 * 
 	 */
-	public String extractKarmaJS(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
-
+	public String extractKarmaJS(String fileName){
 		String resultsTests = "OK";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group().toString();
+		try{
+			String text = Files.readFileIntoString(path+fileName);
+			Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
+			while(m1.find()) return resultsTests = m1.group().toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 
@@ -237,21 +192,16 @@ public class ResultChecker {
 	 * 
 	 * TODO Create sequence of tests for gatling.
 	 */
-	public String extractGatling(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("(.*?)").matcher(text);
-
+	public String extractGatling(String fileName){
 		String resultsTests = "NOTFIND";
+		try{
+			String text = Files.readFileIntoString(path+fileName);
 
-		while(m1.find())
-		{
-			return resultsTests = m1.group(1).toString();
+			Matcher m1 = Pattern.compile("(.*?)").matcher(text);
+			while(m1.find()) return resultsTests = m1.group(1).toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 
@@ -263,21 +213,17 @@ public class ResultChecker {
 	 * 
 	 * TODO Create sequence of tests for gatling.
 	 */
-	public String extractProtractor(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("(.*?) specs, (.*?) failures").matcher(text);
-
+	public String extractProtractor(String fileName){
 		String resultsTests = "NOTFIND";
+		try{
+			String text = Files.readFileIntoString(path+fileName);
 
-		while(m1.find())
-		{
-			return resultsTests = m1.group().toString();
+			Matcher m1 = Pattern.compile("(.*?) specs, (.*?) failures").matcher(text);
+			
+			while(m1.find()) return resultsTests = m1.group().toString();
+		} catch(Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 
@@ -289,26 +235,19 @@ public class ResultChecker {
 	 * @return String of stacktraces
 	 * 
 	 */
-	public String extractStacktraces(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+fileName);
-
-		Matcher m1 = Pattern.compile("(Exception(.*?)\\n)").matcher(text);
-		Matcher m2 = Pattern.compile("(Caused by(.*?)\\n)").matcher(text);
-
+	public String extractStacktraces(String fileName){
 		String stacktraces = "";
-
-		while(m1.find())
-		{
-			stacktraces = stacktraces + m1.group().toString();
+		try{		
+			String text = Files.readFileIntoString(path+fileName);
+	
+			Matcher m1 = Pattern.compile("(Exception(.*?)\\n)").matcher(text);
+			Matcher m2 = Pattern.compile("(Caused by(.*?)\\n)").matcher(text);
+	
+			while(m1.find()) stacktraces = stacktraces + m1.group().toString();
+			while(m2.find()) stacktraces = stacktraces + m2.group().toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-		while(m2.find())
-		{
-			stacktraces = stacktraces + m2.group().toString();
-		}	
-
 		return stacktraces;
 	}
 }
