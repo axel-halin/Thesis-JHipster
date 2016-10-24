@@ -14,17 +14,17 @@ import org.eclipse.xtext.util.Files;
  */
 public class ResultChecker {
 	private String path = null;
-	
+
 	public ResultChecker(String path){
 		this.path = path;
 	}
-	
+
 	public void setPath(String path){
 		this.path = path;
 	}
-	
+
 	public String getPath(){return path;}
-	
+
 	/**
 	 * Check the App is build successfully
 	 * 
@@ -33,22 +33,22 @@ public class ResultChecker {
 	public boolean checkBuildApp(String fileName){
 		try{
 			String text = "";
-	
+
 			//extract log
 			text = Files.readFileIntoString(path+fileName);
-	
+
 			//CHECK IF BUILD FAILED THEN false
 			Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
 			Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
 			Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-	
+
 			while(m.find() | m2.find() | m3.find()) return false;
 			return true;
 		} catch (Exception e){
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check the build result when using Docker.
 	 * 
@@ -65,7 +65,7 @@ public class ResultChecker {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Return the time from log fils (compile.log, build.log)
 	 * 
@@ -95,7 +95,7 @@ public class ResultChecker {
 
 		return timebuild;
 	}
-	
+
 	/**
 	 * Return the memory used   
 	 * 
@@ -108,7 +108,7 @@ public class ResultChecker {
 
 		//extract log
 		text = Files.readFileIntoString(path+fileName);
-		
+
 		Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
 
 		String memoryBuild = "NOTFIND";
@@ -120,7 +120,7 @@ public class ResultChecker {
 
 		return memoryBuild;
 	}
-	
+
 
 	/**
 	 * Return results from tests ./mvnw clean test | ./gradlew clean test  
@@ -133,7 +133,7 @@ public class ResultChecker {
 
 		String text = "";
 		text = Files.readFileIntoString(path+fileName);
-		
+
 		Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest").matcher(text);
 		Matcher m2 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.security.SecurityUtilsUnitTest").matcher(text);
 		Matcher m3 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.service.SocialServiceIntTest").matcher(text);
@@ -144,18 +144,39 @@ public class ResultChecker {
 
 		String resultsTests = "";
 
-		
-		
-		while(m1.find()|m2.find()|m3.find()|m4.find()|m5.find()|m6.find()|m7.find())
+		while(m1.find())
 		{
-			return resultsTests = m1.group().toString() +"\n"+ m2.group().toString() +"\n"+
-					m3.group().toString() +"\n"+ m4.group().toString() +"\n"+ m5.group().toString() +"\n"+
-					m6.group().toString() +"\n"+ m7.group().toString();
+			resultsTests = resultsTests + m1.group().toString() +"\n";
 		}
+		while(m2.find())
+		{
+			resultsTests = resultsTests + m2.group().toString() +"\n";
+		}
+		while(m3.find())
+		{
+			resultsTests = resultsTests + m3.group().toString() +"\n";
+		}
+		while(m4.find())
+		{
+			resultsTests = resultsTests + m4.group().toString() +"\n";
+		}
+		while(m5.find())
+		{
+			resultsTests = resultsTests + m5.group().toString() +"\n";
+		}
+		while(m6.find())
+		{
+			resultsTests = resultsTests + m6.group().toString() +"\n";
+		}
+		while(m7.find())
+		{
+			resultsTests = resultsTests + m7.group().toString();
+		}
+
 
 		return resultsTests;
 	}
-	
+
 
 
 	/**
@@ -249,18 +270,18 @@ public class ResultChecker {
 		text = Files.readFileIntoString(path+fileName);
 
 		Matcher m1 = Pattern.compile("(.*?) specs, (.*?) failures").matcher(text);
-		
+
 		String resultsTests = "NOTFIND";
 
 		while(m1.find())
-			{
+		{
 			return resultsTests = m1.group().toString();
-			}
-		
+		}
+
 		return resultsTests;
 	}
 
-	
+
 	/**
 	 * Return stacktraces
 	 * 
@@ -276,14 +297,17 @@ public class ResultChecker {
 
 		Matcher m1 = Pattern.compile("(Exception(.*?)\\n)").matcher(text);
 		Matcher m2 = Pattern.compile("(Caused by(.*?)\\n)").matcher(text);
-		
+
 		String stacktraces = "";
 
-		while(m1.find() | m2.find())
+		while(m1.find())
 		{
 			stacktraces = stacktraces + m1.group().toString();
-			stacktraces = stacktraces + m2.group().toString();
 		}
+		while(m2.find())
+		{
+			stacktraces = stacktraces + m2.group().toString();
+		}	
 
 		return stacktraces;
 	}
