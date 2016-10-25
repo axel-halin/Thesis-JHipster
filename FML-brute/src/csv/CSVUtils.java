@@ -3,6 +3,8 @@ package csv;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
@@ -19,6 +21,7 @@ import java.io.FileWriter;
 public class CSVUtils {
 	private String path = null;
 	private String JACOCOPATH = "/target/test-results/coverage/jacoco/";
+	private static final Logger _log = Logger.getLogger("CSVUtils");
 
 	public CSVUtils(String path){
 		this.path = path;
@@ -86,7 +89,7 @@ public class CSVUtils {
 	 */
 	public void writeLinesCoverageCSV(String filename,String filename2,String jDirectory) throws IOException {  
 
-		boolean check = true;
+		try{
 		CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
 		String[] row = null;
 
@@ -96,7 +99,6 @@ public class CSVUtils {
 		
 			row = (String[]) object;
 			
-			System.out.println(row[1].toString());
 			String[] newline = {jDirectory,row[0],row[1],row[3],row[4],row[5],row[6],row[7],row[8],
 					row[9],row[10],row[11],row[12]};
 
@@ -108,6 +110,10 @@ public class CSVUtils {
 
 		}
 		lines.close();
+		} 
+		catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
 	}
 	
 	/**
