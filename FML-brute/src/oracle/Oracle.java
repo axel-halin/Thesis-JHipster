@@ -1,20 +1,15 @@
 package oracle;
 
-import main.*;
 import csv.CSVUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -55,27 +50,6 @@ public class Oracle {
 			_log.error("InterruptedException: "+e.getMessage());
 		} finally{
 			try{process.destroy();}
-			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
-		}
-	}
-
-	private void startProcess(String fileName, String jDirectory, long timeOut, TimeUnit unit){
-		Process process = null;
-		try{
-			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
-			processBuilder.directory(new File(projectDirectory + "/" + getjDirectory(jDirectory) +"/"));
-			process = processBuilder.start();
-
-			if(!process.waitFor(timeOut, unit)) {
-				//timeout - kill the process. 
-				process.destroyForcibly();
-			}	
-		} catch(IOException e){
-			_log.error("IOException: "+e.getMessage());
-		} catch(InterruptedException e){
-			_log.error("InterruptedException: "+e.getMessage());
-		} finally{
-			try{process.destroyForcibly(); process.destroy();}
 			catch(Exception e){_log.error("Destroy error: "+e.getMessage());}
 		}
 	}
@@ -150,7 +124,7 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 */
 	private void buildApp(String jDirectory) throws InterruptedException{
-		startProcess("./build.sh", jDirectory, 350, TimeUnit.SECONDS);
+		startProcess("./build.sh", getjDirectory(jDirectory));
 	}
 
 	/**
@@ -245,7 +219,7 @@ public class Oracle {
 
 	private void dockerCompose(String jDirectory){
 		// Run the App
-		startProcess("./dockerStart.sh",jDirectory, 350, TimeUnit.SECONDS);
+		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
 
 	/**
