@@ -43,7 +43,7 @@ public class CSVUtils {
 				"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
 				"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
 				"Log-Gen","TimeToGenerate(secs)","Compile","Log-Compile","TimeToCompile(secs)","Build","Log-Build", "TimeToBuild(secs)", 
-				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions(%)","CoverageBranches(%)"};
+				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions(%)","CoverageBranches(%)","JS-StatementsCoverage(%)","JS-BranchesCoverage(%)"};
 		writer.writeNext(heads);
 		writer.close();
 	}

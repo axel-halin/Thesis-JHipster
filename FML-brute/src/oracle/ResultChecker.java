@@ -16,6 +16,7 @@ public class ResultChecker {
 	private String path = null;
 	private static final Logger _log = Logger.getLogger("ResultChecker");
 	private String JACOCOPATH = "target/test-results/coverage/jacoco/";
+	private static final String DEFAULT_NOT_FOUND_VALUE = "ND";
 
 	public ResultChecker(String path){
 		this.path = path;
@@ -270,7 +271,49 @@ public class ResultChecker {
 		return resultsTests;
 	}
 
+	/**
+	 * Retrieves the percentage of Javascript Statements Coverage
+	 * 
+	 * @param fileName File containing the percentage. 
+	 * @return The percentage of Statement Coverage (Javascript)
+	 */
+	public String extractJSCoverageStatements(String fileName){
+		String result = DEFAULT_NOT_FOUND_VALUE;
+		try{
+			String text = Files.readFileIntoString(path+fileName);
+			Matcher m1 = Pattern.compile("(.*?)<div class='fl pad1y space-right2'>(\r*?)(\n*?)"
+										+ "(.*?)<span class=\"strong\">(.*?)</span>(\r*?)(\n*?)"
+										+ "(.*?)<span class=\"quiet\">Statements</span>(\r*?)(\n*?)"
+										+ "(.*?)<span class='fraction'>(.*?)</span>(\r*?)(\n*?)"
+										+ "(.*?)</div>").matcher(text);
+			while(m1.find()) return m1.group(5).toString();
+		} catch(Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
+		return result;
+	}
 
+	/**
+	 * Retrieves the percentage of Javascript Branches Coverage
+	 * 
+	 * @param fileName File containing the percentage.
+	 * @return The percentage of Branches Coverage (Javascript)
+	 */
+	public String extractJSCoverageBranches(String fileName){
+		String result = DEFAULT_NOT_FOUND_VALUE;
+		try{
+			String text = Files.readFileIntoString(path+fileName);
+			Matcher m1 = Pattern.compile("(.*?)<div class='fl pad1y space-right2'>(\r*?)(\n*?)"
+										+ "(.*?)<span class=\"strong\">(.*?)</span>(\r*?)(\n*?)"
+										+ "(.*?)<span class=\"quiet\">Branches</span>(\r*?)(\n*?)"
+										+ "(.*?)<span class='fraction'>(.*?)</span>(\r*?)(\n*?)"
+										+ "(.*?)</div>").matcher(text);
+			while(m1.find()) return m1.group(5).toString();
+		} catch(Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
+		return result;
+	}
 
 	/**
 	 * Return stacktraces

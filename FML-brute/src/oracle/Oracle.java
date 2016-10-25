@@ -31,7 +31,9 @@ public class Oracle {
 	private static final String JHIPSTERS_DIRECTORY = "jhipsters";
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
 	private static final String projectDirectory = System.getProperty("user.dir");
-
+	private static final String JS_COVERAGE_PATH = "target/test-results/coverage/report-lcov/lcov-report/index.html";
+	
+	
 	private static ResultChecker resultChecker = null;
 	private static CSVUtils csvUtils = null;
 
@@ -222,6 +224,13 @@ public class Oracle {
 		// Run the App
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
+	
+	@Test
+	public void toRemove(){
+		resultChecker = new ResultChecker(getjDirectory("jhipster11"));
+		System.err.println(resultChecker.extractJSCoverageStatements("target/test-results/coverage/report-lcov/lcov-report/index.html"));
+		System.err.println(resultChecker.extractJSCoverageBranches("target/test-results/coverage/report-lcov/lcov-report/index.html"));
+	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -287,6 +296,8 @@ public class Oracle {
 			StringBuilder imageSize = new StringBuilder();
 			String coverageInstuctions= "X";
 			String coverageBranches= "X";
+			String coverageJSStatements = "X";
+			String coverageJSBranches = "X";
 
 			//Get Json strings used for the csv
 			JsonParser jsonParser = new JsonParser();
@@ -351,7 +362,9 @@ public class Oracle {
 						
 						csvUtils = new CSVUtils(getjDirectory(jDirectory));
 						coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
-						coverageBranches = resultChecker.extractGatling("index.html");
+						coverageBranches = resultChecker.extractCoverageBranches("index.html");
+						coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
+						coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
 						//Extract CSV Coverage Data and write in coverage.csv
 						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory);
 
@@ -450,7 +463,7 @@ public class Oracle {
 				String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,
-						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches};
+						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line);
@@ -462,7 +475,7 @@ public class Oracle {
 				String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build,stacktracesBuild,buildTime,
-						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,coverageInstuctions,coverageBranches};
+						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line2);
