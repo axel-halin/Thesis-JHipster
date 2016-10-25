@@ -16,6 +16,7 @@ import org.eclipse.xtext.util.Files;
 public class ResultChecker {
 	private String path = null;
 	private static final Logger _log = Logger.getLogger("ResultChecker");
+	private String JACOCOPATH = "target/test-results/coverage/jacoco/";
 
 	public ResultChecker(String path){
 		this.path = path;
@@ -211,7 +212,6 @@ public class ResultChecker {
 	 * @param jDirectory Name of the folder
 	 * @return String of time of building
 	 * 
-	 * TODO Create sequence of tests for gatling.
 	 */
 	public String extractProtractor(String fileName){
 		String resultsTests = "NOTFIND";
@@ -226,6 +226,59 @@ public class ResultChecker {
 		}
 		return resultsTests;
 	}
+	
+	/**
+	 * Return coverageInstructions from Jacoco
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String coverage of instructions
+	 * 
+	 */
+	public String extractCoverageIntstructions(String fileName) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(path+JACOCOPATH+fileName);
+
+		Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
+				+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
+		
+		String resultsTests = "NOTFIND";
+
+		while(m1.find())
+		{
+			return resultsTests = m1.group(2).toString();
+		}
+
+		return resultsTests;
+	}
+	
+	/**
+	 * Return coverageBranches from Jacoco
+	 * 
+	 * @param jDirectory Name of the folder
+	 * @return String coverage of Branches
+	 * 
+	 */
+	public String extractCoverageBranches(String fileName) throws FileNotFoundException{
+		String text = "";
+
+		//extract log
+		text = Files.readFileIntoString(path+JACOCOPATH+fileName);
+
+		Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
+				+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
+		
+		String resultsTests = "NOTFIND";
+
+		while(m1.find())
+		{
+			return resultsTests = m1.group(4).toString();
+		}
+
+		return resultsTests;
+	}
+
 
 
 	/**

@@ -1,7 +1,6 @@
 package csv;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -18,21 +17,49 @@ import java.io.FileWriter;
  */
 
 public class CSVUtils {
+	private String path = null;
+	private String JACOCOPATH = "/target/test-results/coverage/jacoco/";
 
+	public CSVUtils(String path){
+		this.path = path;
+	}
+
+	public void setPath(String path){
+		this.path = path;
+	}
+
+	public String getPath(){return path;}
+	
 	/**
-	 * create CSVfile and heads of the file
+	 * create CSVfile JHipster and heads of the file
 	 * 
 	 * @param filename Name of the CSVfile
 	 * @param List of lines)
 	 *  
 	 */
-	public static void createCSVFile(String filename) throws IOException {
+	public static void createCSVFileJHipster(String filename) throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
 		String[] heads = {"JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
 				"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
 				"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
 				"Log-Gen","TimeToGenerate(secs)","Compile","Log-Compile","TimeToCompile(secs)","Build","Log-Build", "TimeToBuild(secs)", 
-				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor" };
+				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions(%)","CoverageBranches(%)"};
+		writer.writeNext(heads);
+		writer.close();
+	}
+	
+	/**
+	 * create CSVfile Coverage and heads of the file
+	 * 
+	 * @param filename Name of the CSVfile
+	 * @param List of lines)
+	 *  
+	 */
+	public static void createCSVFileCoverage(String filename) throws IOException {
+		CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
+		String[] heads = {"JHipsterRegister","GROUP","PACKAGE","CLASS","INSTRUCTION_MISSED","INSTRUCTION_COVERED",
+				"BRANCH_MISSED","BRANCH_COVERED","LINE_MISSED","LINE_COVERED","COMPLEXITY_MISSED",
+				"COMPLEXITY_COVERED","METHOD_MISSED","METHOD_COVERED"};
 		writer.writeNext(heads);
 		writer.close();
 	}
@@ -49,6 +76,40 @@ public class CSVUtils {
 		writer.writeNext(line);
 		writer.close();
 	}
+	
+	/**
+	 * return true if the configuration (yo-rc) doesn't already exist in the CSVfile
+	 * 
+	 * @param filename Name of the CSVfile
+	 * @param new line)
+	 *  
+	 */
+	public void writeLinesCoverageCSV(String filename,String filename2,String jDirectory) throws IOException {  
+
+		boolean check = true;
+		CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
+		String[] row = null;
+
+		List content = lines.readAll();
+
+		for (Object object : content) {
+		
+			row = (String[]) object;
+			
+			System.out.println(row[1].toString());
+			String[] newline = {jDirectory,row[0],row[1],row[3],row[4],row[5],row[6],row[7],row[8],
+					row[9],row[10],row[11],row[12]};
+
+			{
+			CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
+			writer.writeNext(newline);
+			writer.close();
+			};
+
+		}
+		lines.close();
+	}
+	
 	/**
 	 * return true if the configuration (yo-rc) doesn't already exist in the CSVfile
 	 * 
