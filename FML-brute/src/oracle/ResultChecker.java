@@ -233,22 +233,18 @@ public class ResultChecker {
 	 * @return String coverage of instructions
 	 * 
 	 */
-	public String extractCoverageIntstructions(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+JACOCOPATH+fileName);
-
-		Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
-				+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
-		
+	public String extractCoverageIntstructions(String fileName){
 		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group(2).toString();
+		try{
+			String text = Files.readFileIntoString(path+JACOCOPATH+fileName);
+	
+			Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
+					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
+			
+			while(m1.find()) return resultsTests = m1.group(2).toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 	
@@ -259,22 +255,18 @@ public class ResultChecker {
 	 * @return String coverage of Branches
 	 * 
 	 */
-	public String extractCoverageBranches(String fileName) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(path+JACOCOPATH+fileName);
-
-		Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
-				+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
-		
+	public String extractCoverageBranches(String fileName){
 		String resultsTests = "NOTFIND";
-
-		while(m1.find())
-		{
-			return resultsTests = m1.group(4).toString();
+		try{
+			String text = Files.readFileIntoString(path+JACOCOPATH+fileName);
+	
+			Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
+					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
+	
+			while(m1.find()) return resultsTests = m1.group(4).toString();
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
 		}
-
 		return resultsTests;
 	}
 
