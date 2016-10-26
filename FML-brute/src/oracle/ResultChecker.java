@@ -35,10 +35,7 @@ public class ResultChecker {
 	 */
 	public boolean checkBuildApp(String fileName){
 		try{
-			String text = "";
-
-			//extract log
-			text = Files.readFileIntoString(path+fileName);
+			String text = Files.readFileIntoString(path+fileName);
 
 			//CHECK IF BUILD FAILED THEN false
 			Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(text);
@@ -77,7 +74,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractTime(String fileName){
-		String timebuild = "NOTFIND";
+		String timebuild = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 
@@ -100,7 +97,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractMemoryBuild(String fileName){
-		String memoryBuild = "NOTFIND";
+		String memoryBuild = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 			Matcher m1 = Pattern.compile("(.*?)Final Memory").matcher(text);
@@ -120,7 +117,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractResultsTest(String fileName){
-		String resultsTests = "";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 
@@ -155,7 +152,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractCucumber(String fileName){
-		String resultsTests = "NOTFIND";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 			Matcher m1 = Pattern.compile("Tests run: (.*?) - in io.variability.jhipster.cucumber.CucumberTest").matcher(text);
@@ -174,7 +171,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractKarmaJS(String fileName){
-		String resultsTests = "OK";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 			Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
@@ -194,7 +191,7 @@ public class ResultChecker {
 	 * TODO Create sequence of tests for gatling.
 	 */
 	public String extractGatling(String fileName){
-		String resultsTests = "NOTFIND";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 
@@ -214,7 +211,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractProtractor(String fileName){
-		String resultsTests = "NOTFIND";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 
@@ -235,7 +232,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractCoverageIntstructions(String fileName){
-		String resultsTests = "NOTFIND";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+JACOCOPATH+fileName);
 	
@@ -257,7 +254,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractCoverageBranches(String fileName){
-		String resultsTests = "NOTFIND";
+		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
 			String text = Files.readFileIntoString(path+JACOCOPATH+fileName);
 	

@@ -4,7 +4,6 @@ import csv.CSVUtils;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
@@ -225,12 +224,6 @@ public class Oracle {
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
 	
-	@Test
-	public void toRemove(){
-		resultChecker = new ResultChecker(getjDirectory("jhipster11"));
-		System.err.println(resultChecker.extractJSCoverageStatements("target/test-results/coverage/report-lcov/lcov-report/index.html"));
-		System.err.println(resultChecker.extractJSCoverageBranches("target/test-results/coverage/report-lcov/lcov-report/index.html"));
-	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
