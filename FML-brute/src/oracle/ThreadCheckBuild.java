@@ -138,7 +138,7 @@ public class ThreadCheckBuild extends Thread {
 	
 	private void killServer(){
 		if (USE_DOCKER) startProcess("./dockerStop.sh");
-		else startProcess("killScript.sh");
+		else startProcess("./killScript.sh");
 	}
 	
 	
