@@ -1,6 +1,8 @@
 package oracle;
 
 import csv.CSVUtils;
+import selenium.SeleniumTest;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -139,25 +141,6 @@ public class Oracle {
 		startProcess("./unitTest.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
-	/**
-	 * Launch Tests on the App is build successfully
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @throws InterruptedException 
-	 */
-	private void testsApp(String jDirectory) throws InterruptedException{
-		startProcess("./test.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
-	}
-
-	/**
-	 * Launch Tests on the App is build successfully
-	 * 
-	 * @param jDirectory Name of the folder
-	 * @throws InterruptedException 
-	 */
-	private void testsAppDocker(String jDirectory) throws InterruptedException{
-		startProcess("./testDocker.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
-	}
 
 	/**
 	 * Return the path to folder jDirectory (which is in the relative path JHIPSTERS_DIRECTORY/)
@@ -224,6 +207,11 @@ public class Oracle {
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
 	
+	@Test
+	public void seleniumTest(){
+		SeleniumTest test = new SeleniumTest();
+		test.populateDB();
+	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -258,10 +246,10 @@ public class Oracle {
 			String compile = "X";
 			String compileTime = "X";
 			String stacktracesCompile = "X";
-			String build = "X";
+			StringBuilder build = new StringBuilder();
 			String stacktracesBuild = "X";
 			String buildTime = "X";
-			String buildWithDocker = "X";
+			StringBuilder buildWithDocker = new StringBuilder();
 			String stacktracesBuildWithDocker = "X";
 			String buildTimeWithDocker = "X";
 			//jsonStrings
@@ -367,74 +355,33 @@ public class Oracle {
 
 						initialization(true, applicationType, authenticationType);
 						imageSize = new StringBuilder();
-						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize);
+						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker);
 						t1.start();
 						//build WITH docker
 						dockerCompose(jDirectory);
 						t1.done();
 
-						if(resultChecker.checkDockerBuild("buildDocker.log"))
-						{
-							//String build used for the csv
-							buildWithDocker = "OK";
-							stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
-							buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
-
-							_log.info("Build Success... Launch tests of the App Docker...");
-							testsAppDocker(jDirectory);
-
-							try{
-								gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
-								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
-							} catch(Exception e){
-								_log.error(e.getMessage());
-							}
-						} else{
-							//String build used for the csv
-							buildWithDocker = "KO";
-							_log.info("App Build Failure... Extract Stacktraces");
-							stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
-							buildTimeWithDocker = "KO";
-							gatlingDocker = "KO";
-							protractorDocker = "KO";
-						}	
+						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
+						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
+						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
+	
 						_log.info("Cleaning up... Docker");
 						cleanUp(jDirectory);
 
 						// Building without Docker
 						initialization(false, applicationType, authenticationType);
-						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize);
+						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build);
 						t2.start();
 						_log.info("Trying to build the App without Docker...");
 						//build WITHOUT docker
 						buildApp(jDirectory);
 						t2.done();
-
-						if(resultChecker.checkBuildApp("build.log"))
-						{
-							//String build used for the csv
-							build = "OK";
-							stacktracesBuild = resultChecker.extractStacktraces("build.log");
-							buildTime = resultChecker.extractTime("build.log");
-
-							_log.info("Build Success... Launch tests of the App...");
-							testsApp(jDirectory);
-
-							try{
-								gatling = resultChecker.extractGatling("testGatling.log");
-								protractor = resultChecker.extractProtractor("testProtractor.log");
-							} catch(Exception e){
-								_log.error(e.getMessage());
-							}
-						} else{
-							//String build used for the csv
-							build = "KO";
-							_log.info("App Build Failure... Extract Stacktraces");
-							stacktracesBuild = resultChecker.extractStacktraces("build.log");
-							buildTime = "KO";
-							gatling = "KO";
-							protractor = "KO";
-						}	
+						
+						gatling = resultChecker.extractGatling("testGatling.log");
+						protractor = resultChecker.extractProtractor("testProtractor.log");
+						stacktracesBuild = resultChecker.extractStacktraces("build.log");
+						buildTime = resultChecker.extractTime("build.log");	
 					} else{
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
@@ -455,7 +402,7 @@ public class Oracle {
 				//New line for file csv With Docker
 				String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker,stacktracesBuildWithDocker,buildTimeWithDocker,
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),stacktracesBuildWithDocker,buildTimeWithDocker,
 						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
@@ -467,15 +414,13 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build,stacktracesBuild,buildTime,
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,buildTime,
 						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line2);
-
 			}
-			else 
-			{
+			else {
 				_log.info("This configuration has been already tested");
 			}
 		}

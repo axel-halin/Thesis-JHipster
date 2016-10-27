@@ -27,16 +27,20 @@ public class ThreadCheckBuild extends Thread {
 	private final boolean USE_DOCKER;
 	private final String LOG_FILE;// buildDocker.log
 	
+	private StringBuilder buildResult;
 	private StringBuilder imageSize;
 	private static volatile boolean isDone = false;
 	private static final String TEST_FILE = "./test.sh";
+	private static final String DOCKER_TEST_FILE = "./testDocker.sh";
 	
 	
-	public ThreadCheckBuild(String path, boolean useDocker, String logFile, StringBuilder imageSize){
+	public ThreadCheckBuild(String path, boolean useDocker, String logFile, StringBuilder imageSize, StringBuilder buildResult){
 		this.PATH = path;
 		this.USE_DOCKER = useDocker;
 		this.LOG_FILE = logFile;
 		this.imageSize = imageSize;
+		this.buildResult = buildResult;
+		isDone = false;
 	}
 	
 	public void done(){
@@ -90,8 +94,10 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildSuccess){
 				_log.info("Build successful ! Trying to run tests...");
+				buildResult.append("OK");
 				// if success: run Tests
-				startProcess(TEST_FILE);
+				if (!USE_DOCKER) startProcess(TEST_FILE);
+				else startProcess(DOCKER_TEST_FILE);
 				//Extract docker images size
 				if (USE_DOCKER) imageSize.append(extractDockerImageSize("jhipster"));
 				_log.info("All done ! Killing the server...");
@@ -102,6 +108,7 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildFailed){
 				_log.info("Build failed... Killing the server now...");
+				buildResult.append("KO");
 				// Kill
 				killServer();
 				isDone = true;
