@@ -1,0 +1,3 @@
+To install JRI simply follow this tutorial:
+
+https://www.r-bloggers.com/talking-r-through-java/
