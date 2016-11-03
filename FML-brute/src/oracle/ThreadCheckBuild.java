@@ -128,7 +128,8 @@ public class ThreadCheckBuild extends Thread {
 		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(logs);
 		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(logs);
 		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(logs);
-		Matcher m4 = Pattern.compile("((.*?)docker_jhipster-app_1 exited with code)").matcher(logs);
+		//Matcher m4 = Pattern.compile("((.*?)docker_jhipster-app_1 exited with code)").matcher(logs);
+		Matcher m4 = Pattern.compile("((.*?)exited with code)").matcher(logs);
 		Matcher m5 = Pattern.compile("((.*?)bind: address already in use)").matcher(logs);
 		Matcher m6 = Pattern.compile("((.*?)startup failed)").matcher(logs);
 		

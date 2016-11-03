@@ -1,10 +1,19 @@
 package oracle;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 
 /**
  * Handle all the necessary checks on the output logs.
@@ -16,6 +25,7 @@ public class ResultChecker {
 	private String path = null;
 	private static final Logger _log = Logger.getLogger("ResultChecker");
 	private String JACOCOPATH = "target/test-results/coverage/jacoco/";
+	private final String CUCUMBER_PATH = "target/surefire-reports/";
 	private static final String DEFAULT_NOT_FOUND_VALUE = "ND";
 
 	public ResultChecker(String path){
@@ -80,9 +90,11 @@ public class ResultChecker {
 
 			Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
 			Matcher m2 = Pattern.compile("Total time: (.*?) secs").matcher(text);
+			Matcher m3 = Pattern.compile("Total time: (.*?)s").matcher(text);
 
 			while(m1.find()) return timebuild = m1.group(1).toString();
 			while(m2.find()) return timebuild = m2.group(1).toString();
+			while(m3.find()) return timebuild = m3.group(1).toString();
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
@@ -117,7 +129,7 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractResultsTest(String fileName){
-		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
+		String resultsTests = "";
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 
@@ -139,7 +151,8 @@ public class ResultChecker {
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
-		return resultsTests;
+		if(resultsTests.equals("")) return DEFAULT_NOT_FOUND_VALUE;
+		else return resultsTests;
 	}
 
 

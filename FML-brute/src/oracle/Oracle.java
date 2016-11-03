@@ -207,6 +207,7 @@ public class Oracle {
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
 	
+
 	@Test
 	public void seleniumTest(){
 		SeleniumTest test = new SeleniumTest();
@@ -231,6 +232,8 @@ public class Oracle {
 			_log.info("Create New CSV File Coverage");
 			CSVUtils.createCSVFileCoverage("coverageJACOCO.csv"); 
 		}
+		
+		CSVUtils.createCSVCucumber("cucumber.csv");
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
@@ -243,15 +246,15 @@ public class Oracle {
 			String generation = "X";
 			String generationTime = "X";
 			String stacktracesGen = "X";
-			String compile = "X";
-			String compileTime = "X";
-			String stacktracesCompile = "X";
-			StringBuilder build = new StringBuilder();
-			String stacktracesBuild = "X";
-			String buildTime = "X";
-			StringBuilder buildWithDocker = new StringBuilder();
-			String stacktracesBuildWithDocker = "X";
-			String buildTimeWithDocker = "X";
+			String compile = "KO";
+			String compileTime = "ND";
+			String stacktracesCompile = "ND";
+			StringBuilder build = new StringBuilder("KO");
+			String stacktracesBuild = "ND";
+			String buildTime = "ND";
+			StringBuilder buildWithDocker = new StringBuilder("KO");
+			String stacktracesBuildWithDocker = "ND";
+			String buildTimeWithDocker = "ND";
 			//jsonStrings
 			String applicationType = "X";
 			String authenticationType = "X";
@@ -274,7 +277,7 @@ public class Oracle {
 			String protractor = "X";
 			String gatlingDocker = "X";
 			String protractorDocker = "X";
-			StringBuilder imageSize = new StringBuilder();
+			StringBuilder imageSize = new StringBuilder("ND");
 			String coverageInstuctions= "X";
 			String coverageBranches= "X";
 			String coverageJSStatements = "X";
@@ -360,8 +363,8 @@ public class Oracle {
 						//build WITH docker
 						dockerCompose(jDirectory);
 						t1.done();
-
-						stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+						
+						if(buildWithDocker.equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
@@ -378,9 +381,9 @@ public class Oracle {
 						buildApp(jDirectory);
 						t2.done();
 						
+						if(build.equals("KO")) stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						gatling = resultChecker.extractGatling("testGatling.log");
 						protractor = resultChecker.extractProtractor("testProtractor.log");
-						stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						buildTime = resultChecker.extractTime("build.log");	
 					} else{
 						_log.error("App Compilation Failed ...");

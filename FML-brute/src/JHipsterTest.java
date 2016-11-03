@@ -69,7 +69,7 @@ public class JHipsterTest extends FMLTest{
 				+ "BackEnd : (Gradle | Maven) ; "
 				// Constraints
 				+ "(OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB) ; "
-				//+ "SocialLogin -> ((HTTPSession | JWT) & (ServerApp | Monolithic) & (SQL | MongoDB)) ; "
+//				+ "SocialLogin -> ((HTTPSession | JWT) & (ServerApp | Monolithic) & (SQL | MongoDB)) ; "
 				+ "SocialLogin -> ((HTTPSession | JWT) & (Monolithic) & (SQL | MongoDB)) ; "
 				+ "UaaServer -> Uaa ; "
 //				+ "Oracle -> (H2 | Oracle12c) ; "
@@ -86,8 +86,8 @@ public class JHipsterTest extends FMLTest{
 				+ "PostgreSQL -> (PostgreSQLDev) ; "
 				+ "(Server | Application) -> (BackEnd & Authentication) ; "
 				+ "(SpringWebSockets | ClusteredSession) -> Application ; "
-				//+ "Client -> (!Gatling & !Cucumber & !BackEnd & !Authentication) ; "
-				//+ "Libsass -> (Application | Client) ; "
+//				+ "Client -> (!Gatling & !Cucumber & !BackEnd & !Authentication) ; "
+//				+ "Libsass -> (Application | Client) ; "
 				+ "Libsass -> (Application) ; "
 				+ " )");
 	}

@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -15,7 +16,7 @@ import java.io.FileWriter;
  * Methods used for writing a Csv file
  * 
  * @author Nuttinck Alexandre
- *
+ * @author Axel Halin
  */
 
 public class CSVUtils {
@@ -65,6 +66,27 @@ public class CSVUtils {
 				"COMPLEXITY_COVERED","METHOD_MISSED","METHOD_COVERED"};
 		writer.writeNext(heads);
 		writer.close();
+	}
+	
+	/**
+	 * Create Cucumber csv file if it doesn't already exist
+	 * 
+	 * @param fileName Name of the Cucumber csv file
+	 */
+	public static void createCSVCucumber(String fileName){
+		File file = new File(fileName);
+		if(!file.exists()) { 
+			try{
+				_log.info("Creating Cucumber csv file...");
+				CSVWriter writer = new CSVWriter(new FileWriter(fileName), ';');
+				// TODO
+				String[] heads = {""};
+				writer.writeNext(heads);
+				writer.close();
+			} catch (IOException e){
+				_log.error("IOException: "+e.getMessage());
+			}
+		}
 	}
 
 	/**
