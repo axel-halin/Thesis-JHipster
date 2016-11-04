@@ -184,11 +184,12 @@ public class ResultChecker {
 	 * 
 	 */
 	public String extractKarmaJS(String fileName){
-		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
+		String resultsTests = "OK";
 		try{
 			String text = Files.readFileIntoString(path+fileName);
 			Matcher m1 = Pattern.compile("(.*?) FAILED").matcher(text);
-			while(m1.find()) return resultsTests = m1.group().toString();
+			while(m1.find()) 
+			{resultsTests = resultsTests + m1.group().toString() + "\n";}
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
