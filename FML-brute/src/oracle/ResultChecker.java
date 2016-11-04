@@ -81,9 +81,18 @@ public class ResultChecker {
 			Matcher m1 = Pattern.compile("Started JhipsterApp in (.*?) seconds").matcher(text);
 			Matcher m2 = Pattern.compile("Total time: (.*?) secs").matcher(text);
 			Matcher m3 = Pattern.compile("Total time: (.*?)s").matcher(text);
+			Matcher m4 = Pattern.compile("Total time: (.*?) mins (.*?) secs").matcher(text);
+			Matcher m5 = Pattern.compile("Total time: (.*?) hrs (.*?) mins (.*?) secs").matcher(text);
 
-			while(m1.find()) return timebuild = m1.group(1).toString();
+			//check if hrs 
+			while(m5.find()) return timebuild = Float.toString(((Float.valueOf(m5.group(1).toString()) *3600)+ (Float.valueOf(m5.group(2).toString())*60) + Float.valueOf(m5.group(3).toString())));
+			//check if mins
+			while(m4.find()) return timebuild = Float.toString(((Float.valueOf(m4.group(1).toString())*60) + Float.valueOf(m4.group(2).toString())));
+			//check if secs
 			while(m2.find()) return timebuild = m2.group(1).toString();
+			//check if seconds
+			while(m1.find()) return timebuild = m1.group(1).toString();
+			//check if s
 			while(m3.find()) return timebuild = m3.group(1).toString();
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
