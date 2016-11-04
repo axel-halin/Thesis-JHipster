@@ -145,13 +145,13 @@ public class ThreadCheckBuild extends Thread {
 	
 	
 	private String extractDockerImageSize(String image){
-		String result = "";
+		String result = "ND";
 		try {
 			Process process = Runtime.getRuntime().exec("docker images "+image+" --format \"{{.Size}}\"");
 			BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			    String inputLine;
 			    while ((inputLine = in.readLine()) != null) {
-			        result += inputLine;
+			        result = inputLine;
 			    }
 			    in.close();
 		} catch (IOException e) {
