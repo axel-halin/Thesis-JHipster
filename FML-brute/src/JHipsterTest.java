@@ -137,8 +137,11 @@ public class JHipsterTest extends FMLTest{
 			jhipsterConf.hibernateCache = falseByNo(get("Hibernate2ndLvlCache", strConfs, fmvJhipster));
 			// Common to ServerApp and Monolith application
 			if(jhipsterConf.applicationType.equals("serverApp") || jhipsterConf.applicationType.equals("monolith") || jhipsterConf.applicationType.equals("gateway")){
-				jhipsterConf.clusteredHttpSession = falseByNo(get("ClusteredSession", strConfs, fmvJhipster));
-				jhipsterConf.websocket = falseByNo(get("SpringWebSockets", strConfs, fmvJhipster));
+				if(isIncluded("ClusteredSession", strConfs).equals("true")) jhipsterConf.clusteredHttpSession = "hazelcast";
+				else jhipsterConf.clusteredHttpSession = "no";
+				
+				if(isIncluded("SpringWebSockets", strConfs).equals("true")) jhipsterConf.websocket = "spring-websocket";
+				else jhipsterConf.websocket = "no";
 				jhipsterConf.enableSocialSignIn = Boolean.parseBoolean(isIncluded("SocialLogin", strConfs));
 			}
 			// Common attributes
@@ -382,7 +385,9 @@ public class JHipsterTest extends FMLTest{
 		_log.info("The feature model has: "+fmvJhipster.cores().size()+" core feature(s).");
 		_log.info("The feature model has: "+fmvJhipster.deads().size()+" dead feature(s).");
 		_log.info("The feature model has: "+fmvJhipster.falseOptionalFeatures().size()+" false optional feature(s).");
+		//for(String s : fmvJhipster.falseOptionalFeatures()) System.out.println(s);
 		_log.info("The feature model has: "+fmvJhipster.fullMandatoryFeatures().size()+" full mandatory feature(s).");
+		//for(String s : fmvJhipster.fullMandatoryFeatures()) System.out.println(s);
 		_log.info("The feature model has: "+fmvJhipster.getAllConstraints().size()+" constraint(s).");
 		_log.info("The feature model has a depth of "+fmvJhipster.depth());
 		
@@ -407,7 +412,7 @@ public class JHipsterTest extends FMLTest{
 			Set<String> strConfs = extractFeatures(configuration);
 			
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
-			
+					
 			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
 			if(jConf.applicationType.endsWith("App") ||jConf.devDatabaseType.equals("oracle") 
 				|| jConf.prodDatabaseType.equals("oracle") || jConf.devDatabaseType.equals("H2") ){}
@@ -430,10 +435,15 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(i==300){
+				if(jConf.clusteredHttpSession!= null && !jConf.clusteredHttpSession.equals("no") && !jConf.clusteredHttpSession.equals("false")){
+					System.out.println("YEP");
+					System.exit(5);
+				}
+				
+				/*if(i==300){
 					_log.info("Stopping at 300...");
 					System.exit(0);
-				}
+				}*/
 			}
 		}
 	}
