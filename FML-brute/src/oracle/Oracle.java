@@ -228,7 +228,7 @@ public class Oracle {
 		}
 	}
 	
-	
+
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
@@ -256,6 +256,11 @@ public class Oracle {
 
 			String jDirectory = "jhipster"+i;
 			resultChecker = new ResultChecker(getjDirectory(jDirectory));
+			
+			//ID CSV ID used for jhipster,coverageJACOCO,cucumber csv
+			String Id = "ND";
+			// generate a new ID -> depend of the csv lenght
+			Id = String.valueOf(f.length());
 
 			//Strings used for the csv
 			String generation = "X";
@@ -365,7 +370,7 @@ public class Oracle {
 						coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
 						coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
 						//Extract CSV Coverage Data and write in coverage.csv
-						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory);
+						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
 
 						_log.info("Compilation success ! Trying to build the App...");
 
@@ -418,7 +423,7 @@ public class Oracle {
 				String docker = "true";
 
 				//New line for file csv With Docker
-				String[] line = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+				String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),stacktracesBuildWithDocker,buildTimeWithDocker,
 						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
@@ -430,7 +435,7 @@ public class Oracle {
 				docker = "false";
 
 				//New line for file csv without Docker
-				String[] line2 = {jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,buildTime,
 						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
