@@ -43,7 +43,7 @@ public class CSVUtils {
 	 */
 	public static void createCSVFileJHipster(String filename) throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
-		String[] heads = {"JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
+		String[] heads = {"Id","JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
 				"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
 				"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
 				"Log-Gen","TimeToGenerate(secs)","Compile","Log-Compile","TimeToCompile(secs)","Build","Log-Build", "TimeToBuild(secs)", 
@@ -61,7 +61,7 @@ public class CSVUtils {
 	 */
 	public static void createCSVFileCoverage(String filename) throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
-		String[] heads = {"JHipsterRegister","GROUP","PACKAGE","CLASS","INSTRUCTION_MISSED","INSTRUCTION_COVERED",
+		String[] heads = {"Id","JHipsterRegister","GROUP","PACKAGE","CLASS","INSTRUCTION_MISSED","INSTRUCTION_COVERED",
 				"BRANCH_MISSED","BRANCH_COVERED","LINE_MISSED","LINE_COVERED","COMPLEXITY_MISSED",
 				"COMPLEXITY_COVERED","METHOD_MISSED","METHOD_COVERED"};
 		writer.writeNext(heads);
@@ -122,7 +122,7 @@ public class CSVUtils {
 	 * @param new line)
 	 *  
 	 */
-	public void writeLinesCoverageCSV(String filename,String filename2,String jDirectory) throws IOException {  
+	public void writeLinesCoverageCSV(String filename,String filename2,String jDirectory,String Id) throws IOException {  
 
 		try{
 		CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
@@ -134,7 +134,7 @@ public class CSVUtils {
 		
 			row = (String[]) object;
 			
-			String[] newline = {jDirectory,row[0],row[1],row[3],row[4],row[5],row[6],row[7],row[8],
+			String[] newline = {Id,jDirectory,row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
 					row[9],row[10],row[11],row[12]};
 
 			{
@@ -170,16 +170,15 @@ public class CSVUtils {
 
 			row = (String[]) object;
 
-			if (row[2].toString().equals(line[0].toString())&&row[3].toString().equals(line[1].toString())&&row[4].toString().equals(line[2].toString())
-					&&row[5].toString().equals(line[3].toString())&&row[6].toString().equals(line[4].toString())&&
-					row[7].toString().equals(line[5].toString())&&row[8].toString().equals(line[6].toString())
-					&&row[9].toString().equals(line[7].toString())&&row[10].toString().equals(line[8].toString())
-					&&row[11].toString().equals(line[9].toString())&&row[12].toString().equals(line[10].toString())
-					&&row[13].toString().equals(line[11].toString())&&row[14].toString().equals(line[12].toString()))
+			if (row[3].toString().equals(line[0].toString())&&row[4].toString().equals(line[1].toString())&&row[5].toString().equals(line[2].toString())
+					&&row[6].toString().equals(line[3].toString())&&row[7].toString().equals(line[4].toString())&&
+					row[8].toString().equals(line[5].toString())&&row[9].toString().equals(line[6].toString())
+					&&row[10].toString().equals(line[7].toString())&&row[11].toString().equals(line[8].toString())
+					&&row[12].toString().equals(line[9].toString())&&row[13].toString().equals(line[10].toString())
+					&&row[14].toString().equals(line[11].toString())&&row[15].toString().equals(line[12].toString()))
 			{
 				check = false;
 			};
-
 		}
 		lines.close();
 		return check;
