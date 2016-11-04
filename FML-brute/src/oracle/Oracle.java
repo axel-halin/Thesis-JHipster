@@ -214,6 +214,21 @@ public class Oracle {
 		test.populateDB();
 	}
 	
+	@Test
+	public void cucumberExtractionTest(){
+		CucumberResultExtractor extract = new CucumberResultExtractor(getjDirectory("jhipster1"));
+		String[] result = extract.extractEntityCucumberTest();
+		csvUtils = new CSVUtils(getjDirectory("jhipster1"));
+		csvUtils.createCSVCucumber("cucumber.csv");
+		try {
+			CSVUtils.writeNewLineCSV("cucumber.csv",result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */

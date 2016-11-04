@@ -79,8 +79,21 @@ public class CSVUtils {
 			try{
 				_log.info("Creating Cucumber csv file...");
 				CSVWriter writer = new CSVWriter(new FileWriter(fileName), ';');
-				// TODO
-				String[] heads = {""};
+				String[] heads = {"isAuthenticated","getCurrentUserLogin","AnonymousIsNotAuthenticated","OnlyActivatedUserCanRequestPasswordReset",
+						"UserMustExistToResetPassword","ResetKeyMustBeValid","UserCanResetPassword","FindNotActivatedUsersByCreationDateBefore",
+						"RemoveOldPersistentTokens","ResetKeyMustNotBeOlderThan24Hours", "SaveInvalidLogin", "RegisterInvalidEmail", "RegisterInvalidLogin",
+						"RegisterInvalidPassword", "RegisterAdminIsIgnored", "GetUnknownAccount", "RegisterDuplicateEmail", "RegisterDuplicateLogin",
+						"AuthenticatedUser","testRegisterValid","testNonAuthenticatedUser","testGetExistingAccount","getNonExistingAudit", "getNonExistingAuditByDate",
+						"getAllAudits", "getAuditsByDate","getAudit","testGetUnknownUser","testGetExistingUser",
+						"getNonExistingCountry","createCountry","updateCountry","getAllCountries","deleteCountry","getCountry",
+						"createDepartment","deleteDepartment","getAllDepartments","updateDepartment","getNonExistingDepartment","checkDepartmentNameIsRequired","getDepartment",
+						"getEmployee","getNonExistingEmployee","deleteEmployee","getAllEmployees","updateEmployee","createEmployee",
+						"updateJobHistory","getNonExistingJobHistory","getJobHistory","getAllJobHistories","createJobHistory","deleteJobHistory",
+						"getNonExistingJob","updateJob","getJob","deleteJob","getAllJobs","createJob",
+						"updateLocation","createLocation","getLocation","getNonExistingLocation","deleteLocation","getAllLocations",
+						"getAllRegions","updateRegion","deleteRegion","getNonExistingRegion","getRegion","createRegion",
+						"getAllTasks","updateTask","getTask","getNonExistingTask","createTask","deleteTask"
+						};
 				writer.writeNext(heads);
 				writer.close();
 			} catch (IOException e){

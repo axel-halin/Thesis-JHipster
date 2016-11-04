@@ -1,18 +1,9 @@
 package oracle;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 
 /**
@@ -25,7 +16,6 @@ public class ResultChecker {
 	private String path = null;
 	private static final Logger _log = Logger.getLogger("ResultChecker");
 	private String JACOCOPATH = "target/test-results/coverage/jacoco/";
-	private final String CUCUMBER_PATH = "target/surefire-reports/";
 	private static final String DEFAULT_NOT_FOUND_VALUE = "ND";
 
 	public ResultChecker(String path){
