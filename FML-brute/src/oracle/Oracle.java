@@ -389,7 +389,7 @@ public class Oracle {
 						dockerCompose(jDirectory);
 						t1.done();
 						
-						if(buildWithDocker.equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+						if(buildWithDocker.toString().equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
@@ -406,7 +406,7 @@ public class Oracle {
 						buildApp(jDirectory);
 						t2.done();
 						
-						if(build.equals("KO")) stacktracesBuild = resultChecker.extractStacktraces("build.log");
+						if(build.toString().equals("KO")) stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						gatling = resultChecker.extractGatling("testGatling.log");
 						protractor = resultChecker.extractProtractor("testProtractor.log");
 						buildTime = resultChecker.extractTime("build.log");	
