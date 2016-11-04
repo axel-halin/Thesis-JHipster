@@ -132,8 +132,9 @@ public class ThreadCheckBuild extends Thread {
 		Matcher m4 = Pattern.compile("((.*?)exited with code)").matcher(logs);
 		Matcher m5 = Pattern.compile("((.*?)bind: address already in use)").matcher(logs);
 		Matcher m6 = Pattern.compile("((.*?)startup failed)").matcher(logs);
+		Matcher m7 = Pattern.compile("((.*?)Error parsing reference:").matcher(logs);
 		
-		while(m6.find() | m4.find() | m5.find() | m.find() | m2.find() | m3.find()) return true;
+		while(m7.find() | m6.find() | m4.find() | m5.find() | m.find() | m2.find() | m3.find()) return true;
 		return false;
 	}
 	

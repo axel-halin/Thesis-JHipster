@@ -115,7 +115,7 @@ public class Oracle {
 		//CHECK IF BUILD FAILED THEN false
 		Matcher m1 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
 		Matcher m2 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-
+		
 		while(m1.find() | m2.find()) return false;
 		return true;
 	}
@@ -213,7 +213,7 @@ public class Oracle {
 		SeleniumTest test = new SeleniumTest();
 		test.populateDB();
 	}
-
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
