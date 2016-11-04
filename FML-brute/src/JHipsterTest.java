@@ -385,9 +385,7 @@ public class JHipsterTest extends FMLTest{
 		_log.info("The feature model has: "+fmvJhipster.cores().size()+" core feature(s).");
 		_log.info("The feature model has: "+fmvJhipster.deads().size()+" dead feature(s).");
 		_log.info("The feature model has: "+fmvJhipster.falseOptionalFeatures().size()+" false optional feature(s).");
-		//for(String s : fmvJhipster.falseOptionalFeatures()) System.out.println(s);
 		_log.info("The feature model has: "+fmvJhipster.fullMandatoryFeatures().size()+" full mandatory feature(s).");
-		//for(String s : fmvJhipster.fullMandatoryFeatures()) System.out.println(s);
 		_log.info("The feature model has: "+fmvJhipster.getAllConstraints().size()+" constraint(s).");
 		_log.info("The feature model has a depth of "+fmvJhipster.depth());
 		
@@ -435,15 +433,11 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				if(jConf.clusteredHttpSession!= null && !jConf.clusteredHttpSession.equals("no") && !jConf.clusteredHttpSession.equals("false")){
-					System.out.println("YEP");
-					System.exit(5);
-				}
 				
-				/*if(i==300){
+				if(i==300){
 					_log.info("Stopping at 300...");
 					System.exit(0);
-				}*/
+				}
 			}
 		}
 	}

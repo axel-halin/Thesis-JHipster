@@ -219,7 +219,7 @@ public class Oracle {
 		CucumberResultExtractor extract = new CucumberResultExtractor(getjDirectory("jhipster1"));
 		String[] result = extract.extractEntityCucumberTest();
 		csvUtils = new CSVUtils(getjDirectory("jhipster1"));
-		csvUtils.createCSVCucumber("cucumber.csv");
+		CSVUtils.createCSVCucumber("cucumber.csv");
 		try {
 			CSVUtils.writeNewLineCSV("cucumber.csv",result);
 		} catch (IOException e) {

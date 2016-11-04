@@ -1,19 +1,19 @@
 package selenium;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-
+/**
+ * Script to populate the database using the user interface.
+ * 
+ * @author Axel Halin
+ */
 public class SeleniumTest {
 	private static final Logger _log = Logger.getLogger("SeleniumTest");
-	private static final long PAUSE_TIME = 1000;
+	private static final long PAUSE_TIME = 1400;
 	private final WebDriver driver;
 	private final String baseUrl;
 	
@@ -32,12 +32,72 @@ public class SeleniumTest {
 	public void populateDB(){
 		driver.get(baseUrl);
 		login("admin","admin");
-		addRegion("region1");
-		addCountry("country1","1001");
-		addLocation("address1", "postalCode1", "city1", "province1", "1002");
-		addDepartment("department1", "1003");
-		addTask("task1","description");
-		addEmployee("test", "test", "test", "test", "2016-10-11 00:00", "5", "5", "1004", null);
+		// Add regions
+		addRegion("region1");		// ID = 1001
+		addRegion("region2");		// ID = 1002
+		addRegion("region3");		// ID = 1003
+		addRegion("region4");		// ID = 1004
+		addRegion("region5");		// ID = 1005
+		addRegion("region6");		// ID = 1006
+		addRegion("region7");		// ID = 1007
+		addRegion("region8");		// ID = 1008
+		addRegion("region9");		// ID = 1009
+		addRegion("region10");		// ID = 1010
+		// Add countries
+		addCountry("country1","1001");	// ID = 1011
+		addCountry("country2","1002");	// ...
+		addCountry("country3","1003");
+		addCountry("country4","1004");
+		addCountry("country5","1005");
+		addCountry("country6","1006");
+		addCountry("country7","1007");
+		addCountry("country8","1008");
+		addCountry("country9","1009");
+		addCountry("country10","1010");
+		// Add locations
+		addLocation("address1", "postalCode1", "city1", "province1", "1011");	// ID = 1021
+		addLocation("address2", "postalCode2", "city2", "province2", "1012");
+		addLocation("address3", "postalCode3", "city3", "province3", "1013");
+		addLocation("address4", "postalCode4", "city4", "province4", "1014");
+		addLocation("address5", "postalCode5", "city5", "province5", "1015");
+		addLocation("address6", "postalCode6", "city6", "province6", "1016");
+		addLocation("address7", "postalCode7", "city7", "province7", "1017");
+		addLocation("address8", "postalCode8", "city8", "province8", "1018");
+		addLocation("address9", "postalCode9", "city9", "province9", "1019");
+		addLocation("address10", "postalCode10", "city10", "province10", "1020");
+		// Add departments
+		addDepartment("department1", "1021"); // ID = 1031
+		addDepartment("department2", "1022");
+		addDepartment("department3", "1023");
+		addDepartment("department4", "1024");
+		addDepartment("department5", "1025");
+		addDepartment("department6", "1026");
+		addDepartment("department7", "1027");
+		addDepartment("department8", "1028");
+		addDepartment("department9", "1029");
+		addDepartment("department10", "1030");
+		// Add tasks
+		addTask("task1","description1"); // ID = 1041
+		addTask("task2","description2");
+		addTask("task3","description3");
+		addTask("task4","description4");
+		addTask("task5","description5");
+		addTask("task6","description6");
+		addTask("task7","description7");
+		addTask("task8","description8");
+		addTask("task9","description9");
+		addTask("task10","description10");
+		// Add employees
+		addEmployee("firstname1","lastname1","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1031", null); // ID = 1051
+		addEmployee("firstname2","lastname2","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1032", "1051");
+		addEmployee("firstname3","lastname3","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1033", null);
+		addEmployee("firstname4","lastname4","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1034", "1052");
+		addEmployee("firstname5","lastname5","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1035", null);
+		addEmployee("firstname6","lastname6","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1036", "1053");
+		addEmployee("firstname7","lastname7","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1037", null);
+		addEmployee("firstname8","lastname8","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1038", "1055");
+		addEmployee("firstname9","lastname9","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1039", null);
+		addEmployee("firstname10","lastname10","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1040", null);
 		//addJob("job1", "5", "10", "1005");
 		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
 		driver.quit();
@@ -95,7 +155,7 @@ public class SeleniumTest {
 	 * @param regionID Id number of the related Region entity.
 	 */
 	private void addCountry(String countryName, String regionID){
-	    driver.findElement(By.id("entity-menu")).click();
+		driver.findElement(By.id("entity-menu")).click();
 	    driver.findElement(By.xpath("//li[2]/a/span[2]")).click();
 	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
 	    driver.findElement(By.id("field_countryName")).clear();
