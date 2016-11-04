@@ -94,6 +94,7 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildSuccess){
 				_log.info("Build successful ! Trying to run tests...");
+				buildResult.delete(0, buildResult.length());
 				buildResult.append("OK");
 				// if success: run Tests
 				if (!USE_DOCKER) startProcess(TEST_FILE);
@@ -108,6 +109,7 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildFailed){
 				_log.info("Build failed... Killing the server now...");
+				buildResult.delete(0, buildResult.length()-1);
 				buildResult.append("KO");
 				// Kill
 				killServer();
@@ -132,7 +134,7 @@ public class ThreadCheckBuild extends Thread {
 		Matcher m4 = Pattern.compile("((.*?)exited with code)").matcher(logs);
 		Matcher m5 = Pattern.compile("((.*?)bind: address already in use)").matcher(logs);
 		Matcher m6 = Pattern.compile("((.*?)startup failed)").matcher(logs);
-		Matcher m7 = Pattern.compile("((.*?)Error parsing reference:").matcher(logs);
+		Matcher m7 = Pattern.compile("((.*?)Error parsing reference:)").matcher(logs);
 		
 		while(m7.find() | m6.find() | m4.find() | m5.find() | m.find() | m2.find() | m3.find()) return true;
 		return false;

@@ -194,8 +194,13 @@ public class Oracle {
 	 * Terminate the Oracle by ending JHipster Registry and UAA servers.
 	 */
 	private void termination(){
-		threadRegistry.interrupt();
-		threadUAA.interrupt();
+		try{
+			threadRegistry.interrupt();
+			threadUAA.interrupt();
+		} catch (Exception e){
+			_log.error(e.getMessage());
+		}
+		
 	}
 
 	private void cleanUp(String jDirectory){
