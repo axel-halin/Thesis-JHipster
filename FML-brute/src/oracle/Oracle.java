@@ -379,7 +379,7 @@ public class Oracle {
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						String[] partsBuildWithDocker = buildTimeWithDocker.split(";");
 						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
-						buildTimeWithDocker = partsBuildWithDocker[1]; 
+						if(buildTimeWithDocker.length()>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 	
@@ -399,8 +399,8 @@ public class Oracle {
 						gatling = resultChecker.extractGatling("testGatling.log");
 						protractor = resultChecker.extractProtractor("testProtractor.log");
 						buildTime = resultChecker.extractTime("build.log");	
-						String[] partsBuildWithoutDocket = buildTime.split(";");
-						buildTime = partsBuildWithDocker[0]; // only two parts with Docker 
+						String[] partsBuildWithoutDocker = buildTime.split(";");
+						buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker 
 					} else{
 						_log.error("App Compilation Failed ...");
 						compile ="KO";

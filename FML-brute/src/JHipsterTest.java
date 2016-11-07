@@ -146,9 +146,15 @@ public class JHipsterTest extends FMLTest{
 			}
 			// Common attributes
 			jhipsterConf.databaseType = falseByNo(get("Database", strConfs, fmvJhipster));
-			jhipsterConf.devDatabaseType = falseByNo(get("Development", strConfs, fmvJhipster));
-			if (jhipsterConf.devDatabaseType.equals("H2")){jhipsterConf.devDatabaseType=get("H2", strConfs, fmvJhipster);}
-			jhipsterConf.prodDatabaseType = falseByNo(get("Production", strConfs, fmvJhipster));
+			if(jhipsterConf.databaseType.equals("mongodb") || jhipsterConf.databaseType.equals("cassandra")){
+				jhipsterConf.devDatabaseType = jhipsterConf.databaseType;
+				jhipsterConf.prodDatabaseType = jhipsterConf.databaseType;
+			} else{
+				jhipsterConf.devDatabaseType = falseByNo(get("Development", strConfs, fmvJhipster));
+				if (jhipsterConf.devDatabaseType.equals("H2")){jhipsterConf.devDatabaseType=get("H2", strConfs, fmvJhipster);}
+				jhipsterConf.prodDatabaseType = falseByNo(get("Production", strConfs, fmvJhipster));
+				
+			}			
 			jhipsterConf.searchEngine = falseByNo(get("ElasticSearch", strConfs, fmvJhipster));
 			jhipsterConf.buildTool = get("BackEnd", strConfs, fmvJhipster);
 			// Authentication Key
