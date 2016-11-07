@@ -77,7 +77,7 @@ public class ThreadCheckBuild extends Thread {
 		while(!isDone)
 		{
 			try{
-				Thread.sleep(15*1000);
+				Thread.sleep(5*1000);
 			} catch (InterruptedException e){
 				_log.error("InterruptedException: "+e.getMessage());
 			}
@@ -94,7 +94,7 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildSuccess){
 				_log.info("Build successful ! Trying to run tests...");
-				buildResult.delete(0, buildResult.length());
+				buildResult.delete(0,5);
 				buildResult.append("OK");
 				// if success: run Tests
 				if (!USE_DOCKER) startProcess(TEST_FILE);
@@ -109,7 +109,7 @@ public class ThreadCheckBuild extends Thread {
 			
 			if(buildFailed){
 				_log.info("Build failed... Killing the server now...");
-				buildResult.delete(0, buildResult.length()-1);
+				buildResult.delete(0, 5);
 				buildResult.append("KO");
 				// Kill
 				killServer();
@@ -130,7 +130,6 @@ public class ThreadCheckBuild extends Thread {
 		Matcher m = Pattern.compile("((.*?)APPLICATION FAILED TO START)").matcher(logs);
 		Matcher m2 = Pattern.compile("((.*?)BUILD FAILED)").matcher(logs);
 		Matcher m3 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(logs);
-		//Matcher m4 = Pattern.compile("((.*?)docker_jhipster-app_1 exited with code)").matcher(logs);
 		Matcher m4 = Pattern.compile("((.*?)exited with code)").matcher(logs);
 		Matcher m5 = Pattern.compile("((.*?)bind: address already in use)").matcher(logs);
 		Matcher m6 = Pattern.compile("((.*?)startup failed)").matcher(logs);
