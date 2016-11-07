@@ -46,8 +46,8 @@ public class CSVUtils {
 		String[] heads = {"Id","JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
 				"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
 				"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
-				"Log-Gen","TimeToGenerate(secs)","Compile","Log-Compile","TimeToCompile(secs)","Build","Log-Build", "TimeToBuild(secs)", 
-				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions(%)","CoverageBranches(%)","JS-StatementsCoverage(%)","JS-BranchesCoverage(%)"};
+				"Log-Gen","TimeToGenerate","Compile","Log-Compile","TimeToCompile","Build","Log-Build", "TimeToBuildDockerPackage", "TimeToBuild", 
+				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions","CoverageBranches","JSStatementsCoverage","JSBranchesCoverage"};
 		writer.writeNext(heads);
 		writer.close();
 	}
@@ -79,7 +79,7 @@ public class CSVUtils {
 			try{
 				_log.info("Creating Cucumber csv file...");
 				CSVWriter writer = new CSVWriter(new FileWriter(fileName), ';');
-				String[] heads = {"isAuthenticated","getCurrentUserLogin","AnonymousIsNotAuthenticated","OnlyActivatedUserCanRequestPasswordReset",
+				String[] heads = {"Id","JHipsterRegister","isAuthenticated","getCurrentUserLogin","AnonymousIsNotAuthenticated","OnlyActivatedUserCanRequestPasswordReset",
 						"UserMustExistToResetPassword","ResetKeyMustBeValid","UserCanResetPassword","FindNotActivatedUsersByCreationDateBefore",
 						"RemoveOldPersistentTokens","ResetKeyMustNotBeOlderThan24Hours", "SaveInvalidLogin", "RegisterInvalidEmail", "RegisterInvalidLogin",
 						"RegisterInvalidPassword", "RegisterAdminIsIgnored", "GetUnknownAccount", "RegisterDuplicateEmail", "RegisterDuplicateLogin",

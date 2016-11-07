@@ -262,7 +262,7 @@ public class Oracle {
 		CSVUtils.createCSVCucumber("cucumber.csv");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =1;i<=weightFolder-1;i++){
+		for (Integer i =3;i<=4-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
@@ -286,6 +286,7 @@ public class Oracle {
 			StringBuilder buildWithDocker = new StringBuilder("KO");
 			String stacktracesBuildWithDocker = "ND";
 			String buildTimeWithDocker = "ND";
+			String buildTimeWithDockerPackage = "ND";
 			//jsonStrings
 			String applicationType = "X";
 			String authenticationType = "X";
@@ -366,6 +367,8 @@ public class Oracle {
 					if(checkCompileApp(jDirectory)){
 						compile ="OK";
 						compileTime = resultChecker.extractTime("compile.log");
+						String[] partsCompile = compileTime.split(";");
+						compileTime = partsCompile[0]; // delete the ";" used for Docker
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
 						_log.info("Compilation success ! Launch Unit Tests...");
@@ -402,6 +405,9 @@ public class Oracle {
 						
 						if(buildWithDocker.toString().equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
+						String[] partsBuildWithDocker = buildTimeWithDocker.split(";");
+						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
+						buildTimeWithDocker = partsBuildWithDocker[1]; 
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 	
@@ -421,6 +427,8 @@ public class Oracle {
 						gatling = resultChecker.extractGatling("testGatling.log");
 						protractor = resultChecker.extractProtractor("testProtractor.log");
 						buildTime = resultChecker.extractTime("build.log");	
+						String[] partsBuildWithoutDocket = buildTime.split(";");
+						buildTime = partsBuildWithDocker[0]; // only two parts with Docker 
 					} else{
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
@@ -441,8 +449,10 @@ public class Oracle {
 				//New line for file csv With Docker
 				String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),stacktracesBuildWithDocker,buildTimeWithDocker,
-						imageSize.toString(),resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
+						stacktracesBuildWithDocker,buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
+						resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
+						coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line);
@@ -453,8 +463,9 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,buildTime,
-						"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,buildTimeWithDockerPackage,
+						buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
+						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
 				CSVUtils.writeNewLineCSV("jhipster.csv",line2);
