@@ -77,17 +77,19 @@ public class rBoxplot {
 			return;
 		}
 
-		createCircleTypeApp(re);
+	/*	createCircleTypeApp(re);
 
 		createCircleBuildResult(re);
 		
 		createBoxplotTime(re);
 
-		createBoxplotCoverage(re);
+		createBoxplotCoverage(re);*/
 
 		//data <- data[- grep("ND", data$TimeToCompile.secs.),]
 		//data <- data[- grep("KO", data$TimeToCompile.secs.),]
 
+		createBalloonPlot(re);
+		
 		re.end();
 		System.out.println("end");
 	}
@@ -179,4 +181,25 @@ public class rBoxplot {
 
 	}
 
+	
+	public static void createBalloonPlot(Rengine re){
+		//re.eval("install.packages(\"ggplot2\")");
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		re.eval("test <- subset(data[grep(\"monolith\", data$applicationType),], select = c(JHipsterRegister, applicationType, prodDatabaseType))");
+		re.eval("print(test)");
+		
+		//data.frame ( table ( data$Group, data$Size ) )
+		re.eval("temp <- data.frame(table(data$applicationType, data$prodDatabaseType))");
+		re.eval("print(temp)");
+		
+		
+        re.eval("library(ggplot2)");
+//        re.eval("sub <- subset(data, select = c(JHipsterRegister, applicationType, prodDatabaseType))");
+//        re.eval("print(sub)");
+        //re.eval("print(data.frame(sub))");
+        System.out.println(re.eval("p <- ggplot(temp, aes(x=Var1, y=Var2, size=Freq)) + geom_point(shape=21, colour=\"black\", fill=\"cornsilk\")"));
+        re.eval("ggsave(\"ggplot.png\")");
+        //System.out.println(re.eval("dev.off()"));
+	}
+	
 }
