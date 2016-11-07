@@ -81,7 +81,11 @@ public class rBoxplot {
 
 		createCircleBuildResult(re);
 		
-		createBoxplotTime(re);
+		createBoxplotTimeBuild(re);
+		
+		createBoxplotTimeCompile(re);
+		
+		createBoxplotTimeGeneration(re);
 
 		createBoxplotCoverage(re);
 
@@ -137,15 +141,41 @@ public class rBoxplot {
 		re.eval("dev.off()");
 	}
 
-	public static void createBoxplotTime(Rengine re) {
+	public static void createBoxplotTimeCompile(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotTimeToCompile.jpg')");
+		//System.out.println(re.eval("data$TimeToGenerate.secs."));
+		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
+		System.out.println(re.eval("boxplot(data$TimeToCompile.secs.~data$applicationType, ylab='Time To Compile(secs)',"
+				+ "main='Boxplot Distribution:Time Compilation of different JHipster apps')"));
+
+		System.out.println(re.eval("dev.off()"));
+	}
+	
+	public static void createBoxplotTimeBuild(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotTimeToBuild.jpg')");
+		//System.out.println(re.eval("data$TimeToGenerate.secs."));
+		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
+		System.out.println(re.eval("boxplot(data$TimeToBuild.secs.~data$applicationType, ylab='Time To Build(secs)',"
+				+ "main='Boxplot Distribution:Time to build - different JHipster apps')"));
+
+		System.out.println(re.eval("dev.off()"));
+	}
+	
+	public static void createBoxplotTimeGeneration(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToGenerate.jpg')");
 		//System.out.println(re.eval("data$TimeToGenerate.secs."));
 		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
-		System.out.println(re.eval("boxplot(data$TimeToGenerate.secs., ylab='Time To Generate(secs)',"
-				+ "main='Boxplot Distribution of Time to Generate Applications JHipster')"));
+		System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.~data$applicationType, ylab='Time To Generate(secs)',"
+				+ "main='Boxplot Distribution:Time Generation of different JHipster apps')"));
 
 		System.out.println(re.eval("dev.off()"));
 	}

@@ -379,7 +379,7 @@ public class Oracle {
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
 						String[] partsBuildWithDocker = buildTimeWithDocker.split(";");
 						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
-						if(buildTimeWithDocker.length()>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
+						if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 	
