@@ -211,34 +211,6 @@ public class Oracle {
 		// Run the App
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
-	
-
-	@Test
-	public void seleniumTest(){
-		SeleniumTest test = new SeleniumTest();
-		test.populateDB();
-	}
-	
-	@Test
-	public void cucumberExtractionTest(){
-		CucumberResultExtractor extract = new CucumberResultExtractor(getjDirectory("jhipster1"));
-		String[] result = extract.extractEntityCucumberTest();
-		csvUtils = new CSVUtils(getjDirectory("jhipster1"));
-		CSVUtils.createCSVCucumber("cucumber.csv");
-		try {
-			CSVUtils.writeNewLineCSV("cucumber.csv",result);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	
-	@Test
-	public void resultCheckerTest(){
-		resultChecker = new ResultChecker(getjDirectory("jhipster1"));
-		System.err.println(resultChecker.extractStacktraces("testFile.log"));
-	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -262,7 +234,7 @@ public class Oracle {
 		CSVUtils.createCSVCucumber("cucumber.csv");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =3;i<=4-1;i++){
+		for (Integer i =1;i<=weightFolder-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
@@ -463,7 +435,7 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,buildTimeWithDockerPackage,
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,"NOTDOCKER",
 						buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
 						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 

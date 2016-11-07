@@ -85,18 +85,18 @@ public class ResultChecker {
 			Matcher m5 = Pattern.compile("Total time: (.*?) hrs (.*?) mins (.*?) secs").matcher(text);
 			Matcher m6 = Pattern.compile("Total time: (.*?):(.*?) min").matcher(text);
 
-			//check if hrs 
-			while(m5.find()) timebuild = timebuild +Float.toString(((Float.valueOf(m5.group(1).toString()) *3600)+ (Float.valueOf(m5.group(2).toString())*60) + Float.valueOf(m5.group(3).toString())))+";";
-			//check if mins
-			while(m4.find()) timebuild = timebuild +Float.toString(((Float.valueOf(m4.group(1).toString())*60) + Float.valueOf(m4.group(2).toString())))+";";
-			//check if min
-			while(m6.find()) timebuild = timebuild +Float.toString(((Float.valueOf(m6.group(1).toString())*60) + Float.valueOf(m6.group(2).toString())))+";";
 			//check if secs
-			while(m2.find()) timebuild = timebuild +m2.group(1).toString()+";";
+			while(m2.find()) timebuild = m2.group(1).toString()+";";
 			//check if s
-			while(m3.find()) timebuild = timebuild +m3.group(1).toString()+";";
+			while(m3.find()) timebuild = m3.group(1).toString()+";";
+			//check if mins
+			while(m4.find()) timebuild = Float.toString(((Float.valueOf(m4.group(1).toString())*60) + Float.valueOf(m4.group(2).toString())))+";";
+			//check if min
+			while(m6.find()) timebuild = Float.toString(((Float.valueOf(m6.group(1).toString())*60) + Float.valueOf(m6.group(2).toString())))+";";
+			//check if hrs 
+			while(m5.find()) timebuild = Float.toString(((Float.valueOf(m5.group(1).toString()) *3600)+ (Float.valueOf(m5.group(2).toString())*60) + Float.valueOf(m5.group(3).toString())))+";";
 			//check if seconds -> build with Docker (not Package)
-			while(m1.find()) timebuild = timebuild +m1.group(1).toString()+";";
+			while(m1.find()) timebuild = timebuild +m1.group(1).toString();
 			
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
