@@ -233,6 +233,12 @@ public class Oracle {
 		}
 	}
 	
+	
+	@Test
+	public void resultCheckerTest(){
+		resultChecker = new ResultChecker(getjDirectory("jhipster1"));
+		System.err.println(resultChecker.extractStacktraces("testFile.log"));
+	}
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
@@ -388,6 +394,11 @@ public class Oracle {
 						//build WITH docker
 						dockerCompose(jDirectory);
 						t1.done();
+						
+						if(imageSize.toString().equals("")){
+							imageSize.delete(0, 5);
+							imageSize.append("ND");
+						}
 						
 						if(buildWithDocker.toString().equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");

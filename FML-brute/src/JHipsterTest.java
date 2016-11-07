@@ -172,7 +172,7 @@ public class JHipsterTest extends FMLTest{
 		}
 		
 		if (jhipsterConf.applicationType.equals("monolith") || jhipsterConf.applicationType.equals("clientApp") || jhipsterConf.applicationType.equals("gateway")) 
-			jhipsterConf.useSass = Boolean.parseBoolean(isIncluded("LibSass", strConfs));
+			jhipsterConf.useSass = Boolean.parseBoolean(isIncluded("Libsass", strConfs));
 		
 		
 		// If internationalization support (we limit ourselves to English for now)
@@ -433,8 +433,7 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 				
-				
-				if(i==300){
+				if(i==1){
 					_log.info("Stopping at 300...");
 					System.exit(0);
 				}
