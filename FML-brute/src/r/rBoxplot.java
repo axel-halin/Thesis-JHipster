@@ -212,24 +212,28 @@ public class rBoxplot {
 	}
 
 	
+	/**
+	 * Draw a balloon plot and generate a png file of it.
+	 * The plot concerns ApplicationType and ProductionDatabase.
+	 * 
+	 * @param re Rengine to execute r commands and get feedback.
+	 */
 	public static void createBalloonPlot(Rengine re){
+		// Install packge (only necessary once)
 		//re.eval("install.packages(\"ggplot2\")");
+		
+		// Retrieve data and extract ApplicationType and DatabaseColumn, grouped and counted
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
-		re.eval("test <- subset(data[grep(\"monolith\", data$applicationType),], select = c(JHipsterRegister, applicationType, prodDatabaseType))");
-		re.eval("print(test)");
-		
-		//data.frame ( table ( data$Group, data$Size ) )
 		re.eval("temp <- data.frame(table(data$applicationType, data$prodDatabaseType))");
+		re.eval("print(names(temp))");
+		re.eval("names(temp)[names(temp)==\"Freq\"] <- \"Proportion\"");
 		re.eval("print(temp)");
-		
-		
+		// Draw the balloonPlot
         re.eval("library(ggplot2)");
-//        re.eval("sub <- subset(data, select = c(JHipsterRegister, applicationType, prodDatabaseType))");
-//        re.eval("print(sub)");
-        //re.eval("print(data.frame(sub))");
-        System.out.println(re.eval("p <- ggplot(temp, aes(x=Var1, y=Var2, size=Freq)) + geom_point(shape=21, colour=\"black\", fill=\"cornsilk\")"));
+        re.eval("p <- ggplot(temp, aes(x=Var1, y=Var2, size=Proportion)) + "
+        						+ "geom_point(shape=21, colour=\"black\", fill=\"cornsilk\") +"
+        						+ "xlab(\"Application Type\") + "
+        						+ "ylab(\"Database\")");
         re.eval("ggsave(\"ggplot.png\")");
-        //System.out.println(re.eval("dev.off()"));
-	}
-	
+	}	
 }
