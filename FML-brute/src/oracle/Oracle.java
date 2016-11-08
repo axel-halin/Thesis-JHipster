@@ -376,8 +376,8 @@ public class Oracle {
 						}
 						
 						if(buildWithDocker.toString().equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
-						buildTimeWithDocker = resultChecker.extractTime("buildDocker.log");
-						String[] partsBuildWithDocker = buildTimeWithDocker.split(";");
+						String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
+						String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
 						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
 						if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
