@@ -77,20 +77,19 @@ public class rBoxplot {
 			return;
 		}
 
-	/*	createCircleTypeApp(re);
+		createCircleTypeApp(re);
 
 		createCircleBuildResult(re);
 		
-		createBoxplotTimeBuild(re);
+		createBoxplotTimeBuildWithoutDocker(re);
+		
+		createBoxplotTimeBuildWithDocker(re);
 		
 		createBoxplotTimeCompile(re);
 		
 		createBoxplotTimeGeneration(re);
 
-		createBoxplotCoverage(re);*/
-
-		//data <- data[- grep("ND", data$TimeToCompile.secs.),]
-		//data <- data[- grep("KO", data$TimeToCompile.secs.),]
+		createBoxplotCoverage(re);
 
 		createBalloonPlot(re);
 		
@@ -104,7 +103,7 @@ public class rBoxplot {
 		// Create Circle + Save jpg
 		re.eval("jpeg('typeApp.jpg')");
 		//extract number of types in table
-		System.out.println(re.eval("type <- table(data$applicationType)"));
+		re.eval("type <- table(data$applicationType)");
 		//data vecteur
 		re.eval("as.numeric(type)");
 		// WARNING VERIFY GOOD NUMBER WITH GOOD TYPE -> alphabetic order
@@ -148,25 +147,56 @@ public class rBoxplot {
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToCompile.jpg')");
-		//System.out.println(re.eval("data$TimeToGenerate.secs."));
+		// drop doublon Docker
+		re.eval("data <- data[- grep(\"true\", data$Docker),]");
+		// drop KO timeToCompile
+		re.eval("data <- data[- grep(\"KO\", data$TimeToCompile),]");
+		//cast numerical
+		re.eval("data$TimeToCompile <- as.numeric(as.character(data$TimeToCompile))");
 		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
-		System.out.println(re.eval("boxplot(data$TimeToCompile.secs.~data$applicationType, ylab='Time To Compile(secs)',"
-				+ "main='Boxplot Distribution:Time Compilation of different JHipster apps')"));
+		re.eval("boxplot(data$TimeToCompile~data$applicationType, ylab='Time To Compile(secs)',"
+				+ "main='Boxplot Distribution:Time Compilation of different JHipster apps')");
 
-		System.out.println(re.eval("dev.off()"));
+		re.eval("dev.off()");
 	}
 	
-	public static void createBoxplotTimeBuild(Rengine re) {
+	public static void createBoxplotTimeBuildWithoutDocker(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
-		re.eval("jpeg('boxplotTimeToBuild.jpg')");
-		//System.out.println(re.eval("data$TimeToGenerate.secs."));
-		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
-		System.out.println(re.eval("boxplot(data$TimeToBuild.secs.~data$applicationType, ylab='Time To Build(secs)',"
-				+ "main='Boxplot Distribution:Time to build - different JHipster apps')"));
+		re.eval("jpeg('boxplotTimeToBuildWithoutDocker.jpg')");
+		// drop Docker
+		re.eval("data <- data[- grep(\"true\", data$Docker),]");
+		// drop KO timeToCompile
+		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		//cast numerical
+		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 
-		System.out.println(re.eval("dev.off()"));
+		re.eval("boxplot(data$TimeToBuild~data$applicationType, ylab='Time To Build(secs)',"
+				+ "main='Boxplot Distribution:Time to build without Docker')");
+
+		re.eval("dev.off()");
+	}
+	
+	public static void createBoxplotTimeBuildWithDocker(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotTimeToBuildWithDocker.jpg')");
+		// drop NotDocker
+		re.eval("data <- data[- grep(\"false\", data$Docker),]");
+		// drop KO timeToCompile
+		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		//cast numerical TimeToBuild and TimeToBuildDockerPackage
+		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
+		re.eval("print(data$TimeToBuild)");
+		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
+		//Add TimeToBuildDockerPackage to TimeToBuild
+		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
+		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
+				+ "main='Boxplot Distribution:Time to build with Docker')");
+
+		re.eval("dev.off()");
 	}
 	
 	public static void createBoxplotTimeGeneration(Rengine re) {
@@ -174,33 +204,34 @@ public class rBoxplot {
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToGenerate.jpg')");
-		//System.out.println(re.eval("data$TimeToGenerate.secs."));
-		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
-		System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.~data$applicationType, ylab='Time To Generate(secs)',"
-				+ "main='Boxplot Distribution:Time Generation of different JHipster apps')"));
+		// drop doublon Docker
+		re.eval("data <- data[- grep(\"true\", data$Docker),]");
 
-		System.out.println(re.eval("dev.off()"));
+		re.eval("boxplot(data$TimeToGenerate~data$applicationType, ylab='Time To Generate(secs)',"
+				+ "main='Boxplot Distribution:Time Generation of different JHipster apps')");
+
+		re.eval("dev.off()");
 	}
 
 	public static void createBoxplotCoverage(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 
-		re.eval("data <- data[- grep(\"ND\", data$CoverageInstructions...),]");
-		re.eval("data <- data[- grep(\"X\", data$CoverageInstructions...),]");
+		re.eval("data <- data[- grep(\"ND\", data$CoverageInstructions),]");
+		re.eval("data <- data[- grep(\"X\", data$CoverageInstructions),]");
 
 		//set numerical
 
-		re.eval("data$CoverageInstructions... <- as.numeric(as.character(data$CoverageInstructions...))");
-		re.eval("data$CoverageBranches... <- as.numeric(as.character(data$CoverageBranches...))");
+		re.eval("data$CoverageInstructions <- as.numeric(as.character(data$CoverageInstructions))");
+		re.eval("data$CoverageBranches <- as.numeric(as.character(data$CoverageBranches))");
 
 		re.eval("jpeg('boxplotCoverage.jpg')");
 		//System.out.println(re.eval("boxplot(data$CoverageInstructions...)"));
-		re.eval("lmts <- range(data$CoverageInstructions...,data$CoverageBranches...)");
+		re.eval("lmts <- range(data$CoverageInstructions,data$CoverageBranches)");
 
 		re.eval("par(mfrow = c(1, 2))");
-		re.eval("boxplot(data$CoverageInstructions...,ylim=lmts, ylab='CoverageInstruction')");
-		re.eval("boxplot(data$CoverageBranches...,ylim=lmts, ylab='CoverageBranches')");
+		re.eval("boxplot(data$CoverageInstructions,ylim=lmts, ylab='CoverageInstruction')");
+		re.eval("boxplot(data$CoverageBranches,ylim=lmts, ylab='CoverageBranches')");
 		re.eval("title(\"Boxplot Distribution of Coverage JHipster Tests\", outer=TRUE)");
 		
 		/*System.out.println(re.eval("data$CoverageInstructions..."));
@@ -225,9 +256,9 @@ public class rBoxplot {
 		// Retrieve data and extract ApplicationType and DatabaseColumn, grouped and counted
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		re.eval("temp <- data.frame(table(data$applicationType, data$prodDatabaseType))");
-		re.eval("print(names(temp))");
+		//re.eval("print(names(temp))");
 		re.eval("names(temp)[names(temp)==\"Freq\"] <- \"Proportion\"");
-		re.eval("print(temp)");
+		//re.eval("print(temp)");
 		// Draw the balloonPlot
         re.eval("library(ggplot2)");
         re.eval("p <- ggplot(temp, aes(x=Var1, y=Var2, size=Proportion)) + "
