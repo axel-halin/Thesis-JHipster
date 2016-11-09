@@ -30,7 +30,7 @@ public class ThreadRegistry implements Runnable {
 	@Override
 	public void run(){
 		try{
-			ProcessBuilder processBuilder = new ProcessBuilder("./mvnw");
+			ProcessBuilder processBuilder = new ProcessBuilder("./build.sh");
 			processBuilder.directory(new File(PATH));
 			process = processBuilder.start();
 			process.waitFor();

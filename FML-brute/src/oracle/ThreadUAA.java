@@ -21,7 +21,7 @@ public class ThreadUAA implements Runnable{
 	public void run(){
 		Process process = null;
 		try{
-			ProcessBuilder processBuilder = new ProcessBuilder("./mvnw");
+			ProcessBuilder processBuilder = new ProcessBuilder("./build.sh");
 			processBuilder.directory(new File(PATH));
 			process = processBuilder.start();
 			process.waitFor();
