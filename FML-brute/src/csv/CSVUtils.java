@@ -45,7 +45,7 @@ public class CSVUtils {
 		CSVWriter writer = new CSVWriter(new FileWriter(filename), ';');
 		String[] heads = {"Id","JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache",
 				"clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType",
-				"searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
+				"buildTool","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate",
 				"Log-Gen","TimeToGenerate","Compile","Log-Compile","TimeToCompile","Build","Log-Build", "TimeToBuildDockerPackage", "TimeToBuild", 
 				"ImageDocker","TestsResult", "Cucumber","KarmaJS","Gatling","Protractor","CoverageInstructions","CoverageBranches","JSStatementsCoverage","JSBranchesCoverage"};
 		writer.writeNext(heads);
