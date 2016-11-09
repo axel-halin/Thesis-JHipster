@@ -77,7 +77,7 @@ public class ThreadCheckBuild extends Thread {
 		while(!isDone)
 		{
 			try{
-				Thread.sleep(5*1000);
+				Thread.sleep(2*1000);
 			} catch (InterruptedException e){
 				_log.error("InterruptedException: "+e.getMessage());
 			}

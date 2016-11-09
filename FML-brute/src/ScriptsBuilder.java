@@ -185,7 +185,7 @@ public class ScriptsBuilder {
 	private void generateUnitTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
 		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
-		else script += "./gradlew clean test >> test.log 2>&1\n";
+		else script += "./gradlew test >> test.log 2>&1\n";
 		// KarmaJS is provided by default
 		script += "gulp test >> testKarmaJS.log 2>&1\n";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"unitTest.sh", script);

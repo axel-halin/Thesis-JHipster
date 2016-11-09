@@ -1,7 +1,6 @@
 package oracle;
 
 import csv.CSVUtils;
-import selenium.SeleniumTest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,7 +32,7 @@ public class Oracle {
 	private static final Integer weightFolder = new File(JHIPSTERS_DIRECTORY+"/").list().length;
 	private static final String projectDirectory = System.getProperty("user.dir");
 	private static final String JS_COVERAGE_PATH = "target/test-results/coverage/report-lcov/lcov-report/index.html";
-	
+	private static final String JS_COVERAGE_PATH_GRADLE = "build/test-results/coverage/report-lcov/lcov-report/index.html";
 	
 	private static ResultChecker resultChecker = null;
 	private static CSVUtils csvUtils = null;
@@ -164,8 +163,7 @@ public class Oracle {
 		if(!docker){
 			// Start database services
 			startProcess("./startDB.sh","");
-
-			if (applicationType.equals("gateway") || applicationType.equals("microservice") || applicationType.equals("uaa")){
+			if (applicationType.equals("\"gateway\"") || applicationType.equals("\"microservice\"") || applicationType.equals("\"uaa\"")){
 				// Start Jhipster Registry
 				threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
 				threadRegistry.start();
@@ -174,7 +172,7 @@ public class Oracle {
 				try{Thread.sleep(30000);}
 				catch(Exception e){_log.error(e.getMessage());}
 				
-				if(authentication.equals("uaa")){
+				if(authentication.equals("\"uaa\"")){
 					// Start UAA Server
 					threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
 					threadUAA.start();
@@ -203,8 +201,9 @@ public class Oracle {
 		
 	}
 
-	private void cleanUp(String jDirectory){
-		startProcess("./dockerStop.sh", getjDirectory(jDirectory));
+	private void cleanUp(String jDirectory, boolean docker){
+		if (docker) startProcess("./dockerStop.sh", getjDirectory(jDirectory));
+		else startProcess("./killScript.sh", getjDirectory(jDirectory));
 	}
 
 	private void dockerCompose(String jDirectory){
@@ -345,16 +344,23 @@ public class Oracle {
 
 						_log.info("Compilation success ! Launch Unit Tests...");
 						unitTestsApp(jDirectory);
-
+					
 						resultsTest = resultChecker.extractResultsTest("test.log");
 						karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
 						cucumber= resultChecker.extractCucumber("test.log");
 						
 						csvUtils = new CSVUtils(getjDirectory(jDirectory));
-						coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
-						coverageBranches = resultChecker.extractCoverageBranches("index.html");
-						coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
-						coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
+						// JACOCO Coverage results are only available with Maven
+						if(searchEngine.equals("maven")){
+							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
+							coverageBranches = resultChecker.extractCoverageBranches("index.html");
+							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
+							coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
+						} else{
+							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH_GRADLE);
+							coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH_GRADLE);
+						}
+						
 						//Extract CSV Coverage Data and write in coverage.csv
 						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
 
@@ -384,7 +390,7 @@ public class Oracle {
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 	
 						_log.info("Cleaning up... Docker");
-						cleanUp(jDirectory);
+						cleanUp(jDirectory,true);
 
 						// Building without Docker
 						initialization(false, applicationType, authenticationType);
@@ -394,6 +400,7 @@ public class Oracle {
 						//build WITHOUT docker
 						buildApp(jDirectory);
 						t2.done();
+						cleanUp(jDirectory,false);
 						
 						if(build.toString().equals("KO")) stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						gatling = resultChecker.extractGatling("testGatling.log");
