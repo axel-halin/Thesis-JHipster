@@ -351,7 +351,7 @@ public class Oracle {
 						
 						csvUtils = new CSVUtils(getjDirectory(jDirectory));
 						// JACOCO Coverage results are only available with Maven
-						if(searchEngine.equals("maven")){
+						if(searchEngine.equals("\"maven\"")){
 							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
 							coverageBranches = resultChecker.extractCoverageBranches("index.html");
 							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
