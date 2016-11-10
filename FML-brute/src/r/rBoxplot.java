@@ -93,6 +93,9 @@ public class rBoxplot {
 
 		createBalloonPlot(re);
 		
+		
+		test(re);
+		
 		re.end();
 		System.out.println("end");
 	}
@@ -267,4 +270,28 @@ public class rBoxplot {
         						+ "ylab(\"Database\")");
         re.eval("ggsave(\"ggplot.png\")");
 	}	
+	
+	
+	public static void test(Rengine re){
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// drop NotDocker
+		re.eval("data <- data[- grep(\"false\", data$Docker),]");
+		re.eval("dataBuildToolBuildResult <- data.frame(table(data$searchEngine, data$Build))");
+		
+		re.eval("buildOK <- temp[- grep(\"KO\", temp$Var2),]");
+		re.eval("buildKO <- temp[- grep(\"OK\", temp$Var2),]");
+		
+		re.eval("buildOK <- as.vector(buildOK$Freq)");
+		re.eval("buildKO <- as.vector(buildKO$Freq)");
+		
+		re.eval("labels <- c(\"Gradle\", \"Maven\")");
+		
+		re.eval("jpeg('buildOKPie.jpeg')");
+		re.eval("pie(buildOK, labels = labels, main=\"Proportion of build success by build tool\")");
+		re.eval("dev.off()");
+		
+		re.eval("jpeg('buildKOPie.jpeg')");
+		re.eval("pie(buildKO, labels = labels, main=\"Proportion of build failed by build tool\")");
+		re.eval("dev.off()");
+	}
 }
