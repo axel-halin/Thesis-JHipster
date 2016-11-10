@@ -81,9 +81,13 @@ public class rBoxplot {
 
 		createCircleBuildResult(re);
 		
-		createBoxplotTimeBuildWithoutDocker(re);
+		createBoxplotTimeBuildWithoutDockerApp(re);
 		
-		createBoxplotTimeBuildWithDocker(re);
+		createBoxplotTimeBuildWithDockerApp(re);
+		
+		createBoxplotTimeBuildWithoutDockerBuildTool(re);
+		
+		createBoxplotTimeBuildWithDockerBuildTool(re);
 		
 		createBoxplotTimeCompile(re);
 		
@@ -102,6 +106,8 @@ public class rBoxplot {
 		re.end();
 		System.out.println("end");
 	}
+	
+	//TODO change searchengine into buildtool
 	
 	public static void createCircleTypeApp(Rengine re) {
 		// Read CSV.
@@ -166,15 +172,17 @@ public class rBoxplot {
 		re.eval("dev.off()");
 	}
 	
-	public static void createBoxplotTimeBuildWithoutDocker(Rengine re) {
+	public static void createBoxplotTimeBuildWithoutDockerApp(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToBuildWithoutDocker.jpg')");
 		// drop Docker
 		re.eval("data <- data[- grep(\"true\", data$Docker),]");
-		// drop KO timeToCompile
+		// drop ND timeToBuild
 		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		// only OK BUILD !!
+		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 
@@ -184,7 +192,7 @@ public class rBoxplot {
 		re.eval("dev.off()");
 	}
 	
-	public static void createBoxplotTimeBuildWithDocker(Rengine re) {
+	public static void createBoxplotTimeBuildWithDockerApp(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
@@ -193,15 +201,58 @@ public class rBoxplot {
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		// drop KO timeToCompile
 		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
-		re.eval("print(data$TimeToBuild)");
+		// only OK BUILD !!
+		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
-		re.eval("print(data$TimeToBuild)");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
+		re.eval("print(data$TimeToBuild)");
 		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
 				+ "main='Boxplot Distribution:Time to build with Docker')");
+
+		re.eval("dev.off()");
+	}
+	
+	public static void createBoxplotTimeBuildWithoutDockerBuildTool(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotTimeToBuildWithoutDockerBuildTool.jpg')");
+		// drop Docker
+		re.eval("data <- data[- grep(\"true\", data$Docker),]");
+		// drop ND timeToBuil
+		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		// only OK BUILD !!
+		re.eval("data <- data[- grep(\"KO\", data$Build),]");
+		//cast numerical
+		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
+
+		re.eval("boxplot(data$TimeToBuild~data$searchEngine, ylab='Time To Build(secs)',"
+				+ "main='Boxplot Distribution:Time to build without Docker/buildTool')");
+
+		re.eval("dev.off()");
+	}
+	
+	public static void createBoxplotTimeBuildWithDockerBuildTool(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotTimeToBuildWithDockerBuildTool.jpg')");
+		// drop NotDocker
+		re.eval("data <- data[- grep(\"false\", data$Docker),]");
+		// drop ND timeToBuild
+		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		// only OK BUILD !!
+		re.eval("data <- data[- grep(\"KO\", data$Build),]");
+		//cast numerical TimeToBuild and TimeToBuildDockerPackage
+		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
+		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
+		//Add TimeToBuildDockerPackage to TimeToBuild
+		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
+		re.eval("boxplot(data$TimeToBuildTotal~data$searchEngine, ylab='Time To Build(secs)',"
+				+ "main='Boxplot Distribution:Time to build with Docker/buildTool')");
 
 		re.eval("dev.off()");
 	}
