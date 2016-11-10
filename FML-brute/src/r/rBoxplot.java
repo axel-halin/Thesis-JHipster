@@ -315,8 +315,8 @@ public class rBoxplot {
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		re.eval("dataBuildToolBuildResult <- data.frame(table(data$searchEngine, data$Build))");
 		
-		re.eval("buildOK <- temp[- grep(\"KO\", temp$Var2),]");
-		re.eval("buildKO <- temp[- grep(\"OK\", temp$Var2),]");
+		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", temp$Var2),]");
+		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", temp$Var2),]");
 		
 		re.eval("buildOK <- as.vector(buildOK$Freq)");
 		re.eval("buildKO <- as.vector(buildKO$Freq)");
