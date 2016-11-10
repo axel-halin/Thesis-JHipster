@@ -90,6 +90,8 @@ public class rBoxplot {
 		createBoxplotTimeGeneration(re);
 
 		createBoxplotCoverage(re);
+		
+		createBoxplotImageDocker(re);
 
 		createBalloonPlot(re);
 		
@@ -190,10 +192,11 @@ public class rBoxplot {
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		// drop KO timeToCompile
 		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		re.eval("print(data$TimeToBuild)");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
-		re.eval("print(data$TimeToBuild)");
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
+		re.eval("print(data$TimeToBuild)");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
 		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
@@ -210,39 +213,74 @@ public class rBoxplot {
 		// drop doublon Docker
 		re.eval("data <- data[- grep(\"true\", data$Docker),]");
 
-		re.eval("boxplot(data$TimeToGenerate~data$applicationType, ylab='Time To Generate(secs)',"
-				+ "main='Boxplot Distribution:Time Generation of different JHipster apps')");
+		re.eval("boxplot(data$TimeToGenerate~data$applicationType, ylab='Time To Generate(secs)', xlab='Applications Type')");
+				//+ "main='Boxplot Distribution:Time Generation of different JHipster apps')");
 
 		re.eval("dev.off()");
 	}
 
 	public static void createBoxplotCoverage(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		re.eval("dataJava<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		re.eval("dataJS<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 
-		re.eval("data <- data[- grep(\"ND\", data$CoverageInstructions),]");
-		re.eval("data <- data[- grep(\"X\", data$CoverageInstructions),]");
+		re.eval("dataJava <- dataJava[- grep(\"ND\", dataJava$CoverageInstructions),]");
+		re.eval("dataJava <- dataJava[- grep(\"X\", dataJava$CoverageInstructions),]");
+		re.eval("dataJS <- dataJS[- grep(\"ND\", dataJS$JSStatementsCoverage),]");
+		re.eval("dataJS <- dataJS[- grep(\"X\", dataJS$JSStatementsCoverage),]");
 
+		//remove % char
+		re.eval("dataJS$JSStatementsCoverage <- as.data.frame(sapply(dataJS$JSStatementsCoverage,gsub,pattern=\"%\",replacement=\"\"))");
+		re.eval("dataJS$JSStatementsCoverage <- unlist(dataJS$JSStatementsCoverage)");
+		re.eval("dataJS$JSBranchesCoverage <- as.data.frame(sapply(dataJS$JSBranchesCoverage,gsub,pattern=\"%\",replacement=\"\"))");
+		re.eval("dataJS$JSBranchesCoverage <- unlist(dataJS$JSBranchesCoverage)");
+		
 		//set numerical
 
-		re.eval("data$CoverageInstructions <- as.numeric(as.character(data$CoverageInstructions))");
-		re.eval("data$CoverageBranches <- as.numeric(as.character(data$CoverageBranches))");
+		re.eval("dataJava$CoverageInstructions <- as.numeric(as.character(dataJava$CoverageInstructions))");
+		re.eval("dataJava$CoverageBranches <- as.numeric(as.character(dataJava$CoverageBranches))");
+		re.eval("dataJS$JSStatementsCoverage <- as.numeric(as.character(dataJS$JSStatementsCoverage))");
+		re.eval("dataJS$JSBranchesCoverage <- as.numeric(as.character(dataJS$JSBranchesCoverage))");
 
-		re.eval("jpeg('boxplotCoverage.jpg')");
+		re.eval("jpeg('boxplotJAVACoverage.jpg')");
 		//System.out.println(re.eval("boxplot(data$CoverageInstructions...)"));
-		re.eval("lmts <- range(data$CoverageInstructions,data$CoverageBranches)");
+		re.eval("lmts <- range(dataJava$CoverageInstructions,dataJava$CoverageBranches,dataJS$JSStatementsCoverage,dataJS$JSBranchesCoverage)");
 
-		re.eval("par(mfrow = c(1, 2))");
-		re.eval("boxplot(data$CoverageInstructions,ylim=lmts, ylab='CoverageInstruction')");
-		re.eval("boxplot(data$CoverageBranches,ylim=lmts, ylab='CoverageBranches')");
-		re.eval("title(\"Boxplot Distribution of Coverage JHipster Tests\", outer=TRUE)");
+		re.eval("par(mfrow = c(2, 2))");
+		re.eval("boxplot(dataJava$CoverageInstructions,ylim=lmts, xlab='CoverageInstruction(%)')");
+		re.eval("boxplot(dataJava$CoverageBranches,ylim=lmts, xlab='CoverageBranches(%)')");
+		re.eval("boxplot(dataJS$JSStatementsCoverage,ylim=lmts, xlab='CoverageJSStatements(%)')");
+		re.eval("boxplot(dataJS$JSBranchesCoverage,ylim=lmts, xlab='CoverageJSBranches(%)')");
+		//re.eval("title(\"Boxplot Distribution of JAVA Coverage JHipster Tests\", outer=TRUE)");
+		//re.eval("(annotate(\"Boxplot Distribution of JAVA Coverage JHipster Tests\", side = 3, line = -21, outer = TRUE)");
 		
-		/*System.out.println(re.eval("data$CoverageInstructions..."));
-		System.out.println(re.eval("boxplot(data$CoverageInstructions...~data$CoverageBranches..., ylab='CoverageInstruction',"
-				+ "main='Boxplot Distribution of Coverage Instructions JHipster')"));*/
+		re.eval("dev.off()");
 
-		System.out.println(re.eval("dev.off()"));
+	}
+	
+	public static void createBoxplotImageDocker(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotImageDocker.jpg')");
+		// drop NotDocker
+		re.eval("data <- data[- grep(\"false\", data$Docker),]");
+		// drop ND imageDocker
+		re.eval("data <- data[- grep(\"ND\", data$ImageDocker),]");
+		re.eval("print(data$ImageDocker)");
+		//remove MB
+		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker,gsub,pattern=\" MB\",replacement=\"\"))");
+		//rempove quotes
+		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker, function(x) gsub(\"\\\"\", \"\", x)))");
+		re.eval("data$ImageDocker <- unlist(data$ImageDocker)");
+		re.eval("print(data$ImageDocker)");
+		//cast numerical TimeToBuild and TimeToBuildDockerPackage
+		re.eval("data$ImageDocker <- as.numeric(as.character(data$ImageDocker))");
 
+		re.eval("boxplot(data$ImageDocker~data$applicationType, ylab='ImageDocker(MB)',"
+				+ "main='Boxplot Distribution:Image Docker')");
+
+		re.eval("dev.off()");
 	}
 
 	
