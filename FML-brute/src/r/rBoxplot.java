@@ -91,7 +91,9 @@ public class rBoxplot {
 
 		createBoxplotCoverage(re);
 		
-		createBoxplotImageDocker(re);
+		createBoxplotImageDockerApplications(re);
+		
+		createBoxplotImageDockerDB(re);
 
 		createBalloonPlot(re);
 		
@@ -257,26 +259,47 @@ public class rBoxplot {
 
 	}
 	
-	public static void createBoxplotImageDocker(Rengine re) {
+	public static void createBoxplotImageDockerApplications(Rengine re) {
 		// Read CSV.
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// Create Boxplot + Save jpg
-		re.eval("jpeg('boxplotImageDocker.jpg')");
+		re.eval("jpeg('boxplotImageDockerApps.jpg')");
 		// drop NotDocker
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		// drop ND imageDocker
 		re.eval("data <- data[- grep(\"ND\", data$ImageDocker),]");
-		re.eval("print(data$ImageDocker)");
 		//remove MB
 		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker,gsub,pattern=\" MB\",replacement=\"\"))");
 		//rempove quotes
 		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker, function(x) gsub(\"\\\"\", \"\", x)))");
 		re.eval("data$ImageDocker <- unlist(data$ImageDocker)");
-		re.eval("print(data$ImageDocker)");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
 		re.eval("data$ImageDocker <- as.numeric(as.character(data$ImageDocker))");
 
 		re.eval("boxplot(data$ImageDocker~data$applicationType, ylab='ImageDocker(MB)',"
+				+ "main='Boxplot Distribution:Image Docker')");
+
+		re.eval("dev.off()");
+	}
+	
+	public static void createBoxplotImageDockerDB(Rengine re) {
+		// Read CSV.
+		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotImageDockerDB.jpg')");
+		// drop NotDocker
+		re.eval("data <- data[- grep(\"false\", data$Docker),]");
+		// drop ND imageDocker
+		re.eval("data <- data[- grep(\"ND\", data$ImageDocker),]");
+		//remove MB
+		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker,gsub,pattern=\" MB\",replacement=\"\"))");
+		//rempove quotes
+		re.eval("data$ImageDocker <- as.data.frame(sapply(data$ImageDocker, function(x) gsub(\"\\\"\", \"\", x)))");
+		re.eval("data$ImageDocker <- unlist(data$ImageDocker)");
+		//cast numerical TimeToBuild and TimeToBuildDockerPackage
+		re.eval("data$ImageDocker <- as.numeric(as.character(data$ImageDocker))");
+
+		re.eval("boxplot(data$ImageDocker~data$prodDatabaseType, ylab='ImageDocker(MB)',"
 				+ "main='Boxplot Distribution:Image Docker')");
 
 		re.eval("dev.off()");
@@ -315,8 +338,8 @@ public class rBoxplot {
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		re.eval("dataBuildToolBuildResult <- data.frame(table(data$searchEngine, data$Build))");
 		
-		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", temp$Var2),]");
-		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", temp$Var2),]");
+		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", dataBuildToolBuildResult$Var2),]");
+		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", dataBuildToolBuildResult$Var2),]");
 		
 		re.eval("buildOK <- as.vector(buildOK$Freq)");
 		re.eval("buildKO <- as.vector(buildKO$Freq)");
