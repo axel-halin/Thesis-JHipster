@@ -199,8 +199,7 @@ public class ScriptsBuilder {
 	 * @param jDirectory
 	 */
 	private void generateDockerScripts(JhipsterConfiguration jconf, String jDirectory){
-		if(jconf.buildTool.equals("maven")) generateDockerStartScript(jDirectory, true);
-		else generateDockerStartScript(jDirectory, false);
+		generateDockerStartScript(jDirectory, jconf);
 		generateDockerStopScript(jconf, jDirectory);
 	}					
 
@@ -211,11 +210,12 @@ public class ScriptsBuilder {
 	 * @param jDirectory Directory where the script must be generated.
 	 * @param maven True if the application uses Maven; False otherwise.
 	 */
-	private void generateDockerStartScript(String jDirectory, boolean maven){
+	private void generateDockerStartScript(String jDirectory, JhipsterConfiguration jconf){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n";
+		if(jconf.databaseType.equals("cassandra")) script += properties.getProperty("cassandraMigration")+" >> cassandraMigration.log 2>&1";
 		// Packaging
-		if(maven) script += properties.getProperty("mavenDockerPackage");
+		if(jconf.buildTool.equals("maven")) script += properties.getProperty("mavenDockerPackage");
 		else script += properties.getProperty("gradleDockerPackage");
 		script+= " >> buildDocker.log 2>&1\n";
 		// Docker-compose
