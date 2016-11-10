@@ -95,8 +95,7 @@ public class rBoxplot {
 
 		createBalloonPlot(re);
 		
-		
-		test(re);
+		createPieChartBuildResultByBuildTool(re);
 		
 		re.end();
 		System.out.println("end");
@@ -310,7 +309,7 @@ public class rBoxplot {
 	}	
 	
 	
-	public static void test(Rengine re){
+	public static void createPieChartBuildResultByBuildTool(Rengine re){
 		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
 		// drop NotDocker
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
