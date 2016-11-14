@@ -412,11 +412,13 @@ public class Oracle {
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
 						compileTime = "KO";
+						stacktracesBuild = "COMPILATION ERROR";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 					}
 				} else{
 					_log.error("App Generation Failed...");
 					generation ="KO";
+					stacktracesBuild = "GENERATION ERROR";
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
 				}
 
@@ -455,5 +457,14 @@ public class Oracle {
 		}
 		_log.info("Termination...");
 		termination();
+	}
+	
+	/**
+	 * Create CSV BUGS 
+	 */
+	@Test
+	public void writeCSVBugs() throws Exception{
+		//boolean false = not check doublon , true yes
+		CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
 	}
 }

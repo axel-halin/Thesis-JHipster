@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -33,7 +35,7 @@ public class CSVUtils {
 	}
 
 	public String getPath(){return path;}
-	
+
 	/**
 	 * create CSVfile JHipster and heads of the file
 	 * 
@@ -51,7 +53,7 @@ public class CSVUtils {
 		writer.writeNext(heads);
 		writer.close();
 	}
-	
+
 	/**
 	 * create CSVfile Coverage and heads of the file
 	 * 
@@ -67,7 +69,7 @@ public class CSVUtils {
 		writer.writeNext(heads);
 		writer.close();
 	}
-	
+
 	/**
 	 * Create Cucumber csv file if it doesn't already exist
 	 * 
@@ -93,7 +95,7 @@ public class CSVUtils {
 						"updateLocation","createLocation","getLocation","getNonExistingLocation","deleteLocation","getAllLocations",
 						"getAllRegions","updateRegion","deleteRegion","getNonExistingRegion","getRegion","createRegion",
 						"getAllTasks","updateTask","getTask","getNonExistingTask","createTask","deleteTask"
-						};
+				};
 				writer.writeNext(heads);
 				writer.close();
 			} catch (IOException e){
@@ -114,9 +116,9 @@ public class CSVUtils {
 		writer.writeNext(line);
 		writer.close();
 	}
-	
+
 	/**
-	 * return true if the configuration (yo-rc) doesn't already exist in the CSVfile
+	 * add new line to the CoverageCSV
 	 * 
 	 * @param filename Name of the CSVfile
 	 * @param new line)
@@ -125,32 +127,32 @@ public class CSVUtils {
 	public void writeLinesCoverageCSV(String filename,String filename2,String jDirectory,String Id) throws IOException {  
 
 		try{
-		CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
-		String[] row = null;
+			CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
+			String[] row = null;
 
-		List content = lines.readAll();
+			List content = lines.readAll();
 
-		for (Object object : content) {
-		
-			row = (String[]) object;
-			
-			String[] newline = {Id,jDirectory,row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
-					row[9],row[10],row[11],row[12]};
+			for (Object object : content) {
 
-			{
-			CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
-			writer.writeNext(newline);
-			writer.close();
-			};
+				row = (String[]) object;
 
-		}
-		lines.close();
+				String[] newline = {Id,jDirectory,row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
+						row[9],row[10],row[11],row[12]};
+
+				{
+					CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
+					writer.writeNext(newline);
+					writer.close();
+				};
+
+			}
+			lines.close();
 		} 
 		catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * return true if the configuration (yo-rc) doesn't already exist in the CSVfile
 	 * 
@@ -183,4 +185,64 @@ public class CSVUtils {
 		lines.close();
 		return check;
 	}
+
+	/**
+	 * Extract bugs from CSV jhipster into a new shorter CSV
+	 * 
+	 * @param filename Name of the CSVfile
+	 * @param filename2 Name of the CSVfile
+	 * @param doublon Check doublon if true
+	 *  
+	 */
+	public static void createBugsCSV(String filename,String filename2,boolean doublon) throws IOException {  
+		CSVWriter writerInit = new CSVWriter(new FileWriter(filename2), ';');
+		String[] heads = {"Id","Log-Build"};
+		writerInit.writeNext(heads);
+		writerInit.close();
+		
+		CSVReader lines = new CSVReader(new FileReader(filename), ';');
+		String[] row = null;
+
+		List content = lines.readAll();
+
+		for (Object object : content) {
+
+			row = (String[]) object;
+
+			String[] newline = {row[0],row[23]};
+
+			if (row[22].equals("KO"))
+			{
+				
+				boolean check = true;
+				CSVReader lines2 = new CSVReader(new FileReader(filename2), ';');
+				String[] row2 = null;
+
+				List content2 = lines2.readAll();
+
+				for (Object object2 : content2) {
+
+					row2 = (String[]) object2;
+					
+					if (row[23].toString().equals(row2[1].toString()) && doublon)
+					{
+						// false if bugs already appears
+						check = false;
+						
+						System.out.println("equals");
+					};
+				}
+				lines2.close();
+				
+				if (check)
+				{
+				CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
+				writer.writeNext(newline);
+				writer.close();
+				}
+			};
+
+		}
+		lines.close();
+	} 
 }

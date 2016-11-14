@@ -4,12 +4,7 @@ import java.io.*;
 import java.awt.Frame;
 import java.awt.FileDialog;
 
-import java.util.Enumeration;
-
 import org.rosuda.JRI.Rengine;
-import org.rosuda.JRI.REXP;
-import org.rosuda.JRI.RList;
-import org.rosuda.JRI.RVector;
 import org.rosuda.JRI.RMainLoopCallbacks;
 
 class TextConsole implements RMainLoopCallbacks
@@ -199,8 +194,10 @@ public class rBoxplot {
 		re.eval("jpeg('boxplotTimeToBuildWithDocker.jpg')");
 		// drop NotDocker
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
-		// drop KO timeToCompile
-		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		// drop ND Time To build
+		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		// drop KO Time To build Docker Package
+		re.eval("data <- data[- grep(\"ND\", data$TimeToBuildDockerPackage),]");
 		// only OK BUILD !!
 		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
@@ -208,6 +205,7 @@ public class rBoxplot {
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
+		re.eval("print(data)");
 		re.eval("print(data$TimeToBuild)");
 		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
 				+ "main='Boxplot Distribution:Time to build with Docker')");
@@ -243,7 +241,7 @@ public class rBoxplot {
 		// drop NotDocker
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		// drop ND timeToBuild
-		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
 		// only OK BUILD !!
 		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
