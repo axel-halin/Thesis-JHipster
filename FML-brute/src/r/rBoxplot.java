@@ -315,8 +315,10 @@ public class rBoxplot {
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
 		re.eval("dataBuildToolBuildResult <- data.frame(table(data$searchEngine, data$Build))");
 		
-		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", temp$Var2),]");
-		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", temp$Var2),]");
+		//re.eval("print(dataBuildToolBuildResult)");
+		
+		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", dataBuildToolBuildResult$Var2),]");
+		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", dataBuildToolBuildResult$Var2),]");
 		
 		re.eval("buildOK <- as.vector(buildOK$Freq)");
 		re.eval("buildKO <- as.vector(buildKO$Freq)");
@@ -331,4 +333,5 @@ public class rBoxplot {
 		re.eval("pie(buildKO, labels = labels, main=\"Proportion of build failed by build tool\")");
 		re.eval("dev.off()");
 	}
+
 }

@@ -332,6 +332,8 @@ public class Oracle {
 					generationTime = generationTimeDouble.toString();
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
 
+					// TODO add .jhl file to create entities
+					
 					_log.info("Generation complete ! Trying to compile the App...");
 					compileApp(jDirectory);
 
