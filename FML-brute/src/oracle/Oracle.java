@@ -37,10 +37,10 @@ public class Oracle {
 	private static ResultChecker resultChecker = null;
 	private static CSVUtils csvUtils = null;
 
-	private Thread threadRegistry;
-	private Thread threadUAA;
+	private static Thread threadRegistry;
+	private static Thread threadUAA;
 
-	private void startProcess(String fileName, String desiredDirectory){
+	private static void startProcess(String fileName, String desiredDirectory){
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
@@ -65,7 +65,7 @@ public class Oracle {
 	 * @throws InterruptedException 
 	 * @throws IOException 
 	 */
-	private void generateApp(String jDirectory) throws InterruptedException, IOException{
+	private static void generateApp(String jDirectory) throws InterruptedException, IOException{
 		startProcess("./generate.sh",JHIPSTERS_DIRECTORY+"/"+jDirectory+"/");
 	}
 
@@ -74,7 +74,7 @@ public class Oracle {
 	 * 
 	 * @param jDirectory Name of the folder
 	 */
-	private boolean checkGenerateApp(String jDirectory) throws FileNotFoundException{
+	private static boolean checkGenerateApp(String jDirectory) throws FileNotFoundException{
 
 		String text = "";
 
@@ -96,7 +96,7 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @param system boolean type of the system (linux then true, else false)
 	 */
-	private void compileApp(String jDirectory){
+	private static void compileApp(String jDirectory){
 		startProcess("./compile.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
@@ -105,7 +105,7 @@ public class Oracle {
 	 * 
 	 * @param jDirectory Name of the folder
 	 */
-	private boolean checkCompileApp(String jDirectory) throws FileNotFoundException{
+	private static boolean checkCompileApp(String jDirectory) throws FileNotFoundException{
 		String text = "";
 
 		//extract log
@@ -126,7 +126,7 @@ public class Oracle {
 	 * @param system boolean type of the system (linux then true, else false)
 	 * @throws InterruptedException 
 	 */
-	private void buildApp(String jDirectory) throws InterruptedException{
+	private static void buildApp(String jDirectory) throws InterruptedException{
 		startProcess("./build.sh", getjDirectory(jDirectory));
 	}
 
@@ -136,7 +136,7 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @throws InterruptedException 
 	 */
-	private void unitTestsApp(String jDirectory) throws InterruptedException{
+	private static void unitTestsApp(String jDirectory) throws InterruptedException{
 		startProcess("./unitTest.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
 
@@ -147,7 +147,7 @@ public class Oracle {
 	 * @param jDirectory Name of the folder
 	 * @return The relative path to folder with name jDirectory.
 	 */
-	private String getjDirectory(String jDirectory) {
+	private static String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
 	}
 
@@ -158,7 +158,7 @@ public class Oracle {
 	 *  
 	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
-	private void initialization(boolean docker, String applicationType, String authentication){
+	private static void initialization(boolean docker, String applicationType, String authentication){
 		_log.info("Starting intialization scripts...");
 		if(!docker){
 			// Start database services
@@ -191,7 +191,7 @@ public class Oracle {
 	/**
 	 * Terminate the Oracle by ending JHipster Registry and UAA servers.
 	 */
-	private void termination(){
+	private static void termination(){
 		try{
 			threadRegistry.interrupt();
 			threadUAA.interrupt();
@@ -201,21 +201,23 @@ public class Oracle {
 		
 	}
 
-	private void cleanUp(String jDirectory, boolean docker){
+	private static void cleanUp(String jDirectory, boolean docker){
 		if (docker) startProcess("./dockerStop.sh", getjDirectory(jDirectory));
 		else startProcess("./killScript.sh", getjDirectory(jDirectory));
 	}
 
-	private void dockerCompose(String jDirectory){
+	private static void dockerCompose(String jDirectory){
 		// Run the App
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
 
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
-	@Test
-	public void genJHipsterVariants() throws Exception{
+	/*@Test
+	public void genJHipsterVariants() throws Exception{*/
+	public static void main(String[] args) throws Exception{
 
 		//Create CSV file JHipster if not exist.
 		File f = new File("jhipster.csv");
@@ -267,6 +269,7 @@ public class Oracle {
 			String databaseType= "X";
 			String devDatabaseType= "X";
 			String prodDatabaseType= "X";
+			String buildTool = "X";
 			String searchEngine= "X";
 			String enableSocialSignIn= "X";
 			String useSass= "X";
@@ -299,7 +302,8 @@ public class Oracle {
 			if (object.get("databaseType") != null) databaseType = object.get("databaseType").toString();
 			if (object.get("devDatabaseType") != null) devDatabaseType = object.get("devDatabaseType").toString();
 			if (object.get("prodDatabaseType") != null) prodDatabaseType = object.get("prodDatabaseType").toString();
-			if (object.get("searchEngine") != null) searchEngine = object.get("buildTool").toString();
+			if (object.get("buildTool") != null) buildTool = object.get("buildTool").toString();
+			if (object.get("searchEngine") != null) searchEngine = object.get("searchEngine").toString();
 			if (object.get("enableSocialSignIn") != null) enableSocialSignIn = object.get("enableSocialSignIn").toString();
 			if (object.get("useSass") != null) useSass = object.get("useSass").toString();
 			if (object.get("enableTranslation") != null) enableTranslation = object.get("enableTranslation").toString();
@@ -308,8 +312,8 @@ public class Oracle {
 			_log.info("Check if this config isn't done yet...");
 
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
-					websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
-
+					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
+// TODO change buildTool in checknotexistlinecsv
 			boolean check = CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc);
 
 			// IF check TRUE the Generate else next
@@ -352,8 +356,9 @@ public class Oracle {
 						cucumber= resultChecker.extractCucumber("test.log");
 						
 						csvUtils = new CSVUtils(getjDirectory(jDirectory));
+												
 						// JACOCO Coverage results are only available with Maven
-						if(searchEngine.equals("\"maven\"")){
+						if(buildTool.equals("\"maven\"")){
 							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
 							coverageBranches = resultChecker.extractCoverageBranches("index.html");
 							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
@@ -414,11 +419,13 @@ public class Oracle {
 						_log.error("App Compilation Failed ...");
 						compile ="KO";
 						compileTime = "KO";
+						stacktracesBuild = "COMPILATION ERROR";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 					}
 				} else{
 					_log.error("App Generation Failed...");
 					generation ="KO";
+					stacktracesBuild = "GENERATION ERROR";
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
 				}
 
@@ -429,7 +436,7 @@ public class Oracle {
 
 				//New line for file csv With Docker
 				String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
-						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
 						stacktracesBuildWithDocker,buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
 						resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
@@ -443,7 +450,7 @@ public class Oracle {
 
 				//New line for file csv without Docker
 				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
-						websocket,databaseType,devDatabaseType,prodDatabaseType,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,"NOTDOCKER",
 						buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
 						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
@@ -457,5 +464,14 @@ public class Oracle {
 		}
 		_log.info("Termination...");
 		termination();
+	}
+	
+	/**
+	 * Create CSV BUGS 
+	 */
+	@Test
+	public void writeCSVBugs() throws Exception{
+		//boolean false = not check doublon , true yes
+		CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
 	}
 }
