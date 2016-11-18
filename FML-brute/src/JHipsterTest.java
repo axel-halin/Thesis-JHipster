@@ -439,7 +439,7 @@ public class JHipsterTest extends FMLTest{
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
 
-			if(i==5){
+			if(i==300){
 					_log.info("Stopping at 300...");
 					System.exit(0);
 				}

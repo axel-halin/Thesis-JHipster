@@ -29,9 +29,12 @@ public class ScriptsBuilder {
 		generateBuildScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
 				
-		if (jconf.testFrameworks.length>0) 
+		if (jconf.testFrameworks.length>0) {
 			generateTestScript(jconf, jDirectory);
 			generateTestDockerScript(jconf, jDirectory);
+		}
+		
+		if(jconf.databaseType.equals("sql")) generateEntitiesScript(jDirectory);
 	}
 	
 	/**
@@ -272,6 +275,16 @@ public class ScriptsBuilder {
 		script += properties.getProperty("killUAA")+"\n";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
 	}
+	
+	private void generateEntitiesScript(String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		Properties properties = getProperties(PROPERTIES_FILE);
+		script += properties.getProperty("importJDL")+"\n";
+		script += properties.getProperty("generateJDL")+"\n";
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"generateJDL.sh", script);
+	}
+	
+	
 	
 	private static String getjDirectory(String jDirectory) {
 		return JHIPSTERS_DIRECTORY + "/" + jDirectory + "/";
