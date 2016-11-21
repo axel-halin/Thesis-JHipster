@@ -145,9 +145,12 @@ public class ScriptsBuilder {
 								script += " >> testGatling.log 2>&1\n";
 								break;
 				case "protractor": 	// TODO Server App must be running!
-									script += "gulp protractor >> testProtractor.log 2>&1\n";
+									script += "xvfb-run gulp protractor >> testProtractor.log 2>&1\n";
 									break;
-				case "cucumber": break; // Already tested in ./mvnw clean test
+				case "cucumber": if(jconf.buildTool.equals("maven")) script += "./mvnw test";
+								 else script += "./gradlew test";
+								 script += " >> testGatling.log 2>&1\n";
+								 break;
 			}
 		}
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"test.sh", script);
@@ -170,8 +173,7 @@ public class ScriptsBuilder {
 									script += "./gradlew gatlingRun -x cleanResources";
 								script += " >> testDockerGatling.log 2>&1\n";
 								break;
-				case "protractor": 	// TODO Server App must be running!
-									script += "gulp protractor >> testDockerProtractor.log 2>&1\n";
+				case "protractor": 	script += "xvfb-run gulp protractor >> testDockerProtractor.log 2>&1\n";
 									break;
 				case "cucumber": break; // Already tested in ./mvnw clean test
 			}
