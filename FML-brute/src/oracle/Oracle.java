@@ -36,6 +36,7 @@ public class Oracle {
 	private static final String DEFAULT_NOT_FOUND_VALUE ="ND";
 	private static final String SUCCEED ="OK";
 	private static final String FAIL="KO";
+	
 
 
 	private static ResultChecker resultChecker = null;
@@ -231,47 +232,47 @@ public class Oracle {
 			Id = String.valueOf(f.length());
 
 			//Strings used for the csv
-			String generation = "X";
-			String generationTime = "X";
-			String stacktracesGen = "X";
+			String generation = DEFAULT_NOT_FOUND_VALUE;
+			String generationTime = DEFAULT_NOT_FOUND_VALUE;
+			String stacktracesGen = DEFAULT_NOT_FOUND_VALUE;
 			String compile = FAIL;
 			String compileTime = DEFAULT_NOT_FOUND_VALUE;
 			String stacktracesCompile = DEFAULT_NOT_FOUND_VALUE;
-			StringBuilder build = new StringBuilder("KO");
+			StringBuilder build = new StringBuilder(FAIL);
 			String stacktracesBuild = DEFAULT_NOT_FOUND_VALUE;
 			String buildTime = DEFAULT_NOT_FOUND_VALUE;
-			StringBuilder buildWithDocker = new StringBuilder("KO");
+			StringBuilder buildWithDocker = new StringBuilder(FAIL);
 			String stacktracesBuildWithDocker = DEFAULT_NOT_FOUND_VALUE;
 			String buildTimeWithDocker = DEFAULT_NOT_FOUND_VALUE;
 			String buildTimeWithDockerPackage = DEFAULT_NOT_FOUND_VALUE;
 			//jsonStrings
-			String applicationType = "X";
-			String authenticationType = "X";
-			String hibernateCache = "X";
-			String clusteredHttpSession = "X";
-			String websocket = "X";
-			String databaseType= "X";
-			String devDatabaseType= "X";
-			String prodDatabaseType= "X";
-			String buildTool = "X";
-			String searchEngine= "X";
-			String enableSocialSignIn= "X";
-			String useSass= "X";
-			String enableTranslation = "X";
-			String testFrameworks ="X";
+			String applicationType = DEFAULT_NOT_FOUND_VALUE;
+			String authenticationType = DEFAULT_NOT_FOUND_VALUE;
+			String hibernateCache = DEFAULT_NOT_FOUND_VALUE;
+			String clusteredHttpSession = DEFAULT_NOT_FOUND_VALUE;
+			String websocket = DEFAULT_NOT_FOUND_VALUE;
+			String databaseType= DEFAULT_NOT_FOUND_VALUE;
+			String devDatabaseType= DEFAULT_NOT_FOUND_VALUE;
+			String prodDatabaseType= DEFAULT_NOT_FOUND_VALUE;
+			String buildTool = DEFAULT_NOT_FOUND_VALUE;
+			String searchEngine= DEFAULT_NOT_FOUND_VALUE;
+			String enableSocialSignIn= DEFAULT_NOT_FOUND_VALUE;
+			String useSass= DEFAULT_NOT_FOUND_VALUE;
+			String enableTranslation = DEFAULT_NOT_FOUND_VALUE;
+			String testFrameworks =DEFAULT_NOT_FOUND_VALUE;
 			//Tests part
-			String resultsTest= "X";
-			String cucumber= "X";
-			String karmaJS= "X";
-			String gatling = "X";
-			String protractor = "X";
-			String gatlingDocker = "X";
-			String protractorDocker = "X";
+			String resultsTest= DEFAULT_NOT_FOUND_VALUE;
+			String cucumber= DEFAULT_NOT_FOUND_VALUE;
+			String karmaJS= DEFAULT_NOT_FOUND_VALUE;
+			String gatling = DEFAULT_NOT_FOUND_VALUE;
+			String protractor = DEFAULT_NOT_FOUND_VALUE;
+			String gatlingDocker = DEFAULT_NOT_FOUND_VALUE;
+			String protractorDocker = DEFAULT_NOT_FOUND_VALUE;
 			StringBuilder imageSize = new StringBuilder(DEFAULT_NOT_FOUND_VALUE);
-			String coverageInstuctions= "X";
-			String coverageBranches= "X";
-			String coverageJSStatements = "X";
-			String coverageJSBranches = "X";
+			String coverageInstuctions= DEFAULT_NOT_FOUND_VALUE;
+			String coverageBranches= DEFAULT_NOT_FOUND_VALUE;
+			String coverageJSStatements = DEFAULT_NOT_FOUND_VALUE;
+			String coverageJSBranches = DEFAULT_NOT_FOUND_VALUE;
 
 			//Get Json strings used for the csv
 			JsonParser jsonParser = new JsonParser();
@@ -298,11 +299,9 @@ public class Oracle {
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
 
-			boolean check = CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc);
+			//check if the variant is present or not in the CSV else next
 
-			// IF check TRUE then Generate else next
-
-			if(check)
+			if(CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc))
 			{
 				_log.info("Generating the App..."); 
 				long millis = System.currentTimeMillis();
@@ -401,7 +400,7 @@ public class Oracle {
 						buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker 
 					} else{
 						_log.error("App Compilation Failed ...");
-						compile =FAIL;
+						compile = FAIL;
 						compileTime = FAIL;
 						stacktracesBuild = "COMPILATION ERROR";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
@@ -456,6 +455,6 @@ public class Oracle {
 	@Test
 	public void writeCSVBugs() throws Exception{
 		//boolean false = not check doublon , true yes
-	//	CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
+		CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
 	}
 }
