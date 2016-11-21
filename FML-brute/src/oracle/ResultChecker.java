@@ -1,5 +1,6 @@
 package oracle;
 
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
@@ -28,6 +29,53 @@ public class ResultChecker {
 
 	public String getPath(){return path;}
 
+	/**
+	 * Check the App is generated successfully
+	 * 
+	 * @param file Name to check
+	 * @return true if the app is well generated
+	 */
+	public boolean checkGenerateApp(String fileName){
+
+		try{
+		//extract log
+		String text = Files.readFileIntoString(path +fileName);
+
+		//CHECK IF Server app generated successfully.
+		//OR Client app generated successfully.
+		Matcher m = Pattern.compile("((.*?)Server app generated successfully.)").matcher(text);
+		Matcher m2 = Pattern.compile("((.*?)Client app generated successfully.)").matcher(text);
+
+		while(m.find() | m2.find()) return true; 
+		return false;
+		} catch (Exception e){
+			return false;
+		}
+	}
+	
+	/**
+	 * Check the App is compiled successfully
+	 * 
+	 * @param file Name to check
+	 * @return true if the app is well compiled
+	 */
+	public boolean checkCompileApp(String fileName) throws FileNotFoundException{
+
+		try{
+		//extract log
+		String text = Files.readFileIntoString(path + fileName);
+
+		//CHECK IF BUILD FAILED THEN false
+		Matcher m1 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
+		Matcher m2 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
+
+		while(m1.find() | m2.find()) return false;
+		return true;
+		} catch (Exception e){
+			return false;
+		}
+	}
+	
 	/**
 	 * Check the App is build successfully
 	 * 

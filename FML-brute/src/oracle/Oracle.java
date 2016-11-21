@@ -74,27 +74,6 @@ public class Oracle {
 	}
 
 	/**
-	 * Check the App is generated successfully
-	 * 
-	 * @param jDirectory Name of the folder
-	 */
-	private static boolean checkGenerateApp(String jDirectory) throws FileNotFoundException{
-
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "generate.log");
-
-		//CHECK IF Server app generated successfully.
-		//OR Client app generated successfully.
-		Matcher m = Pattern.compile("((.*?)Server app generated successfully.)").matcher(text);
-		Matcher m2 = Pattern.compile("((.*?)Client app generated successfully.)").matcher(text);
-
-		while(m.find() | m2.find()) return true; 
-		return false;
-	}
-
-	/**
 	 * Compile the App from the yo-rc.json.
 	 * 
 	 * @param jDirectory Name of the folder
@@ -102,25 +81,6 @@ public class Oracle {
 	 */
 	private static void compileApp(String jDirectory){
 		startProcess("./compile.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
-	}
-
-	/**
-	 * Check the App is compile successfully
-	 * 
-	 * @param jDirectory Name of the folder
-	 */
-	private static boolean checkCompileApp(String jDirectory) throws FileNotFoundException{
-		String text = "";
-
-		//extract log
-		text = Files.readFileIntoString(getjDirectory(jDirectory) + "compile.log");
-
-		//CHECK IF BUILD FAILED THEN false
-		Matcher m1 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
-		Matcher m2 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-
-		while(m1.find() | m2.find()) return false;
-		return true;
 	}
 
 	/**
@@ -221,7 +181,7 @@ public class Oracle {
 	 * @param path of the file to check
 	 * @return true if the file exist
 	 */
-	private static boolean checkIfFileExist(String file){
+	private static boolean checkIfFileNotExist(String file){
 		File f = new File(file);
 		if(!f.exists()) 
 			{return true;}
@@ -232,26 +192,26 @@ public class Oracle {
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
-	/*@Test
-	public void genJHipsterVariants() throws Exception{*/
+	//@Test
+	//public void genJHipsterVariants() throws Exception{
 	public static void main(String[] args) throws Exception{
 
 		//Create CSV file JHipster if not exist.
-		if (checkIfFileExist("jhipster.csv"))
+		if (checkIfFileNotExist("jhipster.csv"))
 		{
 		_log.info("Create New CSV File JHipster");
 		CSVUtils.createCSVFileJHipster("jhipster.csv"); 
 		}
 		
 		//Create CSV file Coverage if not exist.
-		if (checkIfFileExist("coverageJACOCO.csv"))
+		if (checkIfFileNotExist("coverageJACOCO.csv"))
 		{
 		_log.info("Create New CSV File Coverage");
 		CSVUtils.createCSVFileCoverage("coverageJACOCO.csv");
 		}
 		
 		//Create CSV file Coverage if not exist.
-		if (checkIfFileExist("cucumber.csv"))
+		if (checkIfFileNotExist("cucumber.csv"))
 		{
 		_log.info("Create New CSV File Cucumber");
 		CSVUtils.createCSVCucumber("cucumber.csv");
@@ -337,10 +297,10 @@ public class Oracle {
 
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
-			// TODO change buildTool in checknotexistlinecsv
+
 			boolean check = CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc);
 
-			// IF check TRUE the Generate else next
+			// IF check TRUE then Generate else next
 
 			if(check)
 			{
@@ -352,7 +312,7 @@ public class Oracle {
 
 				_log.info("Checking the generation of the App...");
 
-				if(checkGenerateApp(jDirectory)){
+				if(resultChecker.checkGenerateApp("generate.log")){
 					generation =SUCCEED;
 					// Time to Generate
 					Long generationTimeLong = millisAfterGenerate - millis;
@@ -365,7 +325,7 @@ public class Oracle {
 					_log.info("Generation complete ! Trying to compile the App...");
 					compileApp(jDirectory);
 
-					if(checkCompileApp(jDirectory)){
+					if(resultChecker.checkCompileApp("compile.log")){
 						compile =SUCCEED;
 						compileTime = resultChecker.extractTime("compile.log");
 						String[] partsCompile = compileTime.split(";");
@@ -496,6 +456,6 @@ public class Oracle {
 	@Test
 	public void writeCSVBugs() throws Exception{
 		//boolean false = not check doublon , true yes
-		CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
+	//	CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
 	}
 }
