@@ -33,7 +33,11 @@ public class Oracle {
 	private static final String projectDirectory = System.getProperty("user.dir");
 	private static final String JS_COVERAGE_PATH = "target/test-results/coverage/report-lcov/lcov-report/index.html";
 	private static final String JS_COVERAGE_PATH_GRADLE = "build/test-results/coverage/report-lcov/lcov-report/index.html";
-	
+	private static final String DEFAULT_NOT_FOUND_VALUE ="ND";
+	private static final String SUCCEED ="OK";
+	private static final String FAIL="KO";
+
+
 	private static ResultChecker resultChecker = null;
 	private static CSVUtils csvUtils = null;
 
@@ -114,7 +118,7 @@ public class Oracle {
 		//CHECK IF BUILD FAILED THEN false
 		Matcher m1 = Pattern.compile("((.*?)BUILD FAILED)").matcher(text);
 		Matcher m2 = Pattern.compile("((.*?)BUILD FAILURE)").matcher(text);
-		
+
 		while(m1.find() | m2.find()) return false;
 		return true;
 	}
@@ -167,11 +171,11 @@ public class Oracle {
 				// Start Jhipster Registry
 				threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));
 				threadRegistry.start();
-				
+
 				// Let Jhipster Registry initiate before attempting to launch UAA Server...
 				try{Thread.sleep(30000);}
 				catch(Exception e){_log.error(e.getMessage());}
-				
+
 				if(authentication.equals("\"uaa\"")){
 					// Start UAA Server
 					threadUAA = new Thread(new ThreadUAA(projectDirectory+"/"+JHIPSTERS_DIRECTORY+"/uaa/"));
@@ -198,7 +202,7 @@ public class Oracle {
 		} catch (Exception e){
 			_log.error(e.getMessage());
 		}
-		
+
 	}
 
 	private static void cleanUp(String jDirectory, boolean docker){
@@ -210,8 +214,21 @@ public class Oracle {
 		// Run the App
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
 	}	
-
 	
+	/**
+	 * Check If the file exist
+	 *  
+	 * @param path of the file to check
+	 * @return true if the file exist
+	 */
+	private static boolean checkIfFileExist(String file){
+		File f = new File(file);
+		if(!f.exists()) 
+			{return true;}
+		else {return false;}
+	}	
+
+
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
@@ -220,19 +237,25 @@ public class Oracle {
 	public static void main(String[] args) throws Exception{
 
 		//Create CSV file JHipster if not exist.
-		File f = new File("jhipster.csv");
-		if(!f.exists()) { 
-			_log.info("Create New CSV File JHipster");
-			CSVUtils.createCSVFileJHipster("jhipster.csv"); 
-		}
-		//Create CSV file Coverage if not exist.
-		File f2 = new File("coverageJACOCO.csv");
-		if(!f2.exists()) { 
-			_log.info("Create New CSV File Coverage");
-			CSVUtils.createCSVFileCoverage("coverageJACOCO.csv"); 
+		if (checkIfFileExist("jhipster.csv"))
+		{
+		_log.info("Create New CSV File JHipster");
+		CSVUtils.createCSVFileJHipster("jhipster.csv"); 
 		}
 		
+		//Create CSV file Coverage if not exist.
+		if (checkIfFileExist("coverageJACOCO.csv"))
+		{
+		_log.info("Create New CSV File Coverage");
+		CSVUtils.createCSVFileCoverage("coverageJACOCO.csv");
+		}
+		
+		//Create CSV file Coverage if not exist.
+		if (checkIfFileExist("cucumber.csv"))
+		{
+		_log.info("Create New CSV File Cucumber");
 		CSVUtils.createCSVCucumber("cucumber.csv");
+		}
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
@@ -240,26 +263,27 @@ public class Oracle {
 
 			String jDirectory = "jhipster"+i;
 			resultChecker = new ResultChecker(getjDirectory(jDirectory));
-			
+
 			//ID CSV ID used for jhipster,coverageJACOCO,cucumber csv
-			String Id = "ND";
+			String Id = DEFAULT_NOT_FOUND_VALUE;
 			// generate a new ID -> depend of the csv lenght
+			File f = new File("jhipster.csv");
 			Id = String.valueOf(f.length());
 
 			//Strings used for the csv
 			String generation = "X";
 			String generationTime = "X";
 			String stacktracesGen = "X";
-			String compile = "KO";
-			String compileTime = "ND";
-			String stacktracesCompile = "ND";
+			String compile = FAIL;
+			String compileTime = DEFAULT_NOT_FOUND_VALUE;
+			String stacktracesCompile = DEFAULT_NOT_FOUND_VALUE;
 			StringBuilder build = new StringBuilder("KO");
-			String stacktracesBuild = "ND";
-			String buildTime = "ND";
+			String stacktracesBuild = DEFAULT_NOT_FOUND_VALUE;
+			String buildTime = DEFAULT_NOT_FOUND_VALUE;
 			StringBuilder buildWithDocker = new StringBuilder("KO");
-			String stacktracesBuildWithDocker = "ND";
-			String buildTimeWithDocker = "ND";
-			String buildTimeWithDockerPackage = "ND";
+			String stacktracesBuildWithDocker = DEFAULT_NOT_FOUND_VALUE;
+			String buildTimeWithDocker = DEFAULT_NOT_FOUND_VALUE;
+			String buildTimeWithDockerPackage = DEFAULT_NOT_FOUND_VALUE;
 			//jsonStrings
 			String applicationType = "X";
 			String authenticationType = "X";
@@ -283,7 +307,7 @@ public class Oracle {
 			String protractor = "X";
 			String gatlingDocker = "X";
 			String protractorDocker = "X";
-			StringBuilder imageSize = new StringBuilder("ND");
+			StringBuilder imageSize = new StringBuilder(DEFAULT_NOT_FOUND_VALUE);
 			String coverageInstuctions= "X";
 			String coverageBranches= "X";
 			String coverageJSStatements = "X";
@@ -313,11 +337,11 @@ public class Oracle {
 
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
-// TODO change buildTool in checknotexistlinecsv
+			// TODO change buildTool in checknotexistlinecsv
 			boolean check = CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc);
 
 			// IF check TRUE the Generate else next
-			
+
 			if(check)
 			{
 				_log.info("Generating the App..."); 
@@ -329,7 +353,7 @@ public class Oracle {
 				_log.info("Checking the generation of the App...");
 
 				if(checkGenerateApp(jDirectory)){
-					generation ="OK";
+					generation =SUCCEED;
 					// Time to Generate
 					Long generationTimeLong = millisAfterGenerate - millis;
 					Double generationTimeDouble = generationTimeLong/1000.0;
@@ -337,12 +361,12 @@ public class Oracle {
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
 
 					// TODO add .jhl file to create entities
-					
+
 					_log.info("Generation complete ! Trying to compile the App...");
 					compileApp(jDirectory);
 
 					if(checkCompileApp(jDirectory)){
-						compile ="OK";
+						compile =SUCCEED;
 						compileTime = resultChecker.extractTime("compile.log");
 						String[] partsCompile = compileTime.split(";");
 						compileTime = partsCompile[0]; // delete the ";" used for Docker
@@ -350,13 +374,13 @@ public class Oracle {
 
 						_log.info("Compilation success ! Launch Unit Tests...");
 						unitTestsApp(jDirectory);
-					
+
 						resultsTest = resultChecker.extractResultsTest("test.log");
 						karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
 						cucumber= resultChecker.extractCucumber("test.log");
-						
+
 						csvUtils = new CSVUtils(getjDirectory(jDirectory));
-												
+
 						// JACOCO Coverage results are only available with Maven
 						if(buildTool.equals("\"maven\"")){
 							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
@@ -367,7 +391,7 @@ public class Oracle {
 							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH_GRADLE);
 							coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH_GRADLE);
 						}
-						
+
 						//Extract CSV Coverage Data and write in coverage.csv
 						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
 
@@ -382,20 +406,20 @@ public class Oracle {
 						//build WITH docker
 						dockerCompose(jDirectory);
 						t1.done();
-						
+
 						if(imageSize.toString().equals("")){
 							imageSize.delete(0, 5);
-							imageSize.append("ND");
+							imageSize.append(DEFAULT_NOT_FOUND_VALUE);
 						}
-						
-						if(buildWithDocker.toString().equals("KO")) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+
+						if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
 						String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
 						String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
 						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
 						if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
-	
+
 						_log.info("Cleaning up... Docker");
 						cleanUp(jDirectory,true);
 
@@ -408,8 +432,8 @@ public class Oracle {
 						buildApp(jDirectory);
 						t2.done();
 						cleanUp(jDirectory,false);
-						
-						if(build.toString().equals("KO")) stacktracesBuild = resultChecker.extractStacktraces("build.log");
+
+						if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
 						gatling = resultChecker.extractGatling("testGatling.log");
 						protractor = resultChecker.extractProtractor("testProtractor.log");
 						buildTime = resultChecker.extractTime("build.log");	
@@ -417,14 +441,14 @@ public class Oracle {
 						buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker 
 					} else{
 						_log.error("App Compilation Failed ...");
-						compile ="KO";
-						compileTime = "KO";
+						compile =FAIL;
+						compileTime = FAIL;
 						stacktracesBuild = "COMPILATION ERROR";
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 					}
 				} else{
 					_log.error("App Generation Failed...");
-					generation ="KO";
+					generation =FAIL;
 					stacktracesBuild = "GENERATION ERROR";
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
 				}
@@ -465,7 +489,7 @@ public class Oracle {
 		_log.info("Termination...");
 		termination();
 	}
-	
+
 	/**
 	 * Create CSV BUGS 
 	 */
