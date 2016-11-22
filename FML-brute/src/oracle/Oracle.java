@@ -139,6 +139,14 @@ public class Oracle {
 	private static void unitTestsApp(String jDirectory) throws InterruptedException{
 		startProcess("./unitTest.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
 	}
+	
+	private static void generateEntities(String jDirectory){
+		try{
+			startProcess("./generateJDL.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);	
+		} catch (Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
+	}
 
 
 	/**
@@ -313,7 +321,7 @@ public class Oracle {
 
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
-// TODO change buildTool in checknotexistlinecsv
+
 			boolean check = CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc);
 
 			// IF check TRUE the Generate else next
@@ -335,9 +343,7 @@ public class Oracle {
 					Double generationTimeDouble = generationTimeLong/1000.0;
 					generationTime = generationTimeDouble.toString();
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
-
-					// TODO add .jhl file to create entities
-					
+	
 					_log.info("Generation complete ! Trying to compile the App...");
 					compileApp(jDirectory);
 
@@ -348,6 +354,8 @@ public class Oracle {
 						compileTime = partsCompile[0]; // delete the ";" used for Docker
 						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 
+						generateEntities(jDirectory);
+										
 						_log.info("Compilation success ! Launch Unit Tests...");
 						unitTestsApp(jDirectory);
 					
@@ -377,7 +385,7 @@ public class Oracle {
 
 						initialization(true, applicationType, authenticationType);
 						imageSize = new StringBuilder();
-						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker);
+						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker, prodDatabaseType);
 						t1.start();
 						//build WITH docker
 						dockerCompose(jDirectory);
@@ -401,7 +409,7 @@ public class Oracle {
 
 						// Building without Docker
 						initialization(false, applicationType, authenticationType);
-						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build);
+						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build, prodDatabaseType);
 						t2.start();
 						_log.info("Trying to build the App without Docker...");
 						//build WITHOUT docker

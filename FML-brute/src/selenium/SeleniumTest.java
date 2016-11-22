@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Script to populate the database using the user interface.
@@ -15,23 +17,43 @@ public class SeleniumTest {
 	private static final Logger _log = Logger.getLogger("SeleniumTest");
 	private static final long PAUSE_TIME = 1400;
 	private final WebDriver driver;
+	private final WebDriverWait wait;
 	private final String baseUrl;
+	private String database = "";
 	
-	public SeleniumTest(){
-		// TODO change path
-		System.setProperty("webdriver.gecko.driver", "/home/axel/Eclipse/Thesis-JHipster/Dependencies/geckodriver");
+	public SeleniumTest(String geckoDriverPath){
+		System.setProperty("webdriver.gecko.driver", geckoDriverPath);
 		driver = new FirefoxDriver();
 		baseUrl = "http://127.0.0.1:8080/#"; 
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		wait = new WebDriverWait(driver,3);
 	}
 	
 	/**
 	 * Launch a Firefox instance and simulate user interaction.
 	 * This simulation create entities using the GUI generated via JHipster generator.
 	 */
-	public void populateDB(){
+	public void populateDB(String database){
+		this.database = database;
 		driver.get(baseUrl);
 		login("admin","admin");
+		
+		populateRegion();
+		populateCountry();
+		populateLocation();
+		populateDepartment();
+		populateTask();
+		populateEmployee();
+			
+		
+		//addJob("job1", "5", "10", "1005");
+		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
+		driver.quit();
+	}
+	
+	private void populateRegion(){
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[2]/ul/li/a/span[2]"))).click();
 		// Add regions
 		addRegion("region1");		// ID = 1001
 		addRegion("region2");		// ID = 1002
@@ -43,39 +65,63 @@ public class SeleniumTest {
 		addRegion("region8");		// ID = 1008
 		addRegion("region9");		// ID = 1009
 		addRegion("region10");		// ID = 1010
+	}
+	
+	private void populateCountry(){
+	    pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[2]/a/span[2]"))).click();
 		// Add countries
-		addCountry("country1","1001");	// ID = 1011
-		addCountry("country2","1002");	// ...
-		addCountry("country3","1003");
-		addCountry("country4","1004");
-		addCountry("country5","1005");
-		addCountry("country6","1006");
-		addCountry("country7","1007");
-		addCountry("country8","1008");
-		addCountry("country9","1009");
-		addCountry("country10","1010");
+		addCountry("country1","1");	// ID = 1011
+		addCountry("country2","2");	// ...
+		addCountry("country3","3");
+		addCountry("country4","4");
+		addCountry("country5","5");
+		addCountry("country6","6");
+		addCountry("country7","7");
+		addCountry("country8","8");
+		addCountry("country9","9");
+		addCountry("country10","10");
+	}
+	
+	private void populateLocation(){
+		pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[3]/a/span[2]"))).click();
 		// Add locations
-		addLocation("address1", "postalCode1", "city1", "province1", "1011");	// ID = 1021
-		addLocation("address2", "postalCode2", "city2", "province2", "1012");
-		addLocation("address3", "postalCode3", "city3", "province3", "1013");
-		addLocation("address4", "postalCode4", "city4", "province4", "1014");
-		addLocation("address5", "postalCode5", "city5", "province5", "1015");
-		addLocation("address6", "postalCode6", "city6", "province6", "1016");
-		addLocation("address7", "postalCode7", "city7", "province7", "1017");
-		addLocation("address8", "postalCode8", "city8", "province8", "1018");
-		addLocation("address9", "postalCode9", "city9", "province9", "1019");
-		addLocation("address10", "postalCode10", "city10", "province10", "1020");
+		addLocation("address1", "postalCode1", "city1", "province1", "1");	// ID = 1021
+		addLocation("address2", "postalCode2", "city2", "province2", "2");
+		addLocation("address3", "postalCode3", "city3", "province3", "3");
+		addLocation("address4", "postalCode4", "city4", "province4", "4");
+		addLocation("address5", "postalCode5", "city5", "province5", "5");
+		addLocation("address6", "postalCode6", "city6", "province6", "6");
+		addLocation("address7", "postalCode7", "city7", "province7", "7");
+		addLocation("address8", "postalCode8", "city8", "province8", "8");
+		addLocation("address9", "postalCode9", "city9", "province9", "9");
+		addLocation("address10", "postalCode10", "city10", "province10", "10");
+	}
+	
+	private void populateDepartment(){
+		pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[4]/a/span[2]"))).click();
 		// Add departments
-		addDepartment("department1", "1021"); // ID = 1031
-		addDepartment("department2", "1022");
-		addDepartment("department3", "1023");
-		addDepartment("department4", "1024");
-		addDepartment("department5", "1025");
-		addDepartment("department6", "1026");
-		addDepartment("department7", "1027");
-		addDepartment("department8", "1028");
-		addDepartment("department9", "1029");
-		addDepartment("department10", "1030");
+		addDepartment("department1", "1"); // ID = 1031
+		addDepartment("department2", "2");
+		addDepartment("department3", "3");
+		addDepartment("department4", "4");
+		addDepartment("department5", "5");
+		addDepartment("department6", "6");
+		addDepartment("department7", "7");
+		addDepartment("department8", "8");
+		addDepartment("department9", "9");
+		addDepartment("department10", "10");
+	}
+	
+	private void populateTask(){
+		pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[5]/a/span[2]"))).click();	
 		// Add tasks
 		addTask("task1","description1"); // ID = 1041
 		addTask("task2","description2");
@@ -87,20 +133,23 @@ public class SeleniumTest {
 		addTask("task8","description8");
 		addTask("task9","description9");
 		addTask("task10","description10");
+	}
+	
+	private void populateEmployee(){
+		pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+	    wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[6]/a/span[2]"))).click();
 		// Add employees
-		addEmployee("firstname1","lastname1","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1031", null); // ID = 1051
-		addEmployee("firstname2","lastname2","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1032", "1051");
-		addEmployee("firstname3","lastname3","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1033", null);
-		addEmployee("firstname4","lastname4","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1034", "1052");
-		addEmployee("firstname5","lastname5","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1035", null);
-		addEmployee("firstname6","lastname6","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1036", "1053");
-		addEmployee("firstname7","lastname7","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1037", null);
-		addEmployee("firstname8","lastname8","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1038", "1055");
-		addEmployee("firstname9","lastname9","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1039", null);
-		addEmployee("firstname10","lastname10","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1040", null);
-		//addJob("job1", "5", "10", "1005");
-		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
-		driver.quit();
+		addEmployee("firstname1","lastname1","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "1", null); // ID = 1051
+		addEmployee("firstname2","lastname2","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "2", "1");
+		addEmployee("firstname3","lastname3","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "3", null);
+		addEmployee("firstname4","lastname4","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "4", "2");
+		addEmployee("firstname5","lastname5","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "5", null);
+		addEmployee("firstname6","lastname6","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "6", "3");
+		addEmployee("firstname7","lastname7","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "7", null);
+		addEmployee("firstname8","lastname8","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "8", "5");
+		addEmployee("firstname9","lastname9","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "9", null);
+		addEmployee("firstname10","lastname10","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "10", null);
 	}
 	
 	/**
@@ -139,13 +188,9 @@ public class SeleniumTest {
 	 * @param regionName Name of the Region entity to add.
 	 */
 	private void addRegion(String regionName){
-	    driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[2]/ul/li/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_regionName")).clear();
-	    driver.findElement(By.id("field_regionName")).sendKeys(regionName);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+		clickButton();
+		sendKeysByID("field_regionName", regionName, false);
+		clickButton();
 	}
 	
 	/**
@@ -155,15 +200,15 @@ public class SeleniumTest {
 	 * @param regionID Id number of the related Region entity.
 	 */
 	private void addCountry(String countryName, String regionID){
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[2]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_countryName")).clear();
-	    driver.findElement(By.id("field_countryName")).sendKeys(countryName);
-	    // Sendkeys to select option from dropdown list (won't work with Select class)
-	    driver.findElement(By.id("field_region")).sendKeys(regionID);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();;
-	    pause(PAUSE_TIME);
+		clickButton();
+		sendKeysByID("field_countryName", countryName, false);
+		
+	    if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+	    	if(database.equals("\"postgresql\"")) regionID = String.valueOf(1001+Integer.parseInt(regionID)); // 100X
+	    	sendKeysByID("field_region", regionID, true);
+	    }
+	    
+	    clickButton();
 	}
 	
 	/**
@@ -176,20 +221,18 @@ public class SeleniumTest {
 	 * @param countryID Id number of the matching Country entity
 	 */
 	private void addLocation(String address, String postalCode, String city, String stateProvince, String countryID){
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[3]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_streetAddress")).clear();
-	    driver.findElement(By.id("field_streetAddress")).sendKeys(address);
-	    driver.findElement(By.id("field_postalCode")).clear();
-	    driver.findElement(By.id("field_postalCode")).sendKeys(postalCode);
-	    driver.findElement(By.id("field_city")).clear();
-	    driver.findElement(By.id("field_city")).sendKeys(city);
-	    driver.findElement(By.id("field_stateProvince")).clear();
-	    driver.findElement(By.id("field_stateProvince")).sendKeys(stateProvince);
-	    driver.findElement(By.id("field_country")).sendKeys(countryID);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+		clickButton();
+		sendKeysByID("field_streetAddress", address, false);
+		sendKeysByID("field_postalCode", postalCode, false);
+		sendKeysByID("field_city", city,false);
+		sendKeysByID("field_stateProvince",stateProvince,false);
+		
+		if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+			if(database.equals("\"postgresql\"")) countryID = String.valueOf(1011+Integer.parseInt(countryID)); //101X
+			sendKeysByID("field_country", countryID,true);
+	    }
+		
+		clickButton();
 	}
 	
 	/**
@@ -199,15 +242,15 @@ public class SeleniumTest {
 	 * @param locationID Id number of the related Location entity
 	 */
 	private void addDepartment(String departmentName, String locationID){
-	    // Adding new Department entities
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[4]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_departmentName")).clear();
-	    driver.findElement(By.id("field_departmentName")).sendKeys(departmentName);
-	    driver.findElement(By.id("field_location")).sendKeys(locationID);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+		clickButton();
+		sendKeysByID("field_departmentName", departmentName,false);
+	   
+		if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+			if(database.equals("\"postgresql\"")) locationID = String.valueOf(1021+Integer.parseInt(locationID));
+			sendKeysByID("field_location", locationID,true);
+	    }
+		    
+		clickButton();
 	}
 	
 	/**
@@ -216,42 +259,42 @@ public class SeleniumTest {
 	 * @param title Title of the task
 	 * @param description Description of the task.
 	 */
-	private void addTask(String title, String description){
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[5]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_title")).clear();
-	    driver.findElement(By.id("field_title")).sendKeys(title);
-	    driver.findElement(By.id("field_description")).clear();
-	    driver.findElement(By.id("field_description")).sendKeys(description);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+	private void addTask(String title, String description){   
+		clickButton();
+		sendKeysByID("field_title", title,false);
+		sendKeysByID("field_description", description,false);
+		clickButton();
 	}
 	
+	
 	private void addEmployee(String firstName, String name, String email, String phone, 
-				String date, String commission, String salary, String departmentID, String managerID){
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[6]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_firstName")).clear();
-	    driver.findElement(By.id("field_firstName")).sendKeys(firstName);
-	    driver.findElement(By.id("field_lastName")).clear();
-	    driver.findElement(By.id("field_lastName")).sendKeys(name);
-	    driver.findElement(By.id("field_email")).clear();
-	    driver.findElement(By.id("field_email")).sendKeys(email);
-	    driver.findElement(By.id("field_phoneNumber")).clear();
-	    driver.findElement(By.id("field_phoneNumber")).sendKeys(phone);
-	    driver.findElement(By.id("field_hireDate")).clear();
-	    driver.findElement(By.id("field_hireDate")).sendKeys(date);
-	    driver.findElement(By.id("field_commissionPct")).clear();
-	    driver.findElement(By.id("field_commissionPct")).sendKeys(commission);
-	    driver.findElement(By.id("field_salary")).clear();
-	    driver.findElement(By.id("field_salary")).sendKeys(salary);
-	    driver.findElement(By.id("field_department")).sendKeys(departmentID);
-	    if(managerID!=null) driver.findElement(By.id("field_manager")).sendKeys(managerID);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+				String date, String commission, String salary, String departmentID, String managerID)
+	{
+		clickButton();
+	    sendKeysByID("field_firstName", firstName,false);
+	    sendKeysByID("field_lastName", name,false);
+	    sendKeysByID("field_email", email,false);
+	    sendKeysByID("field_phoneNumber", phone,false);
+	       
+	    sendKeysByID("field_commissionPct", commission,false);
+	    sendKeysByID("field_salary", salary,false);
+	    sendKeysByID("field_hireDate", date,false);
+	    
+	    if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+	    	if(database.equals("\"postgresql\"")) departmentID = String.valueOf(1031+Integer.parseInt(departmentID));
+	    	sendKeysByID("field_department", departmentID,true);
+ 	    }
+	    
+	    if(managerID!=null){
+	    	 if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+	 	    	if(database.equals("\"postgresql\"")) managerID = String.valueOf(1041+Integer.parseInt(managerID));
+	 	    	sendKeysByID("field_manager", managerID,true);
+	 	    }
+	    }
+	    
+	    clickButton();
 	}
+
 	
 	private void addJob(String title, String minSalary, String maxSalary, String employeeID){
 		driver.findElement(By.id("entity-menu")).click();
@@ -281,5 +324,28 @@ public class SeleniumTest {
 	    driver.findElement(By.id("field_employee")).sendKeys(employeeID);
 	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
 	    pause(PAUSE_TIME);
+	}
+	
+	
+	/**
+	 * Method to simulate user interaction with button of css class 'button.btn.btn-primary'.
+	 * This button is either the new entity button or the valid entity button.
+	 */
+	private void clickButton(){
+		wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button.btn.btn-primary")));
+	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
+	}
+	
+	/**
+	 * Method to simulate user interaction with an input field of the interface.
+	 * The input field is identified by its id, and the desired value is passed when the element is visible.
+	 * 
+	 * @param id Id of the input field.
+	 * @param value Value to input.
+	 */
+	private void sendKeysByID(String id, String value, boolean dropDown){
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(id)));
+		if(!dropDown) driver.findElement(By.id(id)).clear();
+		driver.findElement(By.id(id)).sendKeys(value);
 	}
 }

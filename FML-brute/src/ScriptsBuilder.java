@@ -34,7 +34,8 @@ public class ScriptsBuilder {
 			generateTestDockerScript(jconf, jDirectory);
 		}
 		
-		if(jconf.databaseType.equals("sql")) generateEntitiesScript(jDirectory);
+		if(jconf.databaseType.equals("sql")) generateEntitiesScript(jDirectory,true);
+		else generateEntitiesScript(jDirectory,false);
 	}
 	
 	/**
@@ -278,11 +279,13 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
 	}
 	
-	private void generateEntitiesScript(String jDirectory){
+	private void generateEntitiesScript(String jDirectory, boolean sql){
 		String script = "#!/bin/bash\n\n";
 		Properties properties = getProperties(PROPERTIES_FILE);
-		script += properties.getProperty("importJDL")+"\n";
-		script += properties.getProperty("generateJDL")+"\n";
+		// TODO add if condition on SQL type (SQL vs NoSQL) and add other script
+		if (sql) script += properties.getProperty("importJDL")+"\n";
+		else script += properties.getProperty("importJDLNoSQL")+"\n";
+		script += properties.getProperty("generateJDL")+" >> generateJDL.log 2>&1\n";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"generateJDL.sh", script);
 	}
 	

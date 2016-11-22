@@ -346,12 +346,16 @@ public class ResultChecker {
 			Matcher m1 = Pattern.compile("(Exception(.*?)\\n)").matcher(text);
 			Matcher m2 = Pattern.compile("(Caused by(.*?)\\n)").matcher(text);
 			Matcher m3 = Pattern.compile("((.*?)\\[ERROR\\](.*))").matcher(text);
-			Matcher m4 = Pattern.compile("(Error parsing reference:(.*?) is not a valid repository/tag)").matcher(text);
+			Matcher m4 = Pattern.compile("(ERROR:(.*?)\\n)").matcher(text);
+			Matcher m5 = Pattern.compile("(error:(.*?)^)").matcher(text);
+			Matcher m6 = Pattern.compile("(Error parsing reference:(.*?) is not a valid repository/tag)").matcher(text);
 	
 			while(m1.find()) stacktraces = stacktraces + m1.group().toString() + "\n";
 			while(m2.find()) stacktraces = stacktraces + m2.group().toString() + "\n";
 			while(m3.find()) stacktraces = stacktraces + m3.group().toString() + "\n";
-			while(m4.find()) stacktraces = stacktraces + m4.group(1).toString() + "\n";
+			while(m4.find()) stacktraces = stacktraces + m4.group().toString() + "\n";
+			while(m5.find()) stacktraces = stacktraces + m5.group().toString() + "\n";
+			while(m6.find()) stacktraces = stacktraces + m6.group(1).toString() + "\n";
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}

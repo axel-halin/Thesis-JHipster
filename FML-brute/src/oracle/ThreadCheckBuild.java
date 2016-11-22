@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 
-//TODO can use ResultChecker to get PATH
+import selenium.SeleniumTest;
 
 
 /**
@@ -29,17 +29,19 @@ public class ThreadCheckBuild extends Thread {
 	
 	private StringBuilder buildResult;
 	private StringBuilder imageSize;
-	private static volatile boolean isDone = false;
+	private volatile boolean isDone = false;
 	private static final String TEST_FILE = "./test.sh";
 	private static final String DOCKER_TEST_FILE = "./testDocker.sh";
+	private final String database;
 	
 	
-	public ThreadCheckBuild(String path, boolean useDocker, String logFile, StringBuilder imageSize, StringBuilder buildResult){
+	public ThreadCheckBuild(String path, boolean useDocker, String logFile, StringBuilder imageSize, StringBuilder buildResult, String database){
 		this.PATH = path;
 		this.USE_DOCKER = useDocker;
 		this.LOG_FILE = logFile;
 		this.imageSize = imageSize;
 		this.buildResult = buildResult;
+		this.database = database;
 		isDone = false;
 	}
 	
@@ -93,6 +95,11 @@ public class ThreadCheckBuild extends Thread {
 			}
 			
 			if(buildSuccess){
+				if(database.equals("\"mysql\"") || database.equals("\"postgresql\"") 
+				|| database.equals("\"mongodb\"") || database.equals("\"cassandra\"")){
+					SeleniumTest selenium = new SeleniumTest("/home/axel/Eclipse/Thesis-JHipster/Dependencies/geckodriver");
+					selenium.populateDB(database);
+				}
 				_log.info("Build successful ! Trying to run tests...");
 				buildResult.delete(0,5);
 				buildResult.append("OK");
