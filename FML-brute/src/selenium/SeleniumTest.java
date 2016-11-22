@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
  */
 public class SeleniumTest {
 	private static final Logger _log = Logger.getLogger("SeleniumTest");
-	private static final long PAUSE_TIME = 1400;
+	private static final long PAUSE_TIME = 2000;
 	private final WebDriver driver;
 	private final WebDriverWait wait;
 	private final String baseUrl;
@@ -44,7 +44,6 @@ public class SeleniumTest {
 		populateDepartment();
 		populateTask();
 		populateEmployee();
-			
 		
 		//addJob("job1", "5", "10", "1005");
 		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
@@ -60,6 +59,7 @@ public class SeleniumTest {
 		addRegion("region3");		// ID = 1003
 		addRegion("region4");		// ID = 1004
 		addRegion("region5");		// ID = 1005
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addRegion("region6");		// ID = 1006
 		addRegion("region7");		// ID = 1007
 		addRegion("region8");		// ID = 1008
@@ -77,6 +77,7 @@ public class SeleniumTest {
 		addCountry("country3","3");
 		addCountry("country4","4");
 		addCountry("country5","5");
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addCountry("country6","6");
 		addCountry("country7","7");
 		addCountry("country8","8");
@@ -94,6 +95,7 @@ public class SeleniumTest {
 		addLocation("address3", "postalCode3", "city3", "province3", "3");
 		addLocation("address4", "postalCode4", "city4", "province4", "4");
 		addLocation("address5", "postalCode5", "city5", "province5", "5");
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addLocation("address6", "postalCode6", "city6", "province6", "6");
 		addLocation("address7", "postalCode7", "city7", "province7", "7");
 		addLocation("address8", "postalCode8", "city8", "province8", "8");
@@ -111,6 +113,7 @@ public class SeleniumTest {
 		addDepartment("department3", "3");
 		addDepartment("department4", "4");
 		addDepartment("department5", "5");
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addDepartment("department6", "6");
 		addDepartment("department7", "7");
 		addDepartment("department8", "8");
@@ -128,6 +131,7 @@ public class SeleniumTest {
 		addTask("task3","description3");
 		addTask("task4","description4");
 		addTask("task5","description5");
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addTask("task6","description6");
 		addTask("task7","description7");
 		addTask("task8","description8");
@@ -145,6 +149,7 @@ public class SeleniumTest {
 		addEmployee("firstname3","lastname3","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "3", null);
 		addEmployee("firstname4","lastname4","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "4", "2");
 		addEmployee("firstname5","lastname5","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "5", null);
+		if(database.equals("\"mongodb\"") || database.equals("\"cassandra\"")) pause(PAUSE_TIME);
 		addEmployee("firstname6","lastname6","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "6", "3");
 		addEmployee("firstname7","lastname7","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "7", null);
 		addEmployee("firstname8","lastname8","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "8", "5");

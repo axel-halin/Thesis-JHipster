@@ -33,9 +33,8 @@ public class ScriptsBuilder {
 			generateTestScript(jconf, jDirectory);
 			generateTestDockerScript(jconf, jDirectory);
 		}
-		
-		if(jconf.databaseType.equals("sql")) generateEntitiesScript(jDirectory,true);
-		else generateEntitiesScript(jDirectory,false);
+		// TODO Alter if dev and prod profiles
+		generateEntitiesScript(jDirectory,true,jconf.prodDatabaseType);
 	}
 	
 	/**
@@ -279,12 +278,15 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
 	}
 	
-	private void generateEntitiesScript(String jDirectory, boolean sql){
+	private void generateEntitiesScript(String jDirectory, String database){
 		String script = "#!/bin/bash\n\n";
 		Properties properties = getProperties(PROPERTIES_FILE);
-		// TODO add if condition on SQL type (SQL vs NoSQL) and add other script
-		if (sql) script += properties.getProperty("importJDL")+"\n";
-		else script += properties.getProperty("importJDLNoSQL")+"\n";
+
+		if(database.equals("mysql") || database.equals("postgresql") || database.equals("mariadb"))
+			script += properties.getProperty("importJDL")+"\n";
+		else if(database.equals("mongodb"))
+			script += properties.getProperty("importJDLMongo")+"\n";
+		else script += properties.getProperty("importJDLCassandra")+"\n";
 		script += properties.getProperty("generateJDL")+" >> generateJDL.log 2>&1\n";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"generateJDL.sh", script);
 	}
