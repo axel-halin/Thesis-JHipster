@@ -171,6 +171,8 @@ public class CSVUtils {
 		for (Object object : content) {
 
 			row = (String[]) object;
+			
+			// Change if we test more variants...
 
 			if (row[3].toString().equals(line[0].toString())&&row[4].toString().equals(line[1].toString())&&row[5].toString().equals(line[2].toString())
 					&&row[6].toString().equals(line[3].toString())&&row[7].toString().equals(line[4].toString())&&
