@@ -346,7 +346,6 @@ public class Oracle {
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
 			
-			System.out.println(idSpreadsheet_jhipster);
 			//check if the variant is present or not in the SpreadSheet and return the number of lines
 			Integer numberOfLine = SpreadsheetUtils.CheckNotExistLineSpreadSheet(idSpreadsheet_jhipster,yorc);
 
@@ -354,7 +353,6 @@ public class Oracle {
 			// -1 : the yorc is already present
 			if(numberOfLine != -1)
 			{
-			System.out.println(numberOfLine);
 				_log.info("Generating the App..."); 
 				long millis = System.currentTimeMillis();
 				generateApp(jDirectory);
@@ -494,8 +492,7 @@ public class Oracle {
 				//write into CSV file
 				//CSVUtils.writeNewLineCSV("jhipster.csv",line);
 				//write in the Spreadsheet
-				System.out.println(numberOfLine);
-				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line, numberOfLine);
+				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line, i*2-1);
 
 				//WITHOUT DOCKER
 				docker = "false";
@@ -510,7 +507,7 @@ public class Oracle {
 				//write into CSV file
 				//CSVUtils.writeNewLineCSV("jhipster.csv",line2);
 				//write in the Spreadsheet
-				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line2, numberOfLine+1);
+				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line2, i*2);
 			}
 			else {
 				_log.info("This configuration has been already tested");
