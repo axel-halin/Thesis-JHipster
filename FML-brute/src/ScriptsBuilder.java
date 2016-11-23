@@ -34,7 +34,7 @@ public class ScriptsBuilder {
 			generateTestDockerScript(jconf, jDirectory);
 		}
 		// TODO Alter if dev and prod profiles
-		generateEntitiesScript(jDirectory,true,jconf.prodDatabaseType);
+		generateEntitiesScript(jDirectory,jconf.prodDatabaseType);
 	}
 	
 	/**

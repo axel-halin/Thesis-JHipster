@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
@@ -256,17 +257,18 @@ public class Oracle {
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =2;i<=3-1;i++){
+		for (Integer i =1;i<=weightFolder-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
 			resultChecker = new ResultChecker(getjDirectory(jDirectory));
 
-			//ID CSV ID used for jhipster,coverageJACOCO,cucumber csv
+			//ID used for jhipster,coverage,cucumber .csv
 			String Id = DEFAULT_NOT_FOUND_VALUE;
-			// generate a new ID -> depend of the csv lenght
-			File f = new File("jhipster.csv");
-			Id = String.valueOf(f.length());
+			// generate a new ID -> depend of the timestamp
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			//return number of milliseconds since January 1, 1970, 00:00:00 GMT
+			Id = String.valueOf(timestamp.getTime());
 
 			//Strings used for the csv
 			String generation = DEFAULT_NOT_FOUND_VALUE;
