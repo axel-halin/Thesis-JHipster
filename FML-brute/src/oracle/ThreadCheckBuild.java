@@ -95,12 +95,16 @@ public class ThreadCheckBuild extends Thread {
 			}
 			
 			if(buildSuccess){
+				_log.info("Build successful ! Trying to run tests...");
+				
 				if(database.equals("\"mysql\"") || database.equals("\"postgresql\"") 
 				|| database.equals("\"mongodb\"") || database.equals("\"cassandra\"")){
+					_log.info("Starting to populate the database");
 					SeleniumTest selenium = new SeleniumTest("/home/axel/Eclipse/Thesis-JHipster/Dependencies/geckodriver");
 					selenium.populateDB(database);
+					_log.info("Done");
 				}
-				_log.info("Build successful ! Trying to run tests...");
+				_log.info("Running some tests...");
 				buildResult.delete(0,5);
 				buildResult.append("OK");
 				// if success: run Tests

@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
@@ -16,12 +17,15 @@ import org.prop4j.Node;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import csv.CSVUtils;
 import fr.familiar.FMLTest; 
 import fr.familiar.operations.featureide.SATFMLFormula;
 import fr.familiar.variable.FeatureModelVariable;
 import fr.familiar.variable.FeatureVariable;
 import fr.familiar.variable.SetVariable;
 import fr.familiar.variable.Variable;
+import oracle.CucumberResultExtractor;
+import selenium.SeleniumTest;
 
 /**
  * Extension of previous work from Mathieu ACHER, Inria Rennes-Bretagne Atlantique.

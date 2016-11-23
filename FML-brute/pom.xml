@@ -97,5 +97,11 @@
 			<artifactId>google-http-client</artifactId>
 			<version>1.16.0-rc</version>
 		</dependency>
+		<!-- Dependency to run Selenium tests from jar file-->
+		<dependency>
+       		<groupId>org.apache.httpcomponents</groupId>
+       		<artifactId>httpclient</artifactId>
+       		<version>4.3.5</version>
+   		</dependency>
 	</dependencies>
 </project>

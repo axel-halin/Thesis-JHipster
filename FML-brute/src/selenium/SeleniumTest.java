@@ -1,12 +1,15 @@
 package selenium;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.phantomjs.*;
 
 /**
  * Script to populate the database using the user interface.
@@ -35,17 +38,20 @@ public class SeleniumTest {
 	 */
 	public void populateDB(String database){
 		this.database = database;
-		driver.get(baseUrl);
-		login("admin","admin");
-		
-		populateRegion();
-		populateCountry();
-		populateLocation();
-		populateDepartment();
-		populateTask();
-		populateEmployee();
-		
-		//addJob("job1", "5", "10", "1005");
+		try{
+			driver.get(baseUrl);
+			login("admin","admin");
+			
+			populateRegion();
+			populateCountry();
+			populateLocation();
+			populateDepartment();
+			populateTask();
+			populateEmployee();
+			//populateJob();
+		} catch (Exception e){
+			_log.error("Entities not fully populated");
+		}
 		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
 		driver.quit();
 	}
@@ -155,6 +161,23 @@ public class SeleniumTest {
 		addEmployee("firstname8","lastname8","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "8", "5");
 		addEmployee("firstname9","lastname9","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "9", null);
 		addEmployee("firstname10","lastname10","test@test.com","0123456789","2016-10-11 00:00", "10", "10", "10", null);
+	}
+	
+	private void populateJob(){
+		pause(PAUSE_TIME);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("entity-menu"))).click();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[7]/a/span[2]"))).click();
+	    // Add jobs
+		addJob("job1", "5", "10", "1");
+		addJob("job2", "5", "10", "2");
+		addJob("job3", "5", "10", "3");
+		addJob("job4", "5", "10", "4");
+		addJob("job5", "5", "10", "5");
+		addJob("job6", "5", "10", "6");
+		addJob("job7", "5", "10", "7");
+		addJob("job8", "5", "10", "8");
+		addJob("job9", "5", "10", "9");
+		addJob("job10", "5", "10", "10");
 	}
 	
 	/**
@@ -302,19 +325,19 @@ public class SeleniumTest {
 
 	
 	private void addJob(String title, String minSalary, String maxSalary, String employeeID){
-		driver.findElement(By.id("entity-menu")).click();
-	    driver.findElement(By.xpath("//li[7]/a/span[2]")).click();
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    driver.findElement(By.id("field_jobTitle")).clear();
-	    driver.findElement(By.id("field_jobTitle")).sendKeys(title);
-	    driver.findElement(By.id("field_minSalary")).clear();
-	    driver.findElement(By.id("field_minSalary")).sendKeys(minSalary);
-	    driver.findElement(By.id("field_maxSalary")).clear();
-	    driver.findElement(By.id("field_maxSalary")).sendKeys(maxSalary);
-	    driver.findElement(By.id("field_employee")).sendKeys(employeeID);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
-	    pause(PAUSE_TIME);
+		clickButton();
+		sendKeysByID("field_jobTitle", title, false);
+		sendKeysByID("field_minSalary", minSalary, false);
+		sendKeysByID("field_maxSalary", maxSalary, false);
+		
+	    if(!database.equals("\"mongodb\"") && !database.equals("\"cassandra\"")){
+	    	if(database.equals("\"postgresql\"")) employeeID = String.valueOf(1041+Integer.parseInt(employeeID));
+			sendKeysByID("field_employee", employeeID, true);
+ 	    }
+			
+	    clickButton();
 	}
+	
 	
 	private void addJobHistories(String start, String end, String language, String departmentID, String employeeID){
 		driver.findElement(By.id("entity-menu")).click();

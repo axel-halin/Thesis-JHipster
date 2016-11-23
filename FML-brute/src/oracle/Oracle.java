@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
@@ -106,8 +108,10 @@ public class Oracle {
 	}
 	
 	private static void generateEntities(String jDirectory){
+		_log.info("Starting entity JDL import");
 		try{
-			startProcess("./generateJDL.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);	
+			startProcess("./generateJDL.sh", JHIPSTERS_DIRECTORY+"/"+jDirectory);
+			_log.info("Entities created !");
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
@@ -360,7 +364,7 @@ public class Oracle {
 						}
 
 						//Extract CSV Coverage Data and write in coverage.csv
-						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
+						//csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
 
 						_log.info("Compilation success ! Trying to build the App...");
 
@@ -380,13 +384,16 @@ public class Oracle {
 						}
 
 						if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
-						String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
-						String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
-						buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
-						if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
-						gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
-						protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
-
+						else {
+							String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
+							String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
+							buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
+							if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
+							gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
+							protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
+							CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+						}
+						
 						_log.info("Cleaning up... Docker");
 						cleanUp(jDirectory,true);
 
@@ -401,11 +408,17 @@ public class Oracle {
 						cleanUp(jDirectory,false);
 
 						if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
-						gatling = resultChecker.extractGatling("testGatling.log");
-						protractor = resultChecker.extractProtractor("testProtractor.log");
-						buildTime = resultChecker.extractTime("build.log");	
-						String[] partsBuildWithoutDocker = buildTime.split(";");
-						buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker 
+						else {
+							gatling = resultChecker.extractGatling("testGatling.log");
+							protractor = resultChecker.extractProtractor("testProtractor.log");
+							
+							String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+							CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+							
+							buildTime = resultChecker.extractTime("build.log");	
+							String[] partsBuildWithoutDocker = buildTime.split(";");
+							buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
+						}
 					} else{
 						_log.error("App Compilation Failed ...");
 						compile = FAIL;

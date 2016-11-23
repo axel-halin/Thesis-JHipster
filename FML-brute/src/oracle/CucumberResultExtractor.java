@@ -36,13 +36,17 @@ public class CucumberResultExtractor {
 	private static final String ENTITY8 = "TEST-io.variability.jhipster.web.rest.TaskResourceIntTest.xml";
 	
 	
-	private String path = null;
-	private final String CUCUMBER_PATH = "target/surefire-reports/";
+	private String path;
+	private String buildTool;
+	private final String CUCUMBER_PATH_MAVEN = "target/surefire-reports/";
+	private final String CUCUMBER_PATH_GRADLE = "build/test-results/";
 	private static final int NUMBER_ENTITIES = 8;
 	private String[] result = new String[29+(6*NUMBER_ENTITIES)+1];
 	
-	public CucumberResultExtractor(String path){
+	public CucumberResultExtractor(String path, String buildTool){
 		this.path = path;
+		this.buildTool = buildTool;
+		for(int i=0; i<result.length;i++) result[i] = "ND";
 	}
 	
 	private static final Logger _log = Logger.getLogger("CucumberResultExtractor");
@@ -56,21 +60,25 @@ public class CucumberResultExtractor {
 	 * TODO 6 result: update, create, get, getNotExist, delete, getAll
 	 */
 	public String[] extractEntityCucumberTest(){
+		// TODO cucumberpath = Maven|Gradle depending....
+		String cucumberPath;
+		if(buildTool.equals("maven")) cucumberPath = CUCUMBER_PATH_MAVEN;
+		else cucumberPath = CUCUMBER_PATH_GRADLE;
 		// Extracting from common files
-		extractResultFromFile(path+CUCUMBER_PATH+FILE1,0); 		// 3 results
-		extractResultFromFile(path+CUCUMBER_PATH+FILE2,3);		// 7 results
-		extractResultFromFile(path+CUCUMBER_PATH+FILE3,10);		// 12 results
-		extractResultFromFile(path+CUCUMBER_PATH+FILE4,22);		// 5 results
-		extractResultFromFile(path+CUCUMBER_PATH+FILE5,27);		// 2 results
+		extractResultFromFile(path+cucumberPath+FILE1,0); 		// 3 results
+		extractResultFromFile(path+cucumberPath+FILE2,3);		// 7 results
+		extractResultFromFile(path+cucumberPath+FILE3,10);		// 12 results
+		extractResultFromFile(path+cucumberPath+FILE4,22);		// 5 results
+		extractResultFromFile(path+cucumberPath+FILE5,27);		// 2 results
 		// Extracting from user defined entities
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY1,29); 	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY2,35); 	// 7 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY3,42);	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY4,48);	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY5,54);	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY6,60);	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY7,66);	// 6 results
-		extractResultFromFile(path+CUCUMBER_PATH+ENTITY8,72);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY1,29); 	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY2,35); 	// 7 results
+		extractResultFromFile(path+cucumberPath+ENTITY3,42);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY4,48);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY5,54);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY6,60);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY7,66);	// 6 results
+		extractResultFromFile(path+cucumberPath+ENTITY8,72);	// 6 results
 		
 		return result;
 	}
