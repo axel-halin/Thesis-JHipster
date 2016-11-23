@@ -403,8 +403,8 @@ public class Oracle {
 						//csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
 						
 						//Extract CSV Coverage and write in the spreadsheet coverage
-						Integer numberOfLineCoverage = SpreadsheetUtils.CheckNumberLineSpreadSheet(idSpreadsheet_coverage);
-						spreadsheetUtils.writeLinesCoverageCSV("jacoco.csv", idSpreadsheet_coverage, jDirectory, Id, numberOfLineCoverage);
+						//Integer numberOfLineCoverage = SpreadsheetUtils.CheckNumberLineSpreadSheet(idSpreadsheet_coverage);
+						spreadsheetUtils.writeLinesCoverageCSV("jacoco.csv", idSpreadsheet_coverage, jDirectory, Id, i);
 
 						_log.info("Compilation success ! Trying to build the App...");
 
@@ -519,6 +519,7 @@ public class Oracle {
 	 */
 	@Test
 	public void writeCSVBugs() throws Exception{
+		
 		//boolean false = not check doublon , true yes
 		//CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",true);
 	}

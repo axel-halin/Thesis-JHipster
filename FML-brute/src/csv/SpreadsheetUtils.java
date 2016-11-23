@@ -131,17 +131,17 @@ public class SpreadsheetUtils{
 	 */
 	public static void createGoogleSpreadsheet(String filename) throws Exception{
 		Sheets service = getSheetsService();
-		
+
 		SpreadsheetProperties properties = new SpreadsheetProperties()
 				.setTitle(filename);
 		Spreadsheet test = new Spreadsheet()
 				.setProperties(properties)
 				.setSpreadsheetId("jhipster");
-		
+
 		service.spreadsheets().create(test)
 		.execute();
 	}
-	
+
 	/**
 	 * return the number of line if the configuration (yo-rc) doesn't already exist in the GoogleSpreadSheet
 	 * 	else return -1
@@ -151,9 +151,9 @@ public class SpreadsheetUtils{
 	 *  
 	 */
 	public static Integer CheckNotExistLineSpreadSheet(String spreadsheetId, String[] line) throws Exception {   
-		
+
 		Sheets service = getSheetsService();
-		
+
 		String range = "A1:Q";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range)
@@ -166,7 +166,7 @@ public class SpreadsheetUtils{
 			check = values.size();
 			System.out.println(check);
 			for (List row : values) {
-				
+
 				if (!row.isEmpty())
 				{	
 					if (row.get(3).toString().equals(line[0].toString())&&row.get(4).toString().equals(line[1].toString())&&row.get(5).toString().equals(line[2].toString())
@@ -183,7 +183,7 @@ public class SpreadsheetUtils{
 		}
 		return check;
 	}
-	
+
 	/**
 	 * Add new line in the GoogleSpreadSheet at a specific line
 	 * 	
@@ -194,19 +194,19 @@ public class SpreadsheetUtils{
 	 *  
 	 */
 	public static void AddLineSpreadSheet(String spreadsheetId, String[] line, Integer numberOfLine) throws Exception {   
-		
+
 		Sheets service = getSheetsService();
-		
+
 		List<Request> requests = new ArrayList<>();
-		
+
 		List<CellData> values = new ArrayList<>();
-		
+
 		for (int i=0;i<line.length;i++)
 		{
-		values.add(new CellData()
-				.setUserEnteredValue(new ExtendedValue()
-						.setStringValue(line[i].toString())
-						));
+			values.add(new CellData()
+					.setUserEnteredValue(new ExtendedValue()
+							.setStringValue(line[i].toString())
+							));
 		}
 
 		requests.add(new Request()
@@ -224,7 +224,7 @@ public class SpreadsheetUtils{
 		service.spreadsheets().batchUpdate(spreadsheetId, batchUpdateRequest)
 		.execute();
 	}
-	
+
 	/**
 	 * add new line to the Coverage Spreadsheet
 	 *  
@@ -241,6 +241,22 @@ public class SpreadsheetUtils{
 		try{
 			CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
 			String[] row = null;
+			ArrayList<String> array = new ArrayList<String>();
+			array.add(0, "");
+			array.add(1, "");
+			array.add(2, "");
+			array.add(3, "");
+			array.add(4, "");
+			array.add(5, "");
+			array.add(6, "");
+			array.add(7, "");
+			array.add(8, "");
+			array.add(9, "");
+			array.add(10, "");
+			array.add(11, "");
+			array.add(12, "");
+			array.add(13, "");
+			array.add(14, "");
 
 			List content = lines.readAll();
 
@@ -248,50 +264,62 @@ public class SpreadsheetUtils{
 
 				row = (String[]) object;
 
-				String[] line = {Id,jDirectory,row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
-						row[9],row[10],row[11],row[12]};
-
-				{
-					Sheets service = getSheetsService();
-					
-					List<Request> requests = new ArrayList<>();
-					
-					List<CellData> values = new ArrayList<>();
-					
-					for (int i=0;i<line.length;i++)
-					{
-					values.add(new CellData()
-							.setUserEnteredValue(new ExtendedValue()
-									.setStringValue(line[i].toString())
-									));
-					}
-
-					requests.add(new Request()
-							.setUpdateCells(new UpdateCellsRequest()
-									.setStart(new GridCoordinate()
-											.setSheetId(0)
-											.setRowIndex(numberOfLine)
-											.setColumnIndex(0))
-									.setRows(Arrays.asList(
-											new RowData().setValues(values)))
-									.setFields("userEnteredValue,userEnteredFormat.backgroundColor")));
-
-					BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest()
-							.setRequests(requests);
-					service.spreadsheets().batchUpdate(spreadsheetId, batchUpdateRequest)
-					.execute();
-				};
-				
-				numberOfLine ++;
+				array.set(0, Id);
+				array.set(1, jDirectory);
+				array.set(2, array.get(2) + row[0]+";");
+				array.set(3, array.get(3) + row[1]+";");
+				array.set(4, array.get(4) + row[2]+";");
+				array.set(5, array.get(5) + row[3]+";");
+				array.set(6, array.get(6) + row[4]+";");
+				array.set(7, array.get(7) + row[5]+";");
+				array.set(8, array.get(8) + row[6]+";");
+				array.set(9, array.get(9) + row[7]+";");
+				array.set(10, array.get(10) + row[8]+";");
+				array.set(11, array.get(11) + row[9]+";");
+				array.set(12, array.get(12) + row[10]+";");
+				array.set(13, array.get(13) + row[11]+";");
+				array.set(14, array.get(14) + row[12]+";");
 
 			}
 			lines.close();
+			{
+				Sheets service = getSheetsService();
+
+				List<Request> requests = new ArrayList<>();
+
+				List<CellData> values = new ArrayList<>();
+
+				for (int i=0;i<array.size();i++)
+				{
+					values.add(new CellData()
+							.setUserEnteredValue(new ExtendedValue()
+									.setStringValue(array.get(i).toString())
+									));
+				}
+
+				requests.add(new Request()
+						.setUpdateCells(new UpdateCellsRequest()
+								.setStart(new GridCoordinate()
+										.setSheetId(0)
+										.setRowIndex(numberOfLine)
+										.setColumnIndex(0))
+								.setRows(Arrays.asList(
+										new RowData().setValues(values)))
+								.setFields("userEnteredValue,userEnteredFormat.backgroundColor")));
+
+				BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest()
+						.setRequests(requests);
+				service.spreadsheets().batchUpdate(spreadsheetId, batchUpdateRequest)
+				.execute();
+			};
+
+
 		} 
 		catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * return the number of line of a GoogleSpreadSheet
 	 * 
@@ -300,9 +328,9 @@ public class SpreadsheetUtils{
 	 *  
 	 */
 	public static Integer CheckNumberLineSpreadSheet(String spreadsheetId) throws Exception {   
-		
+
 		Sheets service = getSheetsService();
-		
+
 		String range = "A1";
 		ValueRange response = service.spreadsheets().values()
 				.get(spreadsheetId, range)
@@ -310,12 +338,12 @@ public class SpreadsheetUtils{
 		List<List<Object>> values = response.getValues();
 		Integer check = 0;
 		if (values != null && values.size() != 0) {
-		check = values.size();
+			check = values.size();
 		}
 		return check;
 	}
 
-	
+
 	@Test
 	public void googleAPItestCreate() throws Exception{
 		//getGoogleSpreadsheet("1SQMaSYOKUIeRit8oHl3Hgo92G3LKFA9j7odPCmjs624");
