@@ -164,17 +164,21 @@ public class SpreadsheetUtils{
 			System.out.println("No data found.");
 		} else {
 			check = values.size();
+			System.out.println(check);
 			for (List row : values) {
 				
-				if (row.get(3).toString().equals(line[0].toString())&&row.get(4).toString().equals(line[1].toString())&&row.get(5).toString().equals(line[2].toString())
-						&&row.get(6).toString().equals(line[3].toString())&&row.get(7).toString().equals(line[4].toString())&&
-						row.get(8).toString().equals(line[5].toString())&&row.get(9).toString().equals(line[6].toString())
-						&&row.get(10).toString().equals(line[7].toString())&&row.get(11).toString().equals(line[8].toString())
-						&&row.get(12).toString().equals(line[9].toString())&&row.get(13).toString().equals(line[10].toString())
-						&&row.get(14).toString().equals(line[11].toString())&&row.get(15).toString().equals(line[12].toString())&&row.get(16).toString().equals(line[13].toString()))
-				{
-					check = -1;
-				};
+				if (!row.isEmpty())
+				{	
+					if (row.get(3).toString().equals(line[0].toString())&&row.get(4).toString().equals(line[1].toString())&&row.get(5).toString().equals(line[2].toString())
+							&&row.get(6).toString().equals(line[3].toString())&&row.get(7).toString().equals(line[4].toString())&&
+							row.get(8).toString().equals(line[5].toString())&&row.get(9).toString().equals(line[6].toString())
+							&&row.get(10).toString().equals(line[7].toString())&&row.get(11).toString().equals(line[8].toString())
+							&&row.get(12).toString().equals(line[9].toString())&&row.get(13).toString().equals(line[10].toString())
+							&&row.get(14).toString().equals(line[11].toString())&&row.get(15).toString().equals(line[12].toString())&&row.get(16).toString().equals(line[13].toString()))
+					{
+						check = -1;
+					};
+				}
 			}
 		}
 		return check;
