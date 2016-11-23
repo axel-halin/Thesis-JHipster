@@ -1,12 +1,14 @@
 package oracle;
 
 import csv.CSVUtils;
+import csv.SpreadsheetUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
@@ -36,9 +38,8 @@ public class Oracle {
 	private static final String DEFAULT_NOT_FOUND_VALUE ="ND";
 	private static final String SUCCEED ="OK";
 	private static final String FAIL="KO";
+	private static final String PROPERTIES_FILE = "System.properties";
 	
-
-
 	private static ResultChecker resultChecker = null;
 	private static CSVUtils csvUtils = null;
 
@@ -113,7 +114,6 @@ public class Oracle {
 		}
 	}
 
-
 	/**
 	 * Return the path to folder jDirectory (which is in the relative path JHIPSTERS_DIRECTORY/)
 	 * 
@@ -171,7 +171,6 @@ public class Oracle {
 		} catch (Exception e){
 			_log.error(e.getMessage());
 		}
-
 	}
 
 	private static void cleanUp(String jDirectory, boolean docker){
@@ -196,16 +195,41 @@ public class Oracle {
 			{return true;}
 		else {return false;}
 	}	
+	
+	/**
+	 * Retrieve all properties from specified property file.
+	 * 
+	 * @param propFileName Property file to retrieve
+	 * @return All properties included in propFileName
+	 */
+	private Properties getProperties(String propFileName) {
+		InputStream inputStream = null;
+		Properties prop = new Properties();
+
+		try {
+			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+
+			if (inputStream != null) prop.load(inputStream);
+			else throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+			
+		} catch (Exception e) {
+			System.out.println("Exception: " + e);
+		} finally {
+			try{inputStream.close();}
+			catch (IOException e){e.printStackTrace();}
+		}
+		return prop; // default linux
+	}
 
 
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
-	//@Test
-	//public void genJHipsterVariants() throws Exception{
-	public static void main(String[] args) throws Exception{
+	@Test
+	public void genJHipsterVariants() throws Exception{
+	//public static void main(String[] args) throws Exception{
 
-		//Create CSV file JHipster if not exist.
+		/*//Create CSV file JHipster if not exist.
 		if (checkIfFileNotExist("jhipster.csv"))
 		{
 		_log.info("Create New CSV File JHipster");
@@ -224,10 +248,15 @@ public class Oracle {
 		{
 		_log.info("Create New CSV File Cucumber");
 		CSVUtils.createCSVCucumber("cucumber.csv");
-		}
+		}*/
+		
+		//GET ID OF SPREADSHEETS
+		Properties property = getProperties(PROPERTIES_FILE);
+		String idSpreadsheet_jhipster = property.getProperty("idSpreadsheetJhipster");
+		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =1;i<=weightFolder-1;i++){
+		for (Integer i =2;i<=3-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
@@ -306,11 +335,16 @@ public class Oracle {
 
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
+			
+			System.out.println(idSpreadsheet_jhipster);
+			//check if the variant is present or not in the SpreadSheet and return the number of lines
+			Integer numberOfLine = SpreadsheetUtils.CheckNotExistLineSpreadSheet(idSpreadsheet_jhipster,yorc);
 
-			//check if the variant is present or not in the CSV else next
-
-			if(CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc))
+			//if(CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc))
+			// -1 : the yorc is already present
+			if(numberOfLine != -1)
 			{
+			System.out.println(numberOfLine);
 				_log.info("Generating the App..."); 
 				long millis = System.currentTimeMillis();
 				generateApp(jDirectory);
@@ -346,8 +380,9 @@ public class Oracle {
 						karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
 						cucumber= resultChecker.extractCucumber("test.log");
 
-						csvUtils = new CSVUtils(getjDirectory(jDirectory));
-
+						//csvUtils = new CSVUtils(getjDirectory(jDirectory));
+						SpreadsheetUtils spreadsheetUtils = new SpreadsheetUtils(getjDirectory(jDirectory));
+						
 						// JACOCO Coverage results are only available with Maven
 						if(buildTool.equals("\"maven\"")){
 							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
@@ -360,7 +395,11 @@ public class Oracle {
 						}
 
 						//Extract CSV Coverage Data and write in coverage.csv
-						csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
+						//csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
+						
+						//Extract CSV Coverage and write in the spreadsheet coverage
+						Integer numberOfLineCoverage = SpreadsheetUtils.CheckNumberLineSpreadSheet(idSpreadsheet_coverage);
+						spreadsheetUtils.writeLinesCoverageCSV("jacoco.csv", idSpreadsheet_coverage, jDirectory, Id, numberOfLineCoverage);
 
 						_log.info("Compilation success ! Trying to build the App...");
 
@@ -434,7 +473,10 @@ public class Oracle {
 						coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
-				CSVUtils.writeNewLineCSV("jhipster.csv",line);
+				//CSVUtils.writeNewLineCSV("jhipster.csv",line);
+				//write in the Spreadsheet
+				System.out.println(numberOfLine);
+				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line, numberOfLine);
 
 				//WITHOUT DOCKER
 				docker = "false";
@@ -447,7 +489,9 @@ public class Oracle {
 						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
 				//write into CSV file
-				CSVUtils.writeNewLineCSV("jhipster.csv",line2);
+				//CSVUtils.writeNewLineCSV("jhipster.csv",line2);
+				//write in the Spreadsheet
+				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line2, numberOfLine+1);
 			}
 			else {
 				_log.info("This configuration has been already tested");
@@ -463,6 +507,6 @@ public class Oracle {
 	@Test
 	public void writeCSVBugs() throws Exception{
 		//boolean false = not check doublon , true yes
-		CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",false);
+		//CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",true);
 	}
 }
