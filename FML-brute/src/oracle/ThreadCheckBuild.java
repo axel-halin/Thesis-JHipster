@@ -34,6 +34,7 @@ public class ThreadCheckBuild extends Thread {
 	private static final String DOCKER_TEST_FILE = "./testDocker.sh";
 	private final String database;
 	
+	private final String GECKODRIVER_PATH = System.getProperty("user.dir") + "/geckodriver";
 	
 	public ThreadCheckBuild(String path, boolean useDocker, String logFile, StringBuilder imageSize, StringBuilder buildResult, String database){
 		this.PATH = path;
@@ -100,7 +101,7 @@ public class ThreadCheckBuild extends Thread {
 				if(database.equals("\"mysql\"") || database.equals("\"postgresql\"") 
 				|| database.equals("\"mongodb\"") || database.equals("\"cassandra\"")){
 					_log.info("Starting to populate the database");
-					SeleniumTest selenium = new SeleniumTest("/home/axel/Eclipse/Thesis-JHipster/Dependencies/geckodriver");
+					SeleniumTest selenium = new SeleniumTest(GECKODRIVER_PATH);
 					selenium.populateDB(database);
 					_log.info("Done");
 				}
