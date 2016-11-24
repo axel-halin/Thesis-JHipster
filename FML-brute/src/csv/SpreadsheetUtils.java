@@ -1,25 +1,6 @@
 package csv;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.*;
-
-import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
-
-import com.google.api.services.sheets.v4.Sheets;
-
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,7 +9,31 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.BatchUpdateSpreadsheetRequest;
+import com.google.api.services.sheets.v4.model.CellData;
+import com.google.api.services.sheets.v4.model.ExtendedValue;
+import com.google.api.services.sheets.v4.model.GridCoordinate;
+import com.google.api.services.sheets.v4.model.Request;
+import com.google.api.services.sheets.v4.model.RowData;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
+import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
+import com.google.api.services.sheets.v4.model.UpdateCellsRequest;
+import com.google.api.services.sheets.v4.model.ValueRange;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Class where we manage everything with the API Spreadsheet from Google
@@ -236,7 +241,7 @@ public class SpreadsheetUtils{
 	 * @throws Exception 
 	 *  
 	 */
-	public void writeLinesCoverageCSV(String filename,String spreadsheetId,String jDirectory,String Id, Integer numberOfLine) throws IOException {  
+	public void writeLinesCoverageCSV(String filename,String spreadsheetId,String jDirectory,String Id, Integer numberOfLine) throws Exception {  
 
 		try{
 			CSVReader lines = new CSVReader(new FileReader(path+JACOCOPATH+filename), ',');
@@ -316,37 +321,80 @@ public class SpreadsheetUtils{
 
 		} 
 		catch (Exception e){
+			
 			_log.error("Exception: "+e.getMessage());
-		}
+
+			//add ND if there is an Exception
+			ArrayList<String> array = new ArrayList<String>();
+			array.add(0, Id);
+			array.add(1, jDirectory);
+			array.add(2, "ND");
+			array.add(3, "ND");
+			array.add(4, "ND");
+			array.add(5, "ND");
+			array.add(6, "ND");
+			array.add(7, "ND");
+			array.add(8, "ND");
+			array.add(9, "ND");
+			array.add(10, "ND");
+			array.add(11, "ND");
+			array.add(12, "ND");
+			array.add(13, "ND");
+			array.add(14, "ND");
+
+			Sheets service = getSheetsService();
+
+			List<Request> requests = new ArrayList<>();
+
+			List<CellData> values = new ArrayList<>();
+
+			for (int i=0;i<array.size();i++)
+			{
+				values.add(new CellData()
+						.setUserEnteredValue(new ExtendedValue()
+								.setStringValue(array.get(i).toString())
+								));
+			}
+
+			requests.add(new Request()
+					.setUpdateCells(new UpdateCellsRequest()
+							.setStart(new GridCoordinate()
+									.setSheetId(0)
+									.setRowIndex(numberOfLine)
+									.setColumnIndex(0))
+							.setRows(Arrays.asList(
+									new RowData().setValues(values)))
+							.setFields("userEnteredValue,userEnteredFormat.backgroundColor")));
+
+			BatchUpdateSpreadsheetRequest batchUpdateRequest = new BatchUpdateSpreadsheetRequest()
+					.setRequests(requests);
+			service.spreadsheets().batchUpdate(spreadsheetId, batchUpdateRequest)
+			.execute();
+		};
+
 	}
 
-	/**
-	 * return the number of line of a GoogleSpreadSheet
-	 * 
-	 * @param id of the Google SpreadSheet
-	 * @throws Exception 
-	 *  
-	 */
-	public static Integer CheckNumberLineSpreadSheet(String spreadsheetId) throws Exception {   
 
-		Sheets service = getSheetsService();
+/**
+ * return the number of line of a GoogleSpreadSheet
+ * 
+ * @param id of the Google SpreadSheet
+ * @throws Exception 
+ *  
+ */
+public static Integer CheckNumberLineSpreadSheet(String spreadsheetId) throws Exception {   
 
-		String range = "A1";
-		ValueRange response = service.spreadsheets().values()
-				.get(spreadsheetId, range)
-				.execute();
-		List<List<Object>> values = response.getValues();
-		Integer check = 0;
-		if (values != null && values.size() != 0) {
-			check = values.size();
-		}
-		return check;
+	Sheets service = getSheetsService();
+
+	String range = "A1";
+	ValueRange response = service.spreadsheets().values()
+			.get(spreadsheetId, range)
+			.execute();
+	List<List<Object>> values = response.getValues();
+	Integer check = 0;
+	if (values != null && values.size() != 0) {
+		check = values.size();
 	}
-
-
-	@Test
-	public void googleAPItestCreate() throws Exception{
-		//getGoogleSpreadsheet("1SQMaSYOKUIeRit8oHl3Hgo92G3LKFA9j7odPCmjs624");
-	}
-
+	return check;
+}
 }
