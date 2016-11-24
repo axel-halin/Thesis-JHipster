@@ -260,6 +260,7 @@ public class Oracle {
 		Properties property = getProperties(PROPERTIES_FILE);
 		String idSpreadsheet_jhipster = property.getProperty("idSpreadsheetJhipster");
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
+		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		for (Integer i =1;i<=weightFolder-1;i++){
@@ -431,7 +432,8 @@ public class Oracle {
 							if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 							gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 							protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
-							CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+							//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest(), i*2-1);
 						}
 						
 						_log.info("Cleaning up... Docker");
@@ -453,7 +455,8 @@ public class Oracle {
 							protractor = resultChecker.extractProtractor("testProtractor.log");
 							
 							String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-							CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+							//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
 							
 							buildTime = resultChecker.extractTime("build.log");	
 							String[] partsBuildWithoutDocker = buildTime.split(";");
