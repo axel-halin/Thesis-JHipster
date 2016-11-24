@@ -1,23 +1,22 @@
 package oracle;
 
-import csv.CSVUtils;
-import csv.SpreadsheetUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Properties;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import csv.CSVUtils;
+import csv.SpreadsheetUtils;
 
 /**
  * Extension of previous work from Mathieu ACHER, Inria Rennes-Bretagne Atlantique.
@@ -208,12 +207,16 @@ public class Oracle {
 	 * @param propFileName Property file to retrieve
 	 * @return All properties included in propFileName
 	 */
-	private Properties getProperties(String propFileName) {
+	private static Properties getProperties(String propFileName) {
 		InputStream inputStream = null;
 		Properties prop = new Properties();
 
 		try {
-			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+			// non static method
+			// inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+			
+			// static method 
+			inputStream = Oracle.class.getClassLoader().getResourceAsStream(propFileName);
 
 			if (inputStream != null) prop.load(inputStream);
 			else throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
@@ -231,9 +234,9 @@ public class Oracle {
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
-	@Test
-	public void genJHipsterVariants() throws Exception{
-	//public static void main(String[] args) throws Exception{
+	//@Test
+	//public void genJHipsterVariants() throws Exception{
+	public static void main(String[] args) throws Exception{
 
 		/*//Create CSV file JHipster if not exist.
 		if (checkIfFileNotExist("jhipster.csv"))
