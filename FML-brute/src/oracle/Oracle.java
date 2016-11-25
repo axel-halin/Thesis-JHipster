@@ -259,6 +259,10 @@ public class Oracle {
 		CSVUtils.createCSVCucumber("cucumber.csv");
 		}*/
 		
+		//Folder i to j Oracle 
+		Integer jhipsterI = Integer.parseInt(args[0]);
+		Integer jhipsterJ = Integer.parseInt(args[1]);
+		
 		//GET ID OF SPREADSHEETS
 		Properties property = getProperties(PROPERTIES_FILE);
 		String idSpreadsheet_jhipster = property.getProperty("idSpreadsheetJhipster");
@@ -266,7 +270,8 @@ public class Oracle {
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
 
 		// 1 -> weightFolder -1 (UAA directory...)
-		for (Integer i =1;i<=weightFolder-1;i++){
+		//for (Integer i =1;i<=weightFolder-1;i++){
+		for (int i = jhipsterI;i<=jhipsterJ-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
 			String jDirectory = "jhipster"+i;
