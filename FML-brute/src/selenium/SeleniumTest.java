@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -22,11 +23,15 @@ public class SeleniumTest {
 	private String database = "";
 	
 	public SeleniumTest(String geckoDriverPath){
-		System.setProperty("webdriver.gecko.driver", geckoDriverPath);
-		driver = new FirefoxDriver();
+		//System.setProperty("webdriver.gecko.driver", geckoDriverPath);
+		//driver = new FirefoxDriver();
+		System.setProperty("phantomjs.binary.path", System.getProperty("user.dir")+"/phantomjs");
+        driver = new PhantomJSDriver();
+        driver.manage().window().setSize(new Dimension(1920,1080));
+        
 		baseUrl = "http://127.0.0.1:8080/#"; 
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-		wait = new WebDriverWait(driver,3);
+		wait = new WebDriverWait(driver,5);
 	}
 	
 	/**
@@ -46,7 +51,7 @@ public class SeleniumTest {
 			populateEmployee();
 			//populateJob();
 		} catch (Exception e){
-			_log.error("Entities not fully populated");
+			_log.error("Entities not fully populated\n"+e.getMessage());
 		}
 		//addJobHistories("2016-10-11 00:00", "2016-10-11 00:00", "FRENCH", "1004", "1006");
 		driver.quit();
@@ -196,13 +201,13 @@ public class SeleniumTest {
 	 * @param password Password of the account
 	 */
 	private void login(String username, String password){
-	    driver.findElement(By.id("account-menu")).click();
+	   // wait.until(ExpectedConditions.elementToBeClickable(By.id("account-menu")));
+		driver.findElement(By.id("account-menu")).click();
 	    driver.findElement(By.xpath("//a[@id='login']/span[2]")).click();
-	    driver.findElement(By.id("username")).clear();
-	    driver.findElement(By.id("username")).sendKeys(username);
-	    driver.findElement(By.id("password")).clear();
-	    driver.findElement(By.id("password")).sendKeys(password);
-	    driver.findElement(By.cssSelector("button.btn.btn-primary")).click();
+	    
+	    sendKeysByID("username",username,false);
+	    sendKeysByID("password",password,false);
+	    clickButton();
 		pause(PAUSE_TIME);
 	}
 	
