@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.xtext.util.Files;
 import org.junit.Test;
+import org.junit.runner.JUnitCore;
 import org.prop4j.Node;
 
 import com.google.gson.Gson;
@@ -377,6 +378,12 @@ public class JHipsterTest extends FMLTest{
 		Files.writeStringIntoFile(DIMACS_FILENAME, dimacsHipster.replace("XXXXXX", "" + nbClauses(n)));
 	}
 
+	
+	public static void main(String[] args) {
+        JUnitCore jCore = new JUnitCore();
+        jCore.run(JHipsterTest.class);
+    }
+	
 	/**
 	 * Generates all variants of JHipster 3.6.1 to test them afterwards. 
 	 */
@@ -442,11 +449,6 @@ public class JHipsterTest extends FMLTest{
 				_log.info("Scripts generated...");
 		
 				_log.info("Configuration "+i+", "+jConf.applicationType+", is done");
-
-			if(i==300){
-					_log.info("Stopping at 300...");
-					System.exit(0);
-				}
 			}
 		}
 	}
