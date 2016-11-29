@@ -29,9 +29,13 @@ public class ScriptsBuilder {
 		generateBuildScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
 				
+		try{
 		if (jconf.testFrameworks.length>0) {
 			generateTestScript(jconf, jDirectory);
 			generateTestDockerScript(jconf, jDirectory);
+		}} catch (Exception e){
+			System.err.println(jconf.toString());
+			System.exit(2);
 		}
 		// TODO Alter if dev and prod profiles
 		generateEntitiesScript(jDirectory,jconf.prodDatabaseType);
@@ -221,7 +225,7 @@ public class ScriptsBuilder {
 	private void generateDockerStartScript(String jDirectory, JhipsterConfiguration jconf){
 		Properties properties = getProperties(PROPERTIES_FILE);
 		String script = "#!/bin/bash\n\n";
-		if(jconf.databaseType.equals("cassandra")) script += properties.getProperty("cassandraMigration")+" >> cassandraMigration.log 2>&1";
+		if(jconf.databaseType.equals("cassandra")) script += properties.getProperty("cassandraMigration")+" >> cassandraMigration.log 2>&1\n";
 		// Packaging
 		if(jconf.buildTool.equals("maven")) script += properties.getProperty("mavenDockerPackage");
 		else script += properties.getProperty("gradleDockerPackage");
