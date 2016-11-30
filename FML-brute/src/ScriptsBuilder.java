@@ -124,8 +124,14 @@ public class ScriptsBuilder {
 							break;
 		}
 		
-		if(jconf.buildTool.equals("maven")) script += "./mvnw -Pprod ";
-		else script += "./gradlew -Pprod ";
+		// TODO See if we include dev profile for all variants
+		if(jconf.devDatabaseType.startsWith("h2")){
+			if(jconf.buildTool.equals("maven")) script += "./mvnw -Pdev ";
+			else script += "./gradlew -Pdev ";
+		} else{
+			if(jconf.buildTool.equals("maven")) script += "./mvnw -Pprod ";
+			else script += "./gradlew -Pprod ";
+		}
 		
 		script += ">> build.log 2>&1";
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "build.sh", script);
