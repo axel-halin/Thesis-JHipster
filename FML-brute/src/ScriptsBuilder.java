@@ -336,6 +336,7 @@ public class ScriptsBuilder {
 		Properties properties = getProperties(PROPERTIES_FILE);
 
 		return 	properties.getProperty("cassandraService")
+				+ properties.getProperty("cassandraDropKeySpace")
 				+ properties.getProperty("cassandraCreateKeySpace")
 				+ properties.getProperty("cassandraCreateTables")
 				+ properties.getProperty("cassandraInsertUsers");
