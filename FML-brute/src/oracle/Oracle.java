@@ -134,7 +134,6 @@ public class Oracle {
 	 * 		- Start Uaa Server (in case of Uaa authentication)
 	 * 		- Start Jhipster-Registry (in case of Microservices)
 	 *  
-	 * @param system Boolean to check OS (True = Linux, False = Windows)
 	 */
 	private static void initialization(boolean docker, String applicationType, String authentication){
 		_log.info("Starting intialization scripts...");
@@ -186,7 +185,12 @@ public class Oracle {
 	private static void dockerCompose(String jDirectory){
 		// Run the App
 		startProcess("./dockerStart.sh",getjDirectory(jDirectory));
-	}	
+	}
+	
+	private static void oracleCopyJAR(String jDirectory){
+		// Copy files for oracle database
+		startProcess("./oracleCopyJAR.sh",getjDirectory(jDirectory));
+	}
 	
 	/**
 	 * Check If the file exist
@@ -268,6 +272,16 @@ public class Oracle {
 		String idSpreadsheet_jhipster = property.getProperty("idSpreadsheetJhipster");
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
+		
+		_log.info("Starting intialization Oracle Database...");
+		
+			// Start Oracle Image Docker
+			Thread threadOracleDatabase = new Thread(new ThreadOracleDatabase(projectDirectory));
+			threadOracleDatabase.start();
+
+			// Let Oracle Databse initiate before other initialization...
+			try{Thread.sleep(30000);}
+			catch(Exception e){_log.error(e.getMessage());}
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		//for (Integer i =1;i<=weightFolder-1;i++){
@@ -374,6 +388,12 @@ public class Oracle {
 					Double generationTimeDouble = generationTimeLong/1000.0;
 					generationTime = generationTimeDouble.toString();
 					stacktracesGen = resultChecker.extractStacktraces("generate.log");
+					
+					//case of ORACLE copy jar 
+					if(prodDatabaseType.equals("\"oracle\"")|devDatabaseType.equals("\"oracle\"")){
+						_log.info("Copy jar Oracle...");
+						oracleCopyJAR(jDirectory);
+					}
 
 					_log.info("Generation complete ! Trying to compile the App...");
 					compileApp(jDirectory);
