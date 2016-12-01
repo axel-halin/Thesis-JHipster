@@ -367,180 +367,183 @@ public class Oracle {
 			String[] yorc = {applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 					websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool, searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks};
 			
-			//check if the variant is present or not in the SpreadSheet and return the number of lines
-			Integer numberOfLine = SpreadsheetUtils.CheckNotExistLineSpreadSheet(idSpreadsheet_jhipster,yorc);
-
-			//if(CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc))
-			// -1 : the yorc is already present
-			if(numberOfLine != -1)
+			if(!devDatabaseType.equals("\"oracle\"") && !prodDatabaseType.equals("\"oracle\""))
 			{
-				_log.info("Generating the App..."); 
-				long millis = System.currentTimeMillis();
-				generateApp(jDirectory);
-				long millisAfterGenerate = System.currentTimeMillis();
-				_log.info("Generation done!");
-
-				_log.info("Checking the generation of the App...");
-
-				if(resultChecker.checkGenerateApp("generate.log")){
-					generation =SUCCEED;
-					// Time to Generate
-					Long generationTimeLong = millisAfterGenerate - millis;
-					Double generationTimeDouble = generationTimeLong/1000.0;
-					generationTime = generationTimeDouble.toString();
-					stacktracesGen = resultChecker.extractStacktraces("generate.log");
-					
-					//case of ORACLE copy jar 
-					if(prodDatabaseType.equals("\"oracle\"")|devDatabaseType.equals("\"oracle\"")){
-						_log.info("Copy jar Oracle...");
-						oracleCopyJAR(jDirectory);
-					}
-
-					_log.info("Generation complete ! Trying to compile the App...");
-					compileApp(jDirectory);
-
-					if(resultChecker.checkCompileApp("compile.log")){
-						compile =SUCCEED;
-						compileTime = resultChecker.extractTime("compile.log");
-						String[] partsCompile = compileTime.split(";");
-						compileTime = partsCompile[0]; // delete the ";" used for Docker
-						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
-
-						generateEntities(jDirectory);
-										
-						_log.info("Compilation success ! Launch Unit Tests...");
-						unitTestsApp(jDirectory);
-
-						resultsTest = resultChecker.extractResultsTest("test.log");
-						karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
-						cucumber= resultChecker.extractCucumber("test.log");
-
-						//csvUtils = new CSVUtils(getjDirectory(jDirectory));
-						SpreadsheetUtils spreadsheetUtils = new SpreadsheetUtils(getjDirectory(jDirectory));
+				//check if the variant is present or not in the SpreadSheet and return the number of lines
+				Integer numberOfLine = SpreadsheetUtils.CheckNotExistLineSpreadSheet(idSpreadsheet_jhipster,yorc);
+	
+				//if(CSVUtils.CheckNotExistLineCSV("jhipster.csv", yorc))
+				// -1 : the yorc is already present
+				if(numberOfLine != -1)
+				{
+					_log.info("Generating the App..."); 
+					long millis = System.currentTimeMillis();
+					generateApp(jDirectory);
+					long millisAfterGenerate = System.currentTimeMillis();
+					_log.info("Generation done!");
+	
+					_log.info("Checking the generation of the App...");
+	
+					if(resultChecker.checkGenerateApp("generate.log")){
+						generation =SUCCEED;
+						// Time to Generate
+						Long generationTimeLong = millisAfterGenerate - millis;
+						Double generationTimeDouble = generationTimeLong/1000.0;
+						generationTime = generationTimeDouble.toString();
+						stacktracesGen = resultChecker.extractStacktraces("generate.log");
 						
-						// JACOCO Coverage results are only available with Maven
-						if(buildTool.equals("\"maven\"")){
-							coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
-							coverageBranches = resultChecker.extractCoverageBranches("index.html");
-							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
-							coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
+						//case of ORACLE copy jar 
+						if(prodDatabaseType.equals("\"oracle\"")|devDatabaseType.equals("\"oracle\"")){
+							_log.info("Copy jar Oracle...");
+							oracleCopyJAR(jDirectory);
+						}
+	
+						_log.info("Generation complete ! Trying to compile the App...");
+						compileApp(jDirectory);
+	
+						if(resultChecker.checkCompileApp("compile.log")){
+							compile =SUCCEED;
+							compileTime = resultChecker.extractTime("compile.log");
+							String[] partsCompile = compileTime.split(";");
+							compileTime = partsCompile[0]; // delete the ";" used for Docker
+							stacktracesCompile = resultChecker.extractStacktraces("compile.log");
+	
+							generateEntities(jDirectory);
+											
+							_log.info("Compilation success ! Launch Unit Tests...");
+							unitTestsApp(jDirectory);
+	
+							resultsTest = resultChecker.extractResultsTest("test.log");
+							karmaJS = resultChecker.extractKarmaJS("testKarmaJS.log");
+							cucumber= resultChecker.extractCucumber("test.log");
+	
+							//csvUtils = new CSVUtils(getjDirectory(jDirectory));
+							SpreadsheetUtils spreadsheetUtils = new SpreadsheetUtils(getjDirectory(jDirectory));
+							
+							// JACOCO Coverage results are only available with Maven
+							if(buildTool.equals("\"maven\"")){
+								coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
+								coverageBranches = resultChecker.extractCoverageBranches("index.html");
+								coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
+								coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
+							} else{
+								coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH_GRADLE);
+								coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH_GRADLE);
+							}
+	
+							//Extract CSV Coverage Data and write in coverage.csv
+							//csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
+							
+							//Extract CSV Coverage and write in the spreadsheet coverage
+							//Integer numberOfLineCoverage = SpreadsheetUtils.CheckNumberLineSpreadSheet(idSpreadsheet_coverage);
+							spreadsheetUtils.writeLinesCoverageCSV("jacoco.csv", idSpreadsheet_coverage, jDirectory, Id, i);
+	
+							_log.info("Compilation success ! Trying to build the App...");
+	
+							_log.info("Trying to build the App with Docker...");
+	
+							initialization(true, applicationType, authenticationType);
+							imageSize = new StringBuilder();
+							ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker, prodDatabaseType);
+							t1.start();
+							//build WITH docker
+							dockerCompose(jDirectory);
+							t1.done();
+	
+							if(imageSize.toString().equals("")){
+								imageSize.delete(0, 5);
+								imageSize.append(DEFAULT_NOT_FOUND_VALUE);
+							}
+	
+							if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+							else {
+								String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
+								String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
+								buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
+								if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
+								gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
+								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
+								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
+							}
+							
+							_log.info("Cleaning up... Docker");
+							cleanUp(jDirectory,true);
+	
+							// Building without Docker
+							initialization(false, applicationType, authenticationType);
+							ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build, prodDatabaseType);
+							t2.start();
+							_log.info("Trying to build the App without Docker...");
+							//build WITHOUT docker
+							buildApp(jDirectory);
+							t2.done();
+							cleanUp(jDirectory,false);
+	
+							if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
+							else {
+								gatling = resultChecker.extractGatling("testGatling.log");
+								protractor = resultChecker.extractProtractor("testProtractor.log");
+								
+								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
+								
+								buildTime = resultChecker.extractTime("build.log");	
+								String[] partsBuildWithoutDocker = buildTime.split(";");
+								buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
+							}
 						} else{
-							coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH_GRADLE);
-							coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH_GRADLE);
-						}
-
-						//Extract CSV Coverage Data and write in coverage.csv
-						//csvUtils.writeLinesCoverageCSV("jacoco.csv","coverageJACOCO.csv",jDirectory,Id);
-						
-						//Extract CSV Coverage and write in the spreadsheet coverage
-						//Integer numberOfLineCoverage = SpreadsheetUtils.CheckNumberLineSpreadSheet(idSpreadsheet_coverage);
-						spreadsheetUtils.writeLinesCoverageCSV("jacoco.csv", idSpreadsheet_coverage, jDirectory, Id, i);
-
-						_log.info("Compilation success ! Trying to build the App...");
-
-						_log.info("Trying to build the App with Docker...");
-
-						initialization(true, applicationType, authenticationType);
-						imageSize = new StringBuilder();
-						ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker, prodDatabaseType);
-						t1.start();
-						//build WITH docker
-						dockerCompose(jDirectory);
-						t1.done();
-
-						if(imageSize.toString().equals("")){
-							imageSize.delete(0, 5);
-							imageSize.append(DEFAULT_NOT_FOUND_VALUE);
-						}
-
-						if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
-						else {
-							String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
-							String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
-							buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
-							if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
-							gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
-							protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
-							//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-							String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
-						}
-						
-						_log.info("Cleaning up... Docker");
-						cleanUp(jDirectory,true);
-
-						// Building without Docker
-						initialization(false, applicationType, authenticationType);
-						ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build, prodDatabaseType);
-						t2.start();
-						_log.info("Trying to build the App without Docker...");
-						//build WITHOUT docker
-						buildApp(jDirectory);
-						t2.done();
-						cleanUp(jDirectory,false);
-
-						if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
-						else {
-							gatling = resultChecker.extractGatling("testGatling.log");
-							protractor = resultChecker.extractProtractor("testProtractor.log");
-							
-							String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-							//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
-							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
-							
-							buildTime = resultChecker.extractTime("build.log");	
-							String[] partsBuildWithoutDocker = buildTime.split(";");
-							buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
+							_log.error("App Compilation Failed ...");
+							compile = FAIL;
+							compileTime = FAIL;
+							stacktracesBuild = "COMPILATION ERROR";
+							stacktracesCompile = resultChecker.extractStacktraces("compile.log");
 						}
 					} else{
-						_log.error("App Compilation Failed ...");
-						compile = FAIL;
-						compileTime = FAIL;
-						stacktracesBuild = "COMPILATION ERROR";
-						stacktracesCompile = resultChecker.extractStacktraces("compile.log");
+						_log.error("App Generation Failed...");
+						generation =FAIL;
+						stacktracesBuild = "GENERATION ERROR";
+						stacktracesGen = resultChecker.extractStacktraces("generate.log");
 					}
-				} else{
-					_log.error("App Generation Failed...");
-					generation =FAIL;
-					stacktracesBuild = "GENERATION ERROR";
-					stacktracesGen = resultChecker.extractStacktraces("generate.log");
+	
+					_log.info("Writing into jhipster.csv");
+	
+					//WITH DOCKER
+					String docker = "true";
+	
+					//New line for file csv With Docker
+					String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+							generation,stacktracesGen,generationTime,compile,stacktracesCompile.substring(0,48000),compileTime,buildWithDocker.toString(),
+							stacktracesBuildWithDocker.substring(0, 48000),buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
+							resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
+							coverageJSStatements, coverageJSBranches};
+	
+					//write into CSV file
+					//CSVUtils.writeNewLineCSV("jhipster.csv",line);
+					//write in the Spreadsheet
+					SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line, i*2-1);
+	
+					//WITHOUT DOCKER
+					docker = "false";
+	
+					//New line for file csv without Docker
+					String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
+							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
+							generation,stacktracesGen,generationTime,compile,stacktracesCompile.substring(0, 48000),compileTime,build.toString(),stacktracesBuild.substring(0, 48000),"NOTDOCKER",
+							buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
+							coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
+	
+					//write into CSV file
+					//CSVUtils.writeNewLineCSV("jhipster.csv",line2);
+					//write in the Spreadsheet
+					SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line2, i*2);
 				}
-
-				_log.info("Writing into jhipster.csv");
-
-				//WITH DOCKER
-				String docker = "true";
-
-				//New line for file csv With Docker
-				String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
-						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
-						stacktracesBuildWithDocker.substring(0, 48000),buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
-						resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
-						coverageJSStatements, coverageJSBranches};
-
-				//write into CSV file
-				//CSVUtils.writeNewLineCSV("jhipster.csv",line);
-				//write in the Spreadsheet
-				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line, i*2-1);
-
-				//WITHOUT DOCKER
-				docker = "false";
-
-				//New line for file csv without Docker
-				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
-						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild.substring(0, 48000),"NOTDOCKER",
-						buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
-						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
-
-				//write into CSV file
-				//CSVUtils.writeNewLineCSV("jhipster.csv",line2);
-				//write in the Spreadsheet
-				SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_jhipster, line2, i*2);
-			}
-			else {
-				_log.info("This configuration has been already tested");
+				else {
+					_log.info("This configuration has been already tested");
+				}
 			}
 		}
 		_log.info("Termination...");
