@@ -77,7 +77,7 @@ public class JHipsterTest extends FMLTest{
 //				+ "SocialLogin -> ((HTTPSession | JWT) & (ServerApp | Monolithic) & (SQL | MongoDB)) ; "
 				+ "SocialLogin -> ((HTTPSession | JWT) & (Monolithic) & (SQL | MongoDB)) ; "
 				+ "UaaServer -> Uaa ; "
-//				+ "Oracle -> (H2 | Oracle12c) ; "
+				+ "Oracle -> (H2 | Oracle12c) ; "
 				+ "(!OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB | Cassandra) ; "
 				+ "Server -> !Protractor ; "
 				+ "!Server -> Protractor ; "
