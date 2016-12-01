@@ -65,12 +65,12 @@ public class JHipsterTest extends FMLTest{
 				+ "Application : (MicroserviceGateway | Monolithic) ; "
 				+ "Database : (SQL | Cassandra | MongoDB) ; "
 				+ "SQL: Development [Hibernate2ndLvlCache] Production [ElasticSearch] ; "
-//				+ "Development : (Oracle12c | H2 | PostgreSQLDev | MariaDBDev | MySql) ; "
-				+ "Development : (PostgreSQLDev | MariaDBDev | MySql) ; "
-//				+ "H2 : (DiskBased | InMemory) ; "
+				+ "Development : (Oracle12c | H2 | PostgreSQLDev | MariaDBDev | MySql) ; "
+//				+ "Development : (PostgreSQLDev | MariaDBDev | MySql) ; "
+				+ "H2 : (DiskBased | InMemory) ; "
 				+ "Hibernate2ndLvlCache : (HazelCast | EhCache) ; " 
-//				+ "Production : (MySQL | Oracle | MariaDB | PostgreSQL) ; "
-				+ "Production : (MySQL | MariaDB | PostgreSQL) ; "
+				+ "Production : (MySQL | Oracle | MariaDB | PostgreSQL) ; "
+//				+ "Production : (MySQL | MariaDB | PostgreSQL) ; "
 				+ "BackEnd : (Gradle | Maven) ; "
 				// Constraints
 				+ "(OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB) ; "
@@ -81,14 +81,14 @@ public class JHipsterTest extends FMLTest{
 				+ "(!OAuth2 & !SocialLogin & !MicroserviceApplication) -> (SQL | MongoDB | Cassandra) ; "
 				+ "Server -> !Protractor ; "
 				+ "!Server -> Protractor ; "
-//				+ "MySQL -> (H2 | MySql) ; "
-				+ "MySQL -> (MySql) ; "
+				+ "MySQL -> (H2 | MySql) ; "
+//				+ "MySQL -> (MySql) ; "
 				+ "(MicroserviceApplication | MicroserviceGateway) -> (JWT | Uaa) ; "
 				+ "Monolithic -> (JWT | HTTPSession | OAuth2) ; "
-//				+ "MariaDB -> (H2 | MariaDBDev) ; "
-				+ "MariaDB -> (MariaDBDev) ; "
-//				+ "PostgreSQL -> (H2 | PostgreSQLDev) ; "
-				+ "PostgreSQL -> (PostgreSQLDev) ; "
+				+ "MariaDB -> (H2 | MariaDBDev) ; "
+//				+ "MariaDB -> (MariaDBDev) ; "
+				+ "PostgreSQL -> (H2 | PostgreSQLDev) ; "
+//				+ "PostgreSQL -> (PostgreSQLDev) ; "
 				+ "(Server | Application) -> (BackEnd & Authentication) ; "
 				+ "(SpringWebSockets | ClusteredSession) -> Application ; "
 //				+ "Client -> (!Gatling & !Cucumber & !BackEnd & !Authentication) ; "
@@ -432,8 +432,7 @@ public class JHipsterTest extends FMLTest{
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
 					
 			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
-			if(jConf.applicationType.endsWith("App") ||jConf.devDatabaseType.equals("oracle") 
-				|| jConf.prodDatabaseType.equals("oracle") || jConf.devDatabaseType.equals("H2") ){}
+			if(jConf.applicationType.endsWith("App")){}
 			else{
 				i++;
 				String jDirectory = "jhipster" + i;
