@@ -98,6 +98,8 @@ public class rBoxplot {
 		
 		createPieChartBuildResultByBuildTool(re);
 		
+		createBoxplotCucumeberDatabase(re);
+		
 		re.end();
 		System.out.println("end");
 	}
@@ -109,9 +111,6 @@ public class rBoxplot {
 	public static void readCSV(Rengine re, String csvfile, String data){
 	// Read CSV. and remove empty rows
 	re.eval(""+data+"<-read.csv(file='"+ csvfile +"', na.strings = c(\"\", \"NA\"), head=TRUE, sep=',')");
-	// Remove empty rows
-	//re.eval(""+data+"<- "+data+"[!apply(is.na("+data+") | "+data+" == \"\", 1, all), ]");
-	//re.eval("head(10)");
 	}
 	
 	public static void createCircleTypeApp(Rengine re) {
@@ -215,8 +214,6 @@ public class rBoxplot {
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
-		re.eval("print(data)");
-		re.eval("print(data$TimeToBuild)");
 		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
 				+ "main='Boxplot Distribution:Time to build with Docker')");
 
@@ -416,4 +413,24 @@ public class rBoxplot {
 		re.eval("dev.off()");
 	}
 
+	public static void createBoxplotCucumeberDatabase(Rengine re) {
+		// Read CSV.
+		readCSV(re, "jhipster.csv","data");
+		readCSV(re, "cucumber.csv","data2");
+		
+		re.eval("mergeData = merge(data, data2)");
+		
+		// Create Boxplot + Save jpg
+		re.eval("jpeg('boxplotCucumberDB.jpg')");
+		
+		re.eval("mergeData <- mergeData[- grep(\"ND\", mergeData$getCurrentUserLogin),]");
+
+		//cast numerical getCurrentUserLogin
+		re.eval("mergeData$getCurrentUserLogin <- as.numeric(as.character(mergeData$getCurrentUserLogin))");
+
+		re.eval("boxplot(mergeData$getCurrentUserLogin~mergeData$prodDatabaseType, ylab='seconds',"
+				+ "main='Boxplot Distribution:Cucumber Database')");
+
+		re.eval("dev.off()");
+	}
 }
