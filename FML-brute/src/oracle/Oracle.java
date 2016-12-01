@@ -273,7 +273,7 @@ public class Oracle {
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
 		
-		_log.info("Starting intialization Oracle Database...");
+	/*	_log.info("Starting intialization Oracle Database...");
 		
 			// Start Oracle Image Docker
 			Thread threadOracleDatabase = new Thread(new ThreadOracleDatabase(projectDirectory));
@@ -281,10 +281,11 @@ public class Oracle {
 
 			// Let Oracle Databse initiate before other initialization...
 			try{Thread.sleep(30000);}
-			catch(Exception e){_log.error(e.getMessage());}
+			catch(Exception e){_log.error(e.getMessage());}*/
 
 		// 1 -> weightFolder -1 (UAA directory...)
 		//for (Integer i =1;i<=weightFolder-1;i++){
+		
 		for (int i = jhipsterI;i<=jhipsterJ-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
 
@@ -461,7 +462,8 @@ public class Oracle {
 							gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 							protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 							//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest(), i*2-1);
+							String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+							SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
 						}
 						
 						_log.info("Cleaning up... Docker");
