@@ -515,7 +515,7 @@ public class Oracle {
 				String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
-						stacktracesBuildWithDocker,buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
+						stacktracesBuildWithDocker.substring(0, 48000),buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
 						resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
 						coverageJSStatements, coverageJSBranches};
 
@@ -530,7 +530,7 @@ public class Oracle {
 				//New line for file csv without Docker
 				String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 						websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,"NOTDOCKER",
+						generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild.substring(0, 48000),"NOTDOCKER",
 						buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
 						coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 
