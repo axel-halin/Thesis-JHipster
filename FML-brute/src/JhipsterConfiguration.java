@@ -17,7 +17,7 @@ public class JhipsterConfiguration {
 	String databaseType;
 	String devDatabaseType;
 	String prodDatabaseType;
-	String searchEngine;
+	boolean searchEngine;
 	String buildTool;
 	String jwtSecretKey;
 	protected String applicationType; // gateway | microservice | monolith | uaa
@@ -41,7 +41,7 @@ public class JhipsterConfiguration {
 		
 		@Override
 		public String toString() {
-			String r = baseName + " " + packageName + " " + packageFolder + " " + authenticationType 
+			String r = baseName + " " + packageName + " " + packageFolder + " " + authenticationType + " " + applicationType
 					+ " " + hibernateCache + " " + clusteredHttpSession + " " + websocket + 
 					" " + databaseType + " " + devDatabaseType + " " + prodDatabaseType + 
 					" " + searchEngine + " " + /*useSass + */" " + buildTool + " " + " " /*+ enableTranslation + " " + enableSocialSignIn */
@@ -101,7 +101,7 @@ public class JhipsterConfiguration {
 					&& jo.databaseType.equals(databaseType)
 					&& jo.devDatabaseType.equals(devDatabaseType)
 					&& jo.prodDatabaseType.equals(prodDatabaseType)
-					&& jo.searchEngine.equals(searchEngine)
+					&& jo.searchEngine == searchEngine
 					//&& jo.useSass == useSass
 					&& jo.buildTool.equals(buildTool)
 					//&& jo.enableTranslation == enableTranslation
