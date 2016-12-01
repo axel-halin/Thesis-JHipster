@@ -513,11 +513,15 @@ public class Oracle {
 					//WITH DOCKER
 					String docker = "true";
 	
+					if (stacktracesCompile.length() > 48000) stacktracesCompile = stacktracesCompile.substring(0, 48000);
+					if (stacktracesBuildWithDocker.length() > 48000) stacktracesBuildWithDocker = stacktracesBuildWithDocker.substring(0, 48000);
+					if (stacktracesBuild.length() > 48000) stacktracesBuild = stacktracesBuild.substring(0, 48000);
+					
 					//New line for file csv With Docker
 					String[] line = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-							generation,stacktracesGen,generationTime,compile,stacktracesCompile.substring(0,48000),compileTime,buildWithDocker.toString(),
-							stacktracesBuildWithDocker.substring(0, 48000),buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
+							generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
+							stacktracesBuildWithDocker,buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
 							resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
 							coverageJSStatements, coverageJSBranches};
 	
@@ -528,11 +532,11 @@ public class Oracle {
 	
 					//WITHOUT DOCKER
 					docker = "false";
-	
+				
 					//New line for file csv without Docker
 					String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
-							generation,stacktracesGen,generationTime,compile,stacktracesCompile.substring(0, 48000),compileTime,build.toString(),stacktracesBuild.substring(0, 48000),"NOTDOCKER",
+							generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,"NOTDOCKER",
 							buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
 							coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 	
