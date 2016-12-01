@@ -160,7 +160,10 @@ public class JHipsterTest extends FMLTest{
 				jhipsterConf.prodDatabaseType = falseByNo(get("Production", strConfs, fmvJhipster));
 				
 			}			
-			jhipsterConf.searchEngine = Boolean.parseBoolean(isIncluded("ElasticSearch", strConfs)); 
+			
+			if (Boolean.parseBoolean(isIncluded("ElasticSearch", strConfs))) jhipsterConf.searchEngine = "elasticsearch";
+			else jhipsterConf.searchEngine = "no";
+					
 			jhipsterConf.buildTool = get("BackEnd", strConfs, fmvJhipster);
 			// Authentication Key
 			if (jhipsterConf.authenticationType.equals("jwt")){jhipsterConf.jwtSecretKey = JWTKEY;}

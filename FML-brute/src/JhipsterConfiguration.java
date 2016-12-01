@@ -17,7 +17,7 @@ public class JhipsterConfiguration {
 	String databaseType;
 	String devDatabaseType;
 	String prodDatabaseType;
-	boolean searchEngine;
+	String searchEngine;
 	String buildTool;
 	String jwtSecretKey;
 	protected String applicationType; // gateway | microservice | monolith | uaa
