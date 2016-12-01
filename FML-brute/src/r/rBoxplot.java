@@ -102,11 +102,21 @@ public class rBoxplot {
 		System.out.println("end");
 	}
 	
-	//TODO change searchengine into buildtool
+	/*
+	 * Read csv and remove empty rows.
+	 * 
+	 */
+	public static void readCSV(Rengine re, String csvfile, String data){
+	// Read CSV. and remove empty rows
+	re.eval(""+data+"<-read.csv(file='"+ csvfile +"', na.strings = c(\"\", \"NA\"), head=TRUE, sep=',')");
+	// Remove empty rows
+	//re.eval(""+data+"<- "+data+"[!apply(is.na("+data+") | "+data+" == \"\", 1, all), ]");
+	//re.eval("head(10)");
+	}
 	
 	public static void createCircleTypeApp(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Circle + Save jpg
 		re.eval("jpeg('typeApp.jpg')");
 		//extract number of types in table
@@ -125,7 +135,7 @@ public class rBoxplot {
 	
 	public static void createCircleBuildResult(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Circle + Save jpg
 		re.eval("jpeg('buildResult.jpg')");
 		//data with Docker
@@ -151,7 +161,7 @@ public class rBoxplot {
 
 	public static void createBoxplotTimeCompile(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToCompile.jpg')");
 		// drop doublon Docker
@@ -169,13 +179,13 @@ public class rBoxplot {
 	
 	public static void createBoxplotTimeBuildWithoutDockerApp(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToBuildWithoutDocker.jpg')");
 		// drop Docker
 		re.eval("data <- data[- grep(\"true\", data$Docker),]");
 		// drop ND timeToBuild
-		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
 		// only OK BUILD !!
 		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical
@@ -189,7 +199,7 @@ public class rBoxplot {
 	
 	public static void createBoxplotTimeBuildWithDockerApp(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToBuildWithDocker.jpg')");
 		// drop NotDocker
@@ -197,7 +207,7 @@ public class rBoxplot {
 		// drop ND Time To build
 		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
 		// drop KO Time To build Docker Package
-		re.eval("data <- data[- grep(\"ND\", data$TimeToBuildDockerPackage),]");
+		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuildDockerPackage),]");
 		// only OK BUILD !!
 		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
@@ -215,19 +225,19 @@ public class rBoxplot {
 	
 	public static void createBoxplotTimeBuildWithoutDockerBuildTool(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToBuildWithoutDockerBuildTool.jpg')");
 		// drop Docker
 		re.eval("data <- data[- grep(\"true\", data$Docker),]");
 		// drop ND timeToBuil
-		re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
+		//re.eval("data <- data[- grep(\"ND\", data$TimeToBuild),]");
 		// only OK BUILD !!
 		re.eval("data <- data[- grep(\"KO\", data$Build),]");
 		//cast numerical
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 
-		re.eval("boxplot(data$TimeToBuild~data$searchEngine, ylab='Time To Build(secs)',"
+		re.eval("boxplot(data$TimeToBuild~data$buildTool, ylab='Time To Build(secs)',"
 				+ "main='Boxplot Distribution:Time to build without Docker/buildTool')");
 
 		re.eval("dev.off()");
@@ -235,7 +245,7 @@ public class rBoxplot {
 	
 	public static void createBoxplotTimeBuildWithDockerBuildTool(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToBuildWithDockerBuildTool.jpg')");
 		// drop NotDocker
@@ -249,7 +259,7 @@ public class rBoxplot {
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
-		re.eval("boxplot(data$TimeToBuildTotal~data$searchEngine, ylab='Time To Build(secs)',"
+		re.eval("boxplot(data$TimeToBuildTotal~data$buildTool, ylab='Time To Build(secs)',"
 				+ "main='Boxplot Distribution:Time to build with Docker/buildTool')");
 
 		re.eval("dev.off()");
@@ -257,7 +267,7 @@ public class rBoxplot {
 	
 	public static void createBoxplotTimeGeneration(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotTimeToGenerate.jpg')");
 		// drop doublon Docker
@@ -271,8 +281,8 @@ public class rBoxplot {
 
 	public static void createBoxplotCoverage(Rengine re) {
 		// Read CSV.
-		re.eval("dataJava<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
-		re.eval("dataJS<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","dataJava");
+		readCSV(re, "jhipster.csv","dataJS");
 
 		re.eval("dataJava <- dataJava[- grep(\"ND\", dataJava$CoverageInstructions),]");
 		re.eval("dataJava <- dataJava[- grep(\"X\", dataJava$CoverageInstructions),]");
@@ -310,7 +320,7 @@ public class rBoxplot {
 	
 	public static void createBoxplotImageDockerApplications(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotImageDockerApps.jpg')");
 		// drop NotDocker
@@ -333,7 +343,7 @@ public class rBoxplot {
 	
 	public static void createBoxplotImageDockerDB(Rengine re) {
 		// Read CSV.
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// Create Boxplot + Save jpg
 		re.eval("jpeg('boxplotImageDockerDB.jpg')");
 		// drop NotDocker
@@ -366,7 +376,9 @@ public class rBoxplot {
 		//re.eval("install.packages(\"ggplot2\")");
 		
 		// Retrieve data and extract ApplicationType and DatabaseColumn, grouped and counted
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
+		
+		
 		re.eval("temp <- data.frame(table(data$applicationType, data$prodDatabaseType))");
 		//re.eval("print(names(temp))");
 		re.eval("names(temp)[names(temp)==\"Freq\"] <- \"Proportion\"");
@@ -382,10 +394,10 @@ public class rBoxplot {
 	
 	
 	public static void createPieChartBuildResultByBuildTool(Rengine re){
-		re.eval("data<-read.csv(file='jhipster.csv', head=TRUE, sep=';')");
+		readCSV(re, "jhipster.csv","data");
 		// drop NotDocker
 		re.eval("data <- data[- grep(\"false\", data$Docker),]");
-		re.eval("dataBuildToolBuildResult <- data.frame(table(data$searchEngine, data$Build))");
+		re.eval("dataBuildToolBuildResult <- data.frame(table(data$buildTool, data$Build))");
 		
 		re.eval("buildOK <- dataBuildToolBuildResult[- grep(\"KO\", dataBuildToolBuildResult$Var2),]");
 		re.eval("buildKO <- dataBuildToolBuildResult[- grep(\"OK\", dataBuildToolBuildResult$Var2),]");
