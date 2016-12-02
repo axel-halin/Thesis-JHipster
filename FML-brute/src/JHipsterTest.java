@@ -417,8 +417,7 @@ public class JHipsterTest extends FMLTest{
 		generateDimacs(getFMJHipster());
 		
 		SCRIPT_BUILDER.generateStopDatabaseScript(PROJECTDIRECTORY);
-		SCRIPT_BUILDER.generateStartDatabaseScript(PROJECTDIRECTORY);
-		
+		 
 		// Transform to list for shuffling
 		List<Variable> list = new ArrayList<Variable>(confs);
 		Collections.shuffle(list);	

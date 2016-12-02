@@ -138,8 +138,6 @@ public class Oracle {
 	private static void initialization(boolean docker, String applicationType, String authentication){
 		_log.info("Starting intialization scripts...");
 		if(!docker){
-			// Start database services
-			startProcess("./startDB.sh","");
 			if (applicationType.equals("\"gateway\"") || applicationType.equals("\"microservice\"") || applicationType.equals("\"uaa\"")){
 				// Start Jhipster Registry
 				threadRegistry = new Thread(new ThreadRegistry(projectDirectory+"/JHipster-Registry/"));

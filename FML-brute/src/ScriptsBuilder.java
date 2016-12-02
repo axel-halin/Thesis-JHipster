@@ -55,17 +55,6 @@ public class ScriptsBuilder {
 		Files.writeStringIntoFile(jDirectory+"/stopDB.sh", script);
 	}
 
-	public void generateStartDatabaseScript(String jDirectory){
-		Properties property = getProperties(PROPERTIES_FILE);
-		String script = "#!/bin/bash\n\n"
-				+ property.getProperty("mysqlService")
-				+ property.getProperty("cassandraService")
-				+ property.getProperty("mongodbService")
-				+ property.getProperty("postgreService");
-		Files.writeStringIntoFile(jDirectory+"/startDB.sh", script);
-	}
-
-
 	/**
 	 * Generates the script to generate the JHipster application.\n
 	 * This script varies depending on the application type (see JHipster's Sub-Generators)
@@ -326,8 +315,10 @@ public class ScriptsBuilder {
 		Properties properties = getProperties(PROPERTIES_FILE);
 
 		return 	properties.getProperty("mysqlService")
+				+ properties.getProperty("sleep")
 				+ properties.getProperty("mysqlInitiateConnexion")
 				+ properties.getProperty("mysqlDropDatabase")
+				+ properties.getProperty("mysqlFlush")
 				+ properties.getProperty("mysqlCreateDatabase")
 				+ properties.getProperty("mysqlCloseConnexion");
 	}
@@ -336,6 +327,7 @@ public class ScriptsBuilder {
 		Properties properties = getProperties(PROPERTIES_FILE);
 
 		return 	properties.getProperty("cassandraService")
+				+ properties.getProperty("sleep")
 				+ properties.getProperty("cassandraExport")
 				+ properties.getProperty("cassandraDropKeySpace")
 				+ properties.getProperty("cassandraCreateKeySpace")
