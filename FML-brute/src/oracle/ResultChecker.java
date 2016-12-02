@@ -301,12 +301,17 @@ public class ResultChecker {
 	public String extractCoverageIntstructions(String fileName){
 		String resultsTests = DEFAULT_NOT_FOUND_VALUE;
 		try{
+			_log.info("ça passe !");
 			String text = Files.readFileIntoString(path+JACOCOPATH+fileName);
 	
 			Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
 					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
 			
+			Matcher m2 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?)%"
+					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?)%</td>").matcher(text);
+			
 			while(m1.find()) return resultsTests = m1.group(2).toString();
+			while(m2.find()) return resultsTests = m2.group(2).toString();
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
@@ -327,8 +332,11 @@ public class ResultChecker {
 	
 			Matcher m1 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %"
 					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?) %</td>").matcher(text);
+			Matcher m2 = Pattern.compile("Total</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?)%"
+					+ "</td><td class=\"bar\">(.*?)</td><td class=\"ctr2\">(.*?)%</td>").matcher(text);
 	
 			while(m1.find()) return resultsTests = m1.group(4).toString();
+			while(m2.find()) return resultsTests = m2.group(4).toString();
 		} catch (Exception e){
 			_log.error("Exception: "+e.getMessage());
 		}
