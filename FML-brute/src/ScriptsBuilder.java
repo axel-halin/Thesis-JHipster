@@ -64,6 +64,19 @@ public class ScriptsBuilder {
 	 */
 	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
+		
+		switch (jconf.prodDatabaseType){
+		case "mysql": 	script += getMysqlScript();
+		break;
+		case "mongodb": script += getMongodbScript();
+		break;
+		case "cassandra": 	script += getCassandraScript();
+		break;
+		case "postgresql": 	script += getPostgreScript();
+		break;
+		case "mariadb":	script += getMysqlScript();
+		break;
+		}
 
 		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
 		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
@@ -97,19 +110,6 @@ public class ScriptsBuilder {
 	 */
 	private void generateBuildScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";	
-
-		switch (jconf.prodDatabaseType){
-		case "mysql": 	script += getMysqlScript();
-		break;
-		case "mongodb": script += getMongodbScript();
-		break;
-		case "cassandra": 	script += getCassandraScript();
-		break;
-		case "postgresql": 	script += getPostgreScript();
-		break;
-		case "mariadb":	script += getMysqlScript();
-		break;
-		}
 		
 		// TODO See if we include dev profile for all variants
 		if(jconf.devDatabaseType.startsWith("h2")){

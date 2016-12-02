@@ -280,9 +280,6 @@ public class Oracle {
 			// Let Oracle Databse initiate before other initialization...
 			try{Thread.sleep(30000);}
 			catch(Exception e){_log.error(e.getMessage());}*/
-
-		// 1 -> weightFolder -1 (UAA directory...)
-		//for (Integer i =1;i<=weightFolder-1;i++){
 		
 		for (int i = jhipsterI;i<=jhipsterJ-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
@@ -420,11 +417,13 @@ public class Oracle {
 							
 							// JACOCO Coverage results are only available with Maven
 							if(buildTool.equals("\"maven\"")){
+								_log.info("maven Coverage");
 								coverageInstuctions= resultChecker.extractCoverageIntstructions("index.html");
 								coverageBranches = resultChecker.extractCoverageBranches("index.html");
 								coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH);
 								coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH);
 							} else{
+								_log.info("gradle Coverage");
 								coverageJSBranches = resultChecker.extractJSCoverageBranches(JS_COVERAGE_PATH_GRADLE);
 								coverageJSStatements = resultChecker.extractJSCoverageStatements(JS_COVERAGE_PATH_GRADLE);
 							}
@@ -438,8 +437,32 @@ public class Oracle {
 	
 							_log.info("Compilation success ! Trying to build the App...");
 	
-							_log.info("Trying to build the App with Docker...");
+							// Building without Docker
+							initialization(false, applicationType, authenticationType);
+							ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build, prodDatabaseType);
+							t2.start();
+							_log.info("Trying to build the App without Docker...");
+							//build WITHOUT docker
+							buildApp(jDirectory);
+							t2.done();
+							cleanUp(jDirectory,false);
 	
+							if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
+							else {
+								gatling = resultChecker.extractGatling("testGatling.log");
+								protractor = resultChecker.extractProtractor("testProtractor.log");
+								
+								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
+								
+								buildTime = resultChecker.extractTime("build.log");	
+								String[] partsBuildWithoutDocker = buildTime.split(";");
+								buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
+							}
+							
+							_log.info("Trying to build the App with Docker...");
+							
 							initialization(true, applicationType, authenticationType);
 							imageSize = new StringBuilder();
 							ThreadCheckBuild t1 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker.log",imageSize, buildWithDocker, prodDatabaseType);
@@ -468,30 +491,7 @@ public class Oracle {
 							
 							_log.info("Cleaning up... Docker");
 							cleanUp(jDirectory,true);
-	
-							// Building without Docker
-							initialization(false, applicationType, authenticationType);
-							ThreadCheckBuild t2 = new ThreadCheckBuild(getjDirectory(jDirectory), false, "build.log",imageSize,build, prodDatabaseType);
-							t2.start();
-							_log.info("Trying to build the App without Docker...");
-							//build WITHOUT docker
-							buildApp(jDirectory);
-							t2.done();
-							cleanUp(jDirectory,false);
-	
-							if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
-							else {
-								gatling = resultChecker.extractGatling("testGatling.log");
-								protractor = resultChecker.extractProtractor("testProtractor.log");
-								
-								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
-								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
-								
-								buildTime = resultChecker.extractTime("build.log");	
-								String[] partsBuildWithoutDocker = buildTime.split(";");
-								buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
-							}
+							
 						} else{
 							_log.error("App Compilation Failed ...");
 							compile = FAIL;
