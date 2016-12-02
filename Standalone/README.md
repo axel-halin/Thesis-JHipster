@@ -2,7 +2,7 @@ The different standalones must be launched from FML-brute folder or any folder f
 
   - Presence of JHipster-Registry folder
   - Presence of jhipsters folder with UAA (generated with JHipster) in it (/uaa)
-  - models folder (store dimacs, even if you're not intersted in it the JAR will look for it)
+  - models folder (store dimacs, the JAR will look for it)
   - phantomjs executable
   - JDL files
   - oracle-jar with ojdbc in it
