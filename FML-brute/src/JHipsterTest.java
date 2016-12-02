@@ -431,7 +431,7 @@ public class JHipsterTest extends FMLTest{
 			JhipsterConfiguration jConf = toJhipsterConfiguration(strConfs, getFMJHipster());
 					
 			// TODO: Nevermind Oracle, H2, ClientApp & ServerApp for now.
-			if(jConf.applicationType.endsWith("App")){}
+			if((jConf.applicationType.endsWith("App"))|(jConf.devDatabaseType.equals("oracle"))|(jConf.prodDatabaseType.equals("oracle"))){}
 			else{
 				i++;
 				String jDirectory = "jhipster" + i;
