@@ -270,6 +270,7 @@ public class Oracle {
 		String idSpreadsheet_jhipster = property.getProperty("idSpreadsheetJhipster");
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
+		String idSpreadsheet_oracle = property.getProperty("idSpreadsheetOracle");
 		
 	/*	_log.info("Starting intialization Oracle Database...");
 		
@@ -456,6 +457,10 @@ public class Oracle {
 								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
 								
+								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"false"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
+								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_oracle, oracleResults, i*2);
+								
 								buildTime = resultChecker.extractTime("build.log");	
 								String[] partsBuildWithoutDocker = buildTime.split(";");
 								buildTime = partsBuildWithoutDocker[0]; // only two parts with Docker
@@ -487,6 +492,8 @@ public class Oracle {
 								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
+								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_oracle, oracleResults, i*2-1);
 							}
 							
 							_log.info("Cleaning up... Docker");
@@ -557,7 +564,6 @@ public class Oracle {
 	 */
 	@Test
 	public void writeCSVBugs() throws Exception{
-		
 		//boolean false = not check doublon , true yes
 		//CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",true);
 	}
