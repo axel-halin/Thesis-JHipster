@@ -328,9 +328,7 @@ public class Oracle {
 			String resultsTest= DEFAULT_NOT_FOUND_VALUE;
 			String cucumber= DEFAULT_NOT_FOUND_VALUE;
 			String karmaJS= DEFAULT_NOT_FOUND_VALUE;
-			String gatling = DEFAULT_NOT_FOUND_VALUE;
 			String protractor = DEFAULT_NOT_FOUND_VALUE;
-			String gatlingDocker = DEFAULT_NOT_FOUND_VALUE;
 			String protractorDocker = DEFAULT_NOT_FOUND_VALUE;
 			StringBuilder imageSize = new StringBuilder(DEFAULT_NOT_FOUND_VALUE);
 			String coverageInstuctions= DEFAULT_NOT_FOUND_VALUE;
@@ -450,7 +448,6 @@ public class Oracle {
 	
 							if(build.toString().equals(FAIL)) stacktracesBuild = resultChecker.extractStacktraces("build.log");
 							else {
-								gatling = resultChecker.extractGatling("testGatling.log");
 								protractor = resultChecker.extractProtractor("testProtractor.log");
 								
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
@@ -487,7 +484,6 @@ public class Oracle {
 								String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");
 								buildTimeWithDockerPackage = partsBuildWithDocker[0]; 
 								if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
-								gatlingDocker = resultChecker.extractGatling("testDockerGatling.log");
 								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
@@ -527,7 +523,7 @@ public class Oracle {
 							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 							generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,buildWithDocker.toString(),
 							stacktracesBuildWithDocker,buildTimeWithDockerPackage,buildTimeWithDocker,imageSize.toString(),
-							resultsTest,cucumber,karmaJS,gatlingDocker,protractorDocker,coverageInstuctions,coverageBranches,
+							resultsTest,cucumber,karmaJS,protractorDocker,coverageInstuctions,coverageBranches,
 							coverageJSStatements, coverageJSBranches};
 	
 					//write into CSV file
@@ -542,7 +538,7 @@ public class Oracle {
 					String[] line2 = {Id,jDirectory,docker,applicationType,authenticationType,hibernateCache,clusteredHttpSession,
 							websocket,databaseType,devDatabaseType,prodDatabaseType,buildTool,searchEngine,enableSocialSignIn,useSass,enableTranslation,testFrameworks,
 							generation,stacktracesGen,generationTime,compile,stacktracesCompile,compileTime,build.toString(),stacktracesBuild,"NOTDOCKER",
-							buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,gatling,protractor,
+							buildTime,"NOTDOCKER",resultsTest,cucumber,karmaJS,protractor,
 							coverageInstuctions,coverageBranches, coverageJSStatements, coverageJSBranches};
 	
 					//write into CSV file
