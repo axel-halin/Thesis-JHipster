@@ -64,6 +64,12 @@ public class ScriptsBuilder {
 	 */
 	private void generateYoJhipsterScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
+
+		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
+		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
+		else script += "yo jhipster ";
+
+		script += ">> generate.log 2>&1\n";
 		
 		switch (jconf.prodDatabaseType){
 		case "mysql": 	script += getMysqlScript();
@@ -77,12 +83,6 @@ public class ScriptsBuilder {
 		case "mariadb":	script += getMysqlScript();
 		break;
 		}
-
-		if(jconf.applicationType.equals("clientApp")) script += "yo jhipster:client --auth session ";
-		else if (jconf.applicationType.equals("serverApp")) script += "yo jhipster:server ";
-		else script += "yo jhipster ";
-
-		script += ">> generate.log 2>&1";
 
 		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
 	}
