@@ -39,6 +39,7 @@ public class GatlingResultExtractor {
 	 */
 	public String[] extractResultsGatlingTest(){
 
+		try{
 		String gatlingPath;
 		if(buildTool.equals("maven")) 
 		{
@@ -48,7 +49,11 @@ public class GatlingResultExtractor {
 			String[] employeePATH = new File(path+"build/reports/gatling/").list();
 			gatlingPath = "build/reports/gatling/"+employeePATH[0]+"/js/";
 		}
-		extractResultFromFile(path+gatlingPath+FILEJSON); 		// 42 results
+		extractResultFromFile(path+gatlingPath+FILEJSON);// 42 results
+		}
+		catch(Exception e){
+			_log.error("Exception: "+e.getMessage());
+		}
 		return result;
 	}
 
