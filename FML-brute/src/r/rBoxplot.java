@@ -96,6 +96,8 @@ public class rBoxplot {
 
 		createBalloonPlot(re);
 		
+		createBalloonPlotBugsFeatures(re);
+		
 		createPieChartBuildResultByBuildTool(re);
 		
 		createBoxplotCucumeberDatabase(re);
@@ -127,7 +129,9 @@ public class rBoxplot {
 		//names
 		re.eval("A <- gl(5,1,5,labels=c(\"Gateway\",\"Microservice\",\"Monolithic\",\"Uaa\"))");
 		re.eval("names(vecteur) <- levels(A)");
-		re.eval("pie(vecteur/100,main=\"Types d'application générées\")");
+		re.eval("pie(vecteur/100"
+				//+ ",main=\"Types d'application générées\""
+				+ ")");
 		
 		re.eval("dev.off()");
 	}
@@ -153,7 +157,9 @@ public class rBoxplot {
 		//names
 		re.eval("A <- gl(5,1,5,labels=c(\"DockerKO\",\"DockerOK\",\"NotDockerKO\",\"NotDockerOK\"))");
 		re.eval("names(vecteur) <- levels(A)");
-		re.eval("pie(vecteur/100,main='Build OK-KO With-Without Docker')");
+		re.eval("pie(vecteur/100"
+				//+ ",main='Build OK-KO With-Without Docker'"
+				+ ")");
 		
 		re.eval("dev.off()");
 	}
@@ -170,8 +176,10 @@ public class rBoxplot {
 		//cast numerical
 		re.eval("data$TimeToCompile <- as.numeric(as.character(data$TimeToCompile))");
 		//System.out.println(re.eval("boxplot(data$TimeToGenerate.secs.)"));
-		re.eval("boxplot(data$TimeToCompile~data$applicationType, ylab='Time To Compile(secs)',"
-				+ "main='Boxplot Distribution:Time Compilation of different JHipster apps')");
+		re.eval("boxplot(data$TimeToCompile~data$applicationType, ylab='Time To Compile(secs)'"
+				//+ ","
+				//+ "main='Boxplot Distribution:Time Compilation of different JHipster apps'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -190,8 +198,9 @@ public class rBoxplot {
 		//cast numerical
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 
-		re.eval("boxplot(data$TimeToBuild~data$applicationType, ylab='Time To Build(secs)',"
-				+ "main='Boxplot Distribution:Time to build without Docker')");
+		re.eval("boxplot(data$TimeToBuild~data$applicationType, ylab='Time To Build(secs)'"
+				//+ ",main='Boxplot Distribution:Time to build without Docker'
+				+")");
 
 		re.eval("dev.off()");
 	}
@@ -214,8 +223,9 @@ public class rBoxplot {
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
-		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)',"
-				+ "main='Boxplot Distribution:Time to build with Docker')");
+		re.eval("boxplot(data$TimeToBuildTotal~data$applicationType, ylab='Time To Build(secs)'"
+				//+ ",main='Boxplot Distribution:Time to build with Docker'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -234,8 +244,9 @@ public class rBoxplot {
 		//cast numerical
 		re.eval("data$TimeToBuild <- as.numeric(as.character(data$TimeToBuild))");
 
-		re.eval("boxplot(data$TimeToBuild~data$buildTool, ylab='Time To Build(secs)',"
-				+ "main='Boxplot Distribution:Time to build without Docker/buildTool')");
+		re.eval("boxplot(data$TimeToBuild~data$buildTool, ylab='Time To Build(secs)'"
+				//+ ",main='Boxplot Distribution:Time to build without Docker/buildTool'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -256,8 +267,9 @@ public class rBoxplot {
 		re.eval("data$TimeToBuildDockerPackage <- as.numeric(as.character(data$TimeToBuildDockerPackage))");
 		//Add TimeToBuildDockerPackage to TimeToBuild
 		re.eval("data$TimeToBuildTotal <- data$TimeToBuildDockerPackage + data$TimeToBuild");
-		re.eval("boxplot(data$TimeToBuildTotal~data$buildTool, ylab='Time To Build(secs)',"
-				+ "main='Boxplot Distribution:Time to build with Docker/buildTool')");
+		re.eval("boxplot(data$TimeToBuildTotal~data$buildTool, ylab='Time To Build(secs)'"
+				//+ ",main='Boxplot Distribution:Time to build with Docker/buildTool'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -282,9 +294,9 @@ public class rBoxplot {
 		readCSV(re, "jhipster.csv","dataJS");
 
 		re.eval("dataJava <- dataJava[- grep(\"ND\", dataJava$CoverageInstructions),]");
-		re.eval("dataJava <- dataJava[- grep(\"X\", dataJava$CoverageInstructions),]");
+		//re.eval("dataJava <- dataJava[- grep(\"X\", dataJava$CoverageInstructions),]");
 		re.eval("dataJS <- dataJS[- grep(\"ND\", dataJS$JSStatementsCoverage),]");
-		re.eval("dataJS <- dataJS[- grep(\"X\", dataJS$JSStatementsCoverage),]");
+		//re.eval("dataJS <- dataJS[- grep(\"X\", dataJS$JSStatementsCoverage),]");
 
 		//remove % char
 		re.eval("dataJS$JSStatementsCoverage <- as.data.frame(sapply(dataJS$JSStatementsCoverage,gsub,pattern=\"%\",replacement=\"\"))");
@@ -332,8 +344,9 @@ public class rBoxplot {
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
 		re.eval("data$ImageDocker <- as.numeric(as.character(data$ImageDocker))");
 
-		re.eval("boxplot(data$ImageDocker~data$applicationType, ylab='ImageDocker(MB)',"
-				+ "main='Boxplot Distribution:Image Docker')");
+		re.eval("boxplot(data$ImageDocker~data$applicationType, ylab='ImageDocker(MB)'"
+				//+ ",main='Boxplot Distribution:Image Docker'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -355,8 +368,9 @@ public class rBoxplot {
 		//cast numerical TimeToBuild and TimeToBuildDockerPackage
 		re.eval("data$ImageDocker <- as.numeric(as.character(data$ImageDocker))");
 
-		re.eval("boxplot(data$ImageDocker~data$prodDatabaseType, ylab='ImageDocker(MB)',"
-				+ "main='Boxplot Distribution:Image Docker')");
+		re.eval("boxplot(data$ImageDocker~data$prodDatabaseType, ylab='ImageDocker(MB)'"
+				//+ ",main='Boxplot Distribution:Image Docker'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
@@ -386,10 +400,36 @@ public class rBoxplot {
         						+ "geom_point(shape=21, colour=\"black\", fill=\"cornsilk\") +"
         						+ "xlab(\"Application Type\") + "
         						+ "ylab(\"Database\")");
-        re.eval("ggsave(\"ggplot.png\")");
+        re.eval("ggsave(\"ggplot.jpg\")");
 	}	
 	
-	
+	/**
+	 * Draw a balloon plot and generate a jpg file of it.
+	 * The plot concerns KO build and features.
+	 * 
+	 * @param re Rengine to execute r commands and get feedback.
+	 */
+	public static void createBalloonPlotBugsFeatures(Rengine re){
+		// Install packge (only necessary once)
+		//re.eval("install.packages(\"ggplot2\")");
+		
+		// Retrieve data and extract ApplicationType and DatabaseColumn, grouped and counted
+		readCSV(re, "jhipster.csv","data");
+		
+		
+		re.eval("temp <- data.frame(table(data$applicationType, data$Build))");
+		//re.eval("print(names(temp))");
+		re.eval("names(temp)[names(temp)==\"Freq\"] <- \"Proportion\"");
+		//re.eval("print(temp)");
+		// Draw the balloonPlot
+        re.eval("library(ggplot2)");
+        re.eval("p <- ggplot(temp, aes(x=Var1, y=Var2, size=Proportion)) + "
+        						+ "geom_point(shape=21, colour=\"black\", fill=\"cornsilk\") +"
+        						+ "xlab(\"Build\") + "
+        						+ "ylab(\"Features\")");
+        re.eval("ggsave(\"bugsFeatures.jpg\")");
+	}	
+		
 	public static void createPieChartBuildResultByBuildTool(Rengine re){
 		readCSV(re, "jhipster.csv","data");
 		// drop NotDocker
@@ -409,7 +449,9 @@ public class rBoxplot {
 		re.eval("dev.off()");
 		
 		re.eval("jpeg('buildKOPie.jpeg')");
-		re.eval("pie(buildKO, labels = labels, main=\"Proportion of build failed by build tool\")");
+		re.eval("pie(buildKO, labels = labels"
+				//+ ", main=\"Proportion of build failed by build tool\""
+				+ ")");
 		re.eval("dev.off()");
 	}
 
@@ -428,8 +470,9 @@ public class rBoxplot {
 		//cast numerical getCurrentUserLogin
 		re.eval("mergeData$getCurrentUserLogin <- as.numeric(as.character(mergeData$getCurrentUserLogin))");
 
-		re.eval("boxplot(mergeData$getCurrentUserLogin~mergeData$prodDatabaseType, ylab='seconds',"
-				+ "main='Boxplot Distribution:Cucumber Database')");
+		re.eval("boxplot(mergeData$getCurrentUserLogin~mergeData$prodDatabaseType, ylab='seconds'"
+				//+ ",main='Boxplot Distribution:Cucumber Database'"
+				+ ")");
 
 		re.eval("dev.off()");
 	}
