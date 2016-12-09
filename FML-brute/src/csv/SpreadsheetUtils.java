@@ -1,6 +1,7 @@
 package csv;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -83,11 +86,23 @@ public class SpreadsheetUtils{
 	static {
 		try {
 			HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+			
 			DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
 		} catch (Throwable t) {
 			t.printStackTrace();
 			System.exit(1);
 		}
+	}
+	
+	private static HttpRequestInitializer setHttpTimeout(final HttpRequestInitializer requestInitializer) {
+	    return new HttpRequestInitializer() {
+	        @Override
+	        public void initialize(HttpRequest httpRequest) throws IOException {
+	            requestInitializer.initialize(httpRequest);
+	            httpRequest.setConnectTimeout(10 * 60000);  // 3 minutes connect timeout
+	            httpRequest.setReadTimeout(10 * 60000);  // 3 minutes read timeout
+	        }
+	    };
 	}
 
 	/**
@@ -123,7 +138,7 @@ public class SpreadsheetUtils{
 	 */
 	public static Sheets getSheetsService() throws Exception {
 		Credential credential = authorize();
-		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
+		return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, setHttpTimeout(credential))
 				.setApplicationName(APPLICATION_NAME)
 				.build();
 	}
@@ -384,12 +399,14 @@ public class SpreadsheetUtils{
 public static Integer CheckNumberLineSpreadSheet(String spreadsheetId) throws Exception {   
 
 	Sheets service = getSheetsService();
-
+	
 	String range = "A1";
-	ValueRange response = service.spreadsheets().values()
+	ValueRange response = service
+			.spreadsheets().values()
 			.get(spreadsheetId, range)
 			.execute();
-	List<List<Object>> values = response.getValues();
+	List<List<Object>> values = response
+			.getValues();
 	Integer check = 0;
 	if (values != null && values.size() != 0) {
 		check = values.size();
