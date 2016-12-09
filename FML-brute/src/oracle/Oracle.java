@@ -548,6 +548,12 @@ public class Oracle {
 				}
 				else {
 					_log.info("This configuration has been already tested");
+					try{
+						_log.info("Sleeping 10 secs...");
+						Thread.sleep(10*1000);
+					} catch (Exception e){
+						_log.error("Exception: "+e.getMessage());
+					}
 				}
 			}
 		}
