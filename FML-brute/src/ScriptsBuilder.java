@@ -71,6 +71,18 @@ public class ScriptsBuilder {
 
 		script += ">> generate.log 2>&1\n";
 		
+		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
+	}
+
+	/**
+	 * Generate the script to compile the JHipster application.
+	 * 
+	 * @param jconf Configuration of JHipster
+	 * @param jDirectory Directory where the script must be generated
+	 */
+	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		
 		switch (jconf.prodDatabaseType){
 		case "mysql": 	script += getMysqlScript();
 		break;
@@ -83,18 +95,8 @@ public class ScriptsBuilder {
 		case "mariadb":	script += getMysqlScript();
 		break;
 		}
-
-		Files.writeStringIntoFile(getjDirectory(jDirectory) + "generate.sh", script);
-	}
-
-	/**
-	 * Generate the script to compile the JHipster application.
-	 * 
-	 * @param jconf Configuration of JHipster
-	 * @param jDirectory Directory where the script must be generated
-	 */
-	private void generateCompileScript(JhipsterConfiguration jconf, String jDirectory){
-		String script = "#!/bin/bash\n\n";
+		
+		
 		if(jconf.buildTool.equals("maven")) script+= "mvn compile";
 		else script+="./gradlew compileJava";
 

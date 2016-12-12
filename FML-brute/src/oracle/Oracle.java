@@ -450,7 +450,7 @@ public class Oracle {
 							else {
 								protractor = resultChecker.extractProtractor("testProtractor.log");
 								
-								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"false"}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
 								
@@ -486,7 +486,7 @@ public class Oracle {
 								if(partsBuildWithDocker.length>1) buildTimeWithDocker = partsBuildWithDocker[1]; 
 								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
+								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
 								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_oracle, oracleResults, i*2-1);
