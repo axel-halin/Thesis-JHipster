@@ -134,21 +134,21 @@ public class ScriptsBuilder {
 	 */
 	private void generateTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
-
+		Properties properties = getProperties(PROPERTIES_FILE);
+		
 		for(String testFramework : jconf.testFrameworks){
 			switch(testFramework){
-			//TODO reactivate Gatling 
-			/*case "gatling": if(jconf.buildTool.equals("maven"))
+			case "gatling": 	script += properties.getProperty("removeGatlingSimulations");
+								if(jconf.buildTool.equals("maven"))
 									script += "./mvnw gatling:execute";
 								else
 									script += "./gradlew gatlingRun -x cleanResources";
 								script += " >> testGatling.log 2>&1\n";
-								break;*/
-			case "protractor": 	// TODO Server App must be running!
-				script += "xvfb-run gulp protractor >> testProtractor.log 2>&1\n";
-				break;
+								break;
+			case "protractor": 	script += "xvfb-run gulp protractor >> testProtractor.log 2>&1\n";
+								break;
 			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> cucumber.log 2>&1\n";
-			else script += "./gradlew test >> cucumber.log 2>&1\n";
+								else script += "./gradlew test >> cucumber.log 2>&1\n";
 			break;
 			}
 		}
@@ -163,21 +163,22 @@ public class ScriptsBuilder {
 	 */
 	private void generateTestDockerScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
-
+		Properties properties = getProperties(PROPERTIES_FILE);
+		
 		for(String testFramework : jconf.testFrameworks){
 			switch(testFramework){
-			//TODO reactivate Gatling 
-			/*case "gatling": if(jconf.buildTool.equals("maven"))
+				case "gatling":	script += properties.getProperty("removeGatlingSimulations");
+								if(jconf.buildTool.equals("maven"))
 									script += "./mvnw gatling:execute";
 								else
 									script += "./gradlew gatlingRun -x cleanResources";
 								script += " >> testDockerGatling.log 2>&1\n";
-								break;*/
+								break;
 			case "protractor": 	script += "xvfb-run gulp protractor >> testDockerProtractor.log 2>&1\n";
 			break;
 			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> cucumberDocker.log 2>&1\n";
 			else script += "./gradlew test >> cucumberDocker.log 2>&1\n";
-			break; // Already tested in ./mvnw clean test
+			break;
 			}
 		}
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"testDocker.sh", script);
