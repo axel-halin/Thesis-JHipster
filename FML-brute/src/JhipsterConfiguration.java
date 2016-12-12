@@ -20,16 +20,17 @@ public class JhipsterConfiguration {
 	String searchEngine;
 	String buildTool;
 	String jwtSecretKey;
-	protected String applicationType; // gateway | microservice | monolith | uaa
+	protected String applicationType; // gateway | microservice | monolith | uaa; protected so that it is omitted when Client/Server standalones, see JHipsterTest.java
 	String[] testFrameworks;
 	String jhiPrefix;
 	String jhipsterVersion;
 		
 	Boolean useSass = null;
-	boolean enableTranslation; 
 	
+	boolean enableTranslation; 
 	String nativeLanguage;
-	//String[] languages = new String[2];
+	String[] languages = new String[2];
+	
 	Boolean skipClient;
 	Boolean skipUserManagement;
 	Boolean enableSocialSignIn;

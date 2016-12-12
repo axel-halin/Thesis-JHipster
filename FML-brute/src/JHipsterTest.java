@@ -1,6 +1,7 @@
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -189,8 +190,20 @@ public class JHipsterTest extends FMLTest{
 			jhipsterConf.useSass = Boolean.parseBoolean(isIncluded("Libsass", strConfs));
 		
 		
-		// If internationalization support (we limit ourselves to English for now)
-		jhipsterConf.enableTranslation = false;
+		//TODO If internationalization support (we limit ourselves to English for now)
+		//jhipsterConf.enableTranslation = false;
+		
+		if(isIncluded("InternationalizationSupport", strConfs).equals("true")){
+			//jhipsterConf.websocket = "spring-websocket";
+			jhipsterConf.enableTranslation = true;
+			jhipsterConf.nativeLanguage = "en";
+			jhipsterConf.languages = new String[]{"en","fr"};
+		}
+		else {
+			jhipsterConf.enableTranslation = false;
+			
+		}
+		
 		
 		return jhipsterConf;
 	}	
