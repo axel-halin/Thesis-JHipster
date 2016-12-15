@@ -174,6 +174,10 @@ public class Oracle {
 			_log.error(e.getMessage());
 		}
 	}
+	
+	private static void publish(String jDirectory){
+		startProcess("./publish.sh",getjDirectory(jDirectory));
+	}
 
 	private static void cleanUp(String jDirectory, boolean docker){
 		if (docker) startProcess("./dockerStop.sh", getjDirectory(jDirectory));
@@ -497,6 +501,7 @@ public class Oracle {
 							
 							_log.info("Cleaning up... Docker");
 							cleanUp(jDirectory,true);
+							publish(jDirectory);
 							
 						} else{
 							_log.error("App Compilation Failed ...");
