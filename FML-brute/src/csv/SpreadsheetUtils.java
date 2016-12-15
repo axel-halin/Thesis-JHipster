@@ -99,8 +99,8 @@ public class SpreadsheetUtils{
 	        @Override
 	        public void initialize(HttpRequest httpRequest) throws IOException {
 	            requestInitializer.initialize(httpRequest);
-	            httpRequest.setConnectTimeout(10 * 60000);  // 3 minutes connect timeout
-	            httpRequest.setReadTimeout(10 * 60000);  // 3 minutes read timeout
+	            httpRequest.setConnectTimeout(20 * 60000);  // 3 minutes connect timeout
+	            httpRequest.setReadTimeout(20 * 60000);  // 3 minutes read timeout
 	        }
 	    };
 	}
