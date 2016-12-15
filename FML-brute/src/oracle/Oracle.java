@@ -271,6 +271,7 @@ public class Oracle {
 		String idSpreadsheet_coverage = property.getProperty("idSpreadsheetCoverage");
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
 		String idSpreadsheet_oracle = property.getProperty("idSpreadsheetOracle");
+		final String idSpreadsheet_cucumberDocker = property.getProperty("idSpreadsheetCucumberDocker");
 		
 	/*	_log.info("Starting intialization Oracle Database...");
 		
@@ -487,7 +488,7 @@ public class Oracle {
 								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2-1);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumberDocker, cucumberResults, i*2-1);
 								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_oracle, oracleResults, i*2-1);
 							}
