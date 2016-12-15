@@ -444,6 +444,7 @@ public class Oracle {
 							_log.info("Trying to build the App without Docker...");
 							//build WITHOUT docker
 							buildApp(jDirectory);
+							Thread.sleep(3000);
 							t2.done();
 							cleanUp(jDirectory,false);
 	
@@ -453,7 +454,7 @@ public class Oracle {
 								
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
-								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i*2);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumber, cucumberResults, i);
 								
 								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"false"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
 								//CSVUtils.writeNewLineCSV("cucumber.csv", cucumberResults);
@@ -472,6 +473,7 @@ public class Oracle {
 							t1.start();
 							//build WITH docker
 							dockerCompose(jDirectory);
+							Thread.sleep(3000);
 							t1.done();
 	
 							if(imageSize.toString().equals("")){
@@ -488,7 +490,7 @@ public class Oracle {
 								protractorDocker = resultChecker.extractProtractor("testDockerProtractor.log");
 								//CSVUtils.writeNewLineCSV("cucumber.csv", new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
 								String[] cucumberResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory}, new CucumberResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractEntityCucumberTest());
-								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumberDocker, cucumberResults, i*2-1);
+								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_cucumberDocker, cucumberResults, i);
 								String[] oracleResults = (String[])ArrayUtils.addAll(new String[]{Id,jDirectory,"true"}, new GatlingResultExtractor(getjDirectory(jDirectory),buildTool.replace("\"","")).extractResultsGatlingTest());
 								SpreadsheetUtils.AddLineSpreadSheet(idSpreadsheet_oracle, oracleResults, i*2-1);
 							}
