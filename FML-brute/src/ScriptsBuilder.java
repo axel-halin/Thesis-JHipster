@@ -147,7 +147,7 @@ public class ScriptsBuilder {
 								break;
 			case "protractor": 	script += "xvfb-run gulp protractor >> testProtractor.log 2>&1\n";
 								break;
-			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> cucumber.log 2>&1\n";
+			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw test >> cucumber.log 2>&1\n";
 								else script += "./gradlew test >> cucumber.log 2>&1\n";
 			break;
 			}
@@ -176,7 +176,7 @@ public class ScriptsBuilder {
 								break;
 			case "protractor": 	script += "xvfb-run gulp protractor >> testDockerProtractor.log 2>&1\n";
 			break;
-			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> cucumberDocker.log 2>&1\n";
+			case "cucumber": 	if (jconf.buildTool.equals("maven")) script += "./mvnw test >> cucumberDocker.log 2>&1\n";
 			else script += "./gradlew test >> cucumberDocker.log 2>&1\n";
 			break;
 			}
@@ -192,7 +192,7 @@ public class ScriptsBuilder {
 	 */
 	private void generateUnitTestScript(JhipsterConfiguration jconf, String jDirectory){
 		String script = "#!/bin/bash\n\n";
-		if (jconf.buildTool.equals("maven")) script += "./mvnw clean test >> test.log 2>&1\n";
+		if (jconf.buildTool.equals("maven")) script += "./mvnw test >> test.log 2>&1\n";
 		else script += "./gradlew test >> test.log 2>&1\n";
 		// KarmaJS is provided by default
 		script += "gulp test >> testKarmaJS.log 2>&1\n";
