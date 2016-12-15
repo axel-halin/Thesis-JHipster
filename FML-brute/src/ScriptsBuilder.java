@@ -30,6 +30,7 @@ public class ScriptsBuilder {
 		generateBuildScript(jconf, jDirectory);
 		generateKillScript(jDirectory);
 		generateOracleDatabaseScript(jconf, jDirectory);
+		generatePublishScript(jDirectory);
 
 		if (jconf.testFrameworks.length>0) {
 			generateTestScript(jconf, jDirectory);
@@ -279,6 +280,16 @@ public class ScriptsBuilder {
 		script += properties.getProperty("killRegistry")+"\n";
 		script += properties.getProperty("killUAA")+"\n";
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"killScript.sh", script);
+	}
+	
+	
+	public void generatePublishScript(String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		
+		script += "tar acf "+jDirectory+".tar.gz *.log\n";
+		script += "gdrive upload "+jDirectory+".tar.gz";
+		
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"publish.sh", script);
 	}
 
 	private void generateEntitiesScript(String jDirectory, String database){
