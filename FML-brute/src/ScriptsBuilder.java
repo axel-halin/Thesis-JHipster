@@ -23,6 +23,7 @@ public class ScriptsBuilder {
 	 * @param jDirectory Directory of the configuration
 	 */
 	public void generateScripts(JhipsterConfiguration jconf, String jDirectory){
+		generateInitScript(jDirectory);
 		generateYoJhipsterScript(jconf, jDirectory);
 		generateCompileScript(jconf, jDirectory);		
 		generateUnitTestScript(jconf, jDirectory);
@@ -291,6 +292,15 @@ public class ScriptsBuilder {
 		
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"publish.sh", script);
 	}
+	
+	
+	public void generateInitScript(String jDirectory){
+		String script = "#!/bin/bash\n\n";
+		Properties properties = getProperties(PROPERTIES_FILE);
+		script += properties.getProperty("init");
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"init.sh", script);
+	}
+	
 
 	private void generateEntitiesScript(String jDirectory, String database){
 		String script = "#!/bin/bash\n\n";

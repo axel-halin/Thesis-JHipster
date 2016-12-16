@@ -375,6 +375,8 @@ public class Oracle {
 				// -1 : the yorc is already present
 				if(numberOfLine != -1)
 				{
+					_log.info("Copying node_modules...");
+					startProcess("./build.sh", getjDirectory(jDirectory));
 					_log.info("Generating the App..."); 
 					long millis = System.currentTimeMillis();
 					generateApp(jDirectory);
