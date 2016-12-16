@@ -143,7 +143,7 @@ public class ScriptsBuilder {
 								if(jconf.buildTool.equals("maven"))
 									script += "./mvnw gatling:execute";
 								else
-									script += "./gradlew gatlingRun -x cleanResources";
+									script += "printf 'empadlew gatlingRun -x cleanResources";
 								script += " >> testGatling.log 2>&1\n";
 								break;
 			case "protractor": 	script += "xvfb-run gulp protractor >> testProtractor.log 2>&1\n";
@@ -172,7 +172,7 @@ public class ScriptsBuilder {
 								if(jconf.buildTool.equals("maven"))
 									script += "./mvnw gatling:execute";
 								else
-									script += "./gradlew gatlingRun -x cleanResources";
+									script += "printf 'empadlew gatlingRun -x cleanResources";
 								script += " >> testDockerGatling.log 2>&1\n";
 								break;
 			case "protractor": 	script += "xvfb-run gulp protractor >> testDockerProtractor.log 2>&1\n";
