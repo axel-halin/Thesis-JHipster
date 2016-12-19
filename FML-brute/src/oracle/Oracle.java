@@ -376,7 +376,7 @@ public class Oracle {
 				if(numberOfLine != -1)
 				{
 					_log.info("Copying node_modules...");
-					startProcess("./build.sh", getjDirectory(jDirectory));
+					startProcess("./init.sh", getjDirectory(jDirectory));
 					_log.info("Generating the App..."); 
 					long millis = System.currentTimeMillis();
 					generateApp(jDirectory);
