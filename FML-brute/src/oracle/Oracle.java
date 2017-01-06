@@ -579,4 +579,10 @@ public class Oracle {
 		//boolean false = not check doublon , true yes
 		//CSVUtils.createBugsCSV("jhipster.csv", "bugs.csv",true);
 	}
+	
+	@Test
+	public void testCSVmethod() throws Exception{
+		CSVUtils.createCSVFileJHipster("2wise.csv");
+		CSVUtils.createNwiseCSV("jhipster.csv","FM-3.6.1-refined.m.ca2.csv","2wise.csv");
+	}
 }
