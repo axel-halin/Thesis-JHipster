@@ -257,6 +257,7 @@ public class CSVUtils {
 	public static void createNwiseCSV(String completeCSV,String twiseCSV, String outputCSV) throws IOException {  
 		CSVReader lines = new CSVReader(new FileReader(completeCSV), ',');
 		String[] row = null;
+
 		int i = 0;
 
 		List content = lines.readAll();
