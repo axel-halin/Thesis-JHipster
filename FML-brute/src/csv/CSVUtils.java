@@ -326,13 +326,13 @@ public class CSVUtils {
 					//clustered http session
 					if ((row[6].toString().equals("\"hazelcast\""))&&(twise[42].toString().equals("-")))
 					{exist = false;}
-					if ((row[6].toString().equals("\"no\""))&&(twise[42].toString().equals("X")))
+					if (((row[6].toString().equals("\"no\""))||(row[6].toString().equals("ND")))&&(twise[42].toString().equals("X")))
 					{exist = false;}
 			//----------------------------------WEBSOCKET		
 					//spring-websocket
 					if ((row[7].toString().equals("\"spring-websocket\""))&&(twise[34].toString().equals("-")))
 					{exist = false;}
-					if ((row[7].toString().equals("\"no\""))&&(twise[34].toString().equals("X")))
+					if (((row[7].toString().equals("\"no\""))||(row[7].toString().equals("ND")))&&(twise[34].toString().equals("X")))
 					{exist = false;}
 			//----------------------------------DATABASE TYPE
 					//databaseType SQL
@@ -362,6 +362,18 @@ public class CSVUtils {
 					//databaseType InMemory
 					if ((row[9].toString().equals("\"InMemory\""))&&(twise[23].toString().equals("-")))
 					{exist = false;}
+					
+			//----------------------------------PROD DATABASE TYPE
+					//databaseType mysql
+					if ((row[10].toString().equals("\"mysql\""))&&(twise[11].toString().equals("-")))
+					{exist = false;}
+					//databaseType MariaDB 
+					if ((row[10].toString().equals("\"mariadb\""))&&(twise[21].toString().equals("-")))
+					{exist = false;}
+					//databaseType postgresql
+					if ((row[10].toString().equals("\"postgresql\""))&&(twise[4].toString().equals("-")))
+					{exist = false;}		
+					
 			//----------------------------------BUILD TOOL
 					//maven
 					if ((row[11].toString().equals("\"maven\""))&&(twise[0].toString().equals("-")))
@@ -381,17 +393,29 @@ public class CSVUtils {
 					{exist = false;}
 					if ((row[13].toString().equals("false"))&&(twise[18].toString().equals("X")))
 					{exist = false;}
+					if ((row[13].toString().equals("ND"))&&(twise[18].toString().equals("X")))
+					{exist = false;}
 			//----------------------------------USESASS
 					//usesass
 					if ((row[14].toString().equals("true"))&&(twise[27].toString().equals("-")))
 					{exist = false;}
 					if ((row[14].toString().equals("false"))&&(twise[27].toString().equals("X")))
 					{exist = false;}
+					if ((row[14].toString().equals("ND"))&&(twise[27].toString().equals("X")))
+					{exist = false;}
 			//----------------------------------TRANSLATION
 					//translation
 					if ((row[15].toString().equals("true"))&&(twise[19].toString().equals("-")))
 					{exist = false;}
 					if ((row[15].toString().equals("false"))&&(twise[19].toString().equals("X")))
+					{exist = false;}
+					if ((row[15].toString().equals("ND"))&&(twise[19].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------TEST FRAMEWORKS
+					//without protractor
+					if ((row[16].toString().equals("[\"gatling\",\"cucumber\"]"))&&(twise[36].toString().equals("X")))
+					{exist = false;}
+					if ((row[16].toString().equals("[\"cucumber\",\"gatling\"]"))&&(twise[36].toString().equals("X")))
 					{exist = false;}
 					
 					if (exist)
