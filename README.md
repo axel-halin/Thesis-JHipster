@@ -1,4 +1,5 @@
 # Thesis-JHipster
+Analysis workflow on top of JHipster 3.6.1, developped by Alexandre Nuttinck and Axel Halin, during the course of our Master Thesis at UNamur, under the supervision of Mathieu Acher (INRIA-Rennes 1), Gilles Perrouin, Xavier Devroey and Patrick Heymans (UNamur)
 
 # Jhipster: A case study for variability techniques 
 
