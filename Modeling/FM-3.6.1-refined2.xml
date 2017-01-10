@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+	<feature_model name="FeatureIDE model">
+		<feature_tree>
+			:r JHipster(JHipster)
+				:m Generator(Generator)
+					:g [1,1]
+						: Server(Server)
+							:g [1,1]
+								: MicroserviceApplication(MicroserviceApplication)
+								: UaaServer(UaaServer)
+						: Application(Application)
+							:g [1,1]
+								: MicroserviceGateway(MicroserviceGateway)
+								: Monolithic(Monolithic)
+				:m Authentication(Authentication)
+					:g [1,1]
+						: HTTPSession(HTTPSession)
+						: OAuth2(OAuth2)
+						: Uaa(Uaa)
+						: JWT(JWT)
+				:o SocialLogin(SocialLogin)
+				:o Docker(Docker)
+				:o Database(Database)
+					:g [1,1]
+						: SQL(SQL)
+							:o Hibernate2ndLvlCache(Hibernate2ndLvlCache)
+								:g [1,1]
+									: HazelCast(HazelCast)
+									: EhCache(EhCache)
+							:m Development(Development)
+								:g [1,1]
+									: H2(H2)
+										:g [1,1]
+											: DiskBased(DiskBased)
+											: InMemory(InMemory)
+									: PostgreSQLDev(PostgreSQLDev)
+									: MariaDBDev(MariaDBDev)
+									: MySql(MySql)
+							:m Production(Production)
+								:g [1,1]
+									: MySQL(MySQL)
+									: MariaDB(MariaDB)
+									: PostgreSQL(PostgreSQL)
+							:o ElasticSearch(ElasticSearch)
+						: Cassandra(Cassandra)
+						: MongoDB(MongoDB)
+				:o SpringWebSockets(SpringWebSockets)
+				:o Libsass(Libsass)
+				:o ClusteredSession(ClusteredSession)
+				:m BackEnd(BackEnd)
+					:g [1,1]
+						: Gradle(Gradle)
+						: Maven(Maven)
+				:o InternationalizationSupport(InternationalizationSupport)
+				:m TestingFrameworks(TestingFrameworks)
+					:o Protractor(Protractor)
+					:m Gatling(Gatling)
+					:m Cucumber(Cucumber)
+		</feature_tree>
+		<constraints>
+			C1:~OAuth2  or  SocialLogin  or  MicroserviceApplication  or  SQL  or  MongoDB
+			C2:~SocialLogin  or  HTTPSession  or  JWT
+			C3:~SocialLogin  or  Monolithic
+			C4:~SocialLogin  or  SQL  or  MongoDB
+			C5:~UaaServer  or  Uaa
+			C6:OAuth2  or  SocialLogin  or  MicroserviceApplication  or  SQL  or  MongoDB  or  Cassandra
+			C7:~Server  or  ~Protractor
+			C8:Server  or  Protractor
+			C9:~MySQL  or  H2  or  MySql
+			C10:~MicroserviceApplication  or  JWT  or  Uaa
+			C11:~MicroserviceGateway  or  JWT  or  Uaa
+			C12:~Monolithic  or  JWT  or  HTTPSession  or  OAuth2
+			C13:~MariaDB  or  H2  or  MariaDBDev
+			C14:~PostgreSQL  or  H2  or  PostgreSQLDev
+			C15:~SpringWebSockets  or  Application
+			C16:~ClusteredSession  or  Application
+			C17:~Libsass  or  Application
+		</constraints>
+	</feature_model>

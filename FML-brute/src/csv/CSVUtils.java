@@ -1,5 +1,8 @@
 package csv;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -8,11 +11,6 @@ import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
 import au.com.bytecode.opencsv.CSVWriter;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 
 /**
  * Methods used for writing a Csv file
@@ -247,4 +245,192 @@ public class CSVUtils {
 		}
 		lines.close();
 	} 
-}
+	
+	/**
+	 * Create new CSV with configurations from CSV t-wise from CSV
+	 * 
+	 * @param filename Name of the complete CSVfile
+	 * @param filename2 Name of the twise CSVfile
+	 * @param outputCSV Name of the output CSVfile
+	 *  
+	 */
+	public static void createNwiseCSV(String completeCSV,String twiseCSV, String outputCSV) throws IOException {  
+		CSVReader lines = new CSVReader(new FileReader(completeCSV), ',');
+		String[] row = null;
+
+		int i = 0;
+
+		List content = lines.readAll();
+		content.remove(0);
+		
+		for (Object object : content) {
+
+			row = (String[]) object;
+			String[] line = {row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
+					row[9],row[10],row[11],row[12],row[13],row[14],row[15],
+					row[16],row[17],row[18],row[19],row[20],row[21],row[22],row[23],row[24],
+					row[25],row[26],row[27],row[28],row[29],row[30],row[31],row[32],
+					row[33],row[34],row[35]};
+
+			CSVReader lines2 = new CSVReader(new FileReader(twiseCSV), ';');
+			String[] twise = null;
+
+			List content2 = lines2.readAll();
+			content2.remove(0);
+			
+			for (Object object2 : content2) {
+
+			boolean exist = true;
+			twise = (String[]) object2;
+					
+			//----------------------------------APPLICATION TYPE
+					//applicationType monolith
+			/*System.out.println("row[3] = "+row[3]);
+			System.out.println("twise[26] = "+twise[26]);
+			System.exit(333);*/
+					if ((row[3].toString().equals("\"monolith\""))&&(twise[26].toString().equals("-")))
+					{exist = false;}
+					//applicationType gateway 
+					if ((row[3].toString().equals("\"gateway\""))&&(twise[16].toString().equals("-")))
+					{exist = false;}
+					//applicationType uaa
+					if ((row[3].toString().equals("\"uaa\""))&&(twise[32].toString().equals("-")))
+					{exist = false;}
+					//applicationType microservice
+					if ((row[3].toString().equals("\"microservice\""))&&(twise[31].toString().equals("-")))
+					{exist = false;}
+					
+			//----------------------------------AUTHENTICATION TYPE		
+					//authenticationType session
+					if ((row[4].toString().equals("\"session\""))&&(twise[20].toString().equals("-")))
+					{exist = false;}
+					//applicationType uaa
+					if ((row[4].toString().equals("\"uaa\""))&&(twise[29].toString().equals("-")))
+					{exist = false;}
+					//applicationType oauth2
+					if ((row[4].toString().equals("\"oauth2\""))&&(twise[15].toString().equals("-")))
+					{exist = false;}
+					//applicationType jwt
+					if ((row[4].toString().equals("\"jwt\""))&&(twise[17].toString().equals("-")))
+					{exist = false;}
+			//----------------------------------HIBERNATE CACHE		
+					//hazelcast
+					if ((row[5].toString().equals("\"hazelcast\""))&&(twise[28].toString().equals("-")))
+					{exist = false;}
+					//ehcache
+					if ((row[5].toString().equals("\"ehcache\""))&&(twise[14].toString().equals("-")))
+					{exist = false;}
+					if ((row[5].toString().equals("\"no\""))&&((twise[14].toString().equals("X"))||(twise[28].toString().equals("X"))))
+					{exist = false;}
+			//----------------------------------CLUSTERED HTTPSESSION		
+					//clustered http session
+					if ((row[6].toString().equals("\"hazelcast\""))&&(twise[42].toString().equals("-")))
+					{exist = false;}
+					if (((row[6].toString().equals("\"no\""))||(row[6].toString().equals("ND")))&&(twise[42].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------WEBSOCKET		
+					//spring-websocket
+					if ((row[7].toString().equals("\"spring-websocket\""))&&(twise[34].toString().equals("-")))
+					{exist = false;}
+					if (((row[7].toString().equals("\"no\""))||(row[7].toString().equals("ND")))&&(twise[34].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------DATABASE TYPE
+					//databaseType SQL
+					if ((row[8].toString().equals("\"sql\""))&&(twise[25].toString().equals("-")))
+					{exist = false;}
+					//databaseType MongoDB 
+					if ((row[8].toString().equals("\"mongodb\""))&&(twise[35].toString().equals("-")))
+					{exist = false;}
+					//databaseType Cassandra
+					if ((row[8].toString().equals("\"cassandra\""))&&(twise[5].toString().equals("-")))
+					{exist = false;}
+					if ((row[8].toString().equals("\"no\""))&&(twise[12].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------DEVDATABASE TYPE
+					//databaseType mysql
+					if ((row[9].toString().equals("\"mysql\""))&&(twise[10].toString().equals("-")))
+					{exist = false;}
+					//databaseType MariaDB 
+					if ((row[9].toString().equals("\"mariadb\""))&&(twise[41].toString().equals("-")))
+					{exist = false;}
+					//databaseType postgresql
+					if ((row[9].toString().equals("\"postgresql\""))&&(twise[37].toString().equals("-")))
+					{exist = false;}		
+					//databaseType DiskBased
+					if ((row[9].toString().equals("\"DiskBased\""))&&(twise[24].toString().equals("-")))
+					{exist = false;}	
+					//databaseType InMemory
+					if ((row[9].toString().equals("\"InMemory\""))&&(twise[23].toString().equals("-")))
+					{exist = false;}
+					
+			//----------------------------------PROD DATABASE TYPE
+					//databaseType mysql
+					if ((row[10].toString().equals("\"mysql\""))&&(twise[11].toString().equals("-")))
+					{exist = false;}
+					//databaseType MariaDB 
+					if ((row[10].toString().equals("\"mariadb\""))&&(twise[21].toString().equals("-")))
+					{exist = false;}
+					//databaseType postgresql
+					if ((row[10].toString().equals("\"postgresql\""))&&(twise[4].toString().equals("-")))
+					{exist = false;}		
+					
+			//----------------------------------BUILD TOOL
+					//maven
+					if ((row[11].toString().equals("\"maven\""))&&(twise[0].toString().equals("-")))
+					{exist = false;}
+					//gradle 
+					if ((row[11].toString().equals("\"gradle\""))&&(twise[38].toString().equals("-")))
+					{exist = false;}
+			//----------------------------------SEARCH ENGINE	
+					//elasticsearch
+					if ((row[12].toString().equals("\"elasticsearch\""))&&(twise[7].toString().equals("-")))
+					{exist = false;}
+					if ((row[12].toString().equals("\"no\""))&&(twise[7].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------SOCIAL LOGIN
+					//social login
+					if ((row[13].toString().equals("true"))&&(twise[18].toString().equals("-")))
+					{exist = false;}
+					if ((row[13].toString().equals("false"))&&(twise[18].toString().equals("X")))
+					{exist = false;}
+					if ((row[13].toString().equals("ND"))&&(twise[18].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------USESASS
+					//usesass
+					if ((row[14].toString().equals("true"))&&(twise[27].toString().equals("-")))
+					{exist = false;}
+					if ((row[14].toString().equals("false"))&&(twise[27].toString().equals("X")))
+					{exist = false;}
+					if ((row[14].toString().equals("ND"))&&(twise[27].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------TRANSLATION
+					//translation
+					if ((row[15].toString().equals("true"))&&(twise[19].toString().equals("-")))
+					{exist = false;}
+					if ((row[15].toString().equals("false"))&&(twise[19].toString().equals("X")))
+					{exist = false;}
+					if ((row[15].toString().equals("ND"))&&(twise[19].toString().equals("X")))
+					{exist = false;}
+			//----------------------------------TEST FRAMEWORKS
+					//without protractor
+					if ((row[16].toString().equals("[\"gatling\",\"cucumber\"]"))&&(twise[36].toString().equals("X")))
+					{exist = false;}
+					if ((row[16].toString().equals("[\"cucumber\",\"gatling\"]"))&&(twise[36].toString().equals("X")))
+					{exist = false;}
+					
+					if (exist)
+					{
+						System.out.println(row[0]+row[1]+row[2]+row[3]+row[4]+row[5]+row[13]);
+						//System.out.println(row[1]);
+						i++;
+						CSVWriter writer = new CSVWriter(new FileWriter(outputCSV, true),';');
+						writer.writeNext(line);
+						writer.close();
+					}
+				}
+				lines2.close();
+			}
+		lines.close();
+		System.out.println("Total: "+i);
+	}
+} 
