@@ -169,7 +169,7 @@ public class CSVUtils {
 		for (Object object : content) {
 
 			row = (String[]) object;
-			
+
 			// Change if we test more variants...
 
 			if (row[3].toString().equals(line[0].toString())&&row[4].toString().equals(line[1].toString())&&row[5].toString().equals(line[2].toString())
@@ -199,7 +199,7 @@ public class CSVUtils {
 		String[] heads = {"Id","Log-Build"};
 		writerInit.writeNext(heads);
 		writerInit.close();
-		
+
 		CSVReader lines = new CSVReader(new FileReader(filename), ';');
 		String[] row = null;
 
@@ -213,7 +213,7 @@ public class CSVUtils {
 
 			if (row[22].equals("KO"))
 			{
-				
+
 				boolean check = true;
 				CSVReader lines2 = new CSVReader(new FileReader(filename2), ';');
 				String[] row2 = null;
@@ -223,29 +223,29 @@ public class CSVUtils {
 				for (Object object2 : content2) {
 
 					row2 = (String[]) object2;
-					
+
 					if (row[23].toString().equals(row2[1].toString()) && doublon)
 					{
 						// false if bugs already appears
 						check = false;
-						
+
 						System.out.println("equals");
 					};
 				}
 				lines2.close();
-				
+
 				if (check)
 				{
-				CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
-				writer.writeNext(newline);
-				writer.close();
+					CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),';');
+					writer.writeNext(newline);
+					writer.close();
 				}
 			};
 
 		}
 		lines.close();
 	} 
-	
+
 	/**
 	 * Create new CSV with configurations from CSV t-wise from CSV
 	 * 
@@ -262,7 +262,7 @@ public class CSVUtils {
 
 		List content = lines.readAll();
 		content.remove(0);
-		
+
 		for (Object object : content) {
 
 			row = (String[]) object;
@@ -277,159 +277,164 @@ public class CSVUtils {
 
 			List content2 = lines2.readAll();
 			content2.remove(0);
-			
+
 			for (Object object2 : content2) {
 
-			boolean exist = true;
-			twise = (String[]) object2;
-					
-			//----------------------------------APPLICATION TYPE
-					//applicationType monolith
-			/*System.out.println("row[3] = "+row[3]);
-			System.out.println("twise[26] = "+twise[26]);
-			System.exit(333);*/
-					if ((row[3].toString().equals("\"monolith\""))&&(twise[26].toString().equals("-")))
-					{exist = false;}
-					//applicationType gateway 
-					if ((row[3].toString().equals("\"gateway\""))&&(twise[16].toString().equals("-")))
-					{exist = false;}
-					//applicationType uaa
-					if ((row[3].toString().equals("\"uaa\""))&&(twise[32].toString().equals("-")))
-					{exist = false;}
-					//applicationType microservice
-					if ((row[3].toString().equals("\"microservice\""))&&(twise[31].toString().equals("-")))
-					{exist = false;}
-					
-			//----------------------------------AUTHENTICATION TYPE		
-					//authenticationType session
-					if ((row[4].toString().equals("\"session\""))&&(twise[20].toString().equals("-")))
-					{exist = false;}
-					//applicationType uaa
-					if ((row[4].toString().equals("\"uaa\""))&&(twise[29].toString().equals("-")))
-					{exist = false;}
-					//applicationType oauth2
-					if ((row[4].toString().equals("\"oauth2\""))&&(twise[15].toString().equals("-")))
-					{exist = false;}
-					//applicationType jwt
-					if ((row[4].toString().equals("\"jwt\""))&&(twise[17].toString().equals("-")))
-					{exist = false;}
-			//----------------------------------HIBERNATE CACHE		
-					//hazelcast
-					if ((row[5].toString().equals("\"hazelcast\""))&&(twise[28].toString().equals("-")))
-					{exist = false;}
-					//ehcache
-					if ((row[5].toString().equals("\"ehcache\""))&&(twise[14].toString().equals("-")))
-					{exist = false;}
-					if ((row[5].toString().equals("\"no\""))&&((twise[14].toString().equals("X"))||(twise[28].toString().equals("X"))))
-					{exist = false;}
-			//----------------------------------CLUSTERED HTTPSESSION		
-					//clustered http session
-					if ((row[6].toString().equals("\"hazelcast\""))&&(twise[42].toString().equals("-")))
-					{exist = false;}
-					if (((row[6].toString().equals("\"no\""))||(row[6].toString().equals("ND")))&&(twise[42].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------WEBSOCKET		
-					//spring-websocket
-					if ((row[7].toString().equals("\"spring-websocket\""))&&(twise[34].toString().equals("-")))
-					{exist = false;}
-					if (((row[7].toString().equals("\"no\""))||(row[7].toString().equals("ND")))&&(twise[34].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------DATABASE TYPE
-					//databaseType SQL
-					if ((row[8].toString().equals("\"sql\""))&&(twise[25].toString().equals("-")))
-					{exist = false;}
-					//databaseType MongoDB 
-					if ((row[8].toString().equals("\"mongodb\""))&&(twise[35].toString().equals("-")))
-					{exist = false;}
-					//databaseType Cassandra
-					if ((row[8].toString().equals("\"cassandra\""))&&(twise[5].toString().equals("-")))
-					{exist = false;}
-					if ((row[8].toString().equals("\"no\""))&&(twise[12].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------DEVDATABASE TYPE
-					//databaseType mysql
-					if ((row[9].toString().equals("\"mysql\""))&&(twise[10].toString().equals("-")))
-					{exist = false;}
-					//databaseType MariaDB 
-					if ((row[9].toString().equals("\"mariadb\""))&&(twise[41].toString().equals("-")))
-					{exist = false;}
-					//databaseType postgresql
-					if ((row[9].toString().equals("\"postgresql\""))&&(twise[37].toString().equals("-")))
-					{exist = false;}		
-					//databaseType DiskBased
-					if ((row[9].toString().equals("\"DiskBased\""))&&(twise[24].toString().equals("-")))
-					{exist = false;}	
-					//databaseType InMemory
-					if ((row[9].toString().equals("\"InMemory\""))&&(twise[23].toString().equals("-")))
-					{exist = false;}
-					
-			//----------------------------------PROD DATABASE TYPE
-					//databaseType mysql
-					if ((row[10].toString().equals("\"mysql\""))&&(twise[11].toString().equals("-")))
-					{exist = false;}
-					//databaseType MariaDB 
-					if ((row[10].toString().equals("\"mariadb\""))&&(twise[21].toString().equals("-")))
-					{exist = false;}
-					//databaseType postgresql
-					if ((row[10].toString().equals("\"postgresql\""))&&(twise[4].toString().equals("-")))
-					{exist = false;}		
-					
-			//----------------------------------BUILD TOOL
-					//maven
-					if ((row[11].toString().equals("\"maven\""))&&(twise[0].toString().equals("-")))
-					{exist = false;}
-					//gradle 
-					if ((row[11].toString().equals("\"gradle\""))&&(twise[38].toString().equals("-")))
-					{exist = false;}
-			//----------------------------------SEARCH ENGINE	
-					//elasticsearch
-					if ((row[12].toString().equals("\"elasticsearch\""))&&(twise[7].toString().equals("-")))
-					{exist = false;}
-					if ((row[12].toString().equals("\"no\""))&&(twise[7].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------SOCIAL LOGIN
-					//social login
-					if ((row[13].toString().equals("true"))&&(twise[18].toString().equals("-")))
-					{exist = false;}
-					if ((row[13].toString().equals("false"))&&(twise[18].toString().equals("X")))
-					{exist = false;}
-					if ((row[13].toString().equals("ND"))&&(twise[18].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------USESASS
-					//usesass
-					if ((row[14].toString().equals("true"))&&(twise[27].toString().equals("-")))
-					{exist = false;}
-					if ((row[14].toString().equals("false"))&&(twise[27].toString().equals("X")))
-					{exist = false;}
-					if ((row[14].toString().equals("ND"))&&(twise[27].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------TRANSLATION
-					//translation
-					if ((row[15].toString().equals("true"))&&(twise[19].toString().equals("-")))
-					{exist = false;}
-					if ((row[15].toString().equals("false"))&&(twise[19].toString().equals("X")))
-					{exist = false;}
-					if ((row[15].toString().equals("ND"))&&(twise[19].toString().equals("X")))
-					{exist = false;}
-			//----------------------------------TEST FRAMEWORKS
-					//without protractor
-					if ((row[16].toString().equals("[\"gatling\",\"cucumber\"]"))&&(twise[36].toString().equals("X")))
-					{exist = false;}
-					if ((row[16].toString().equals("[\"cucumber\",\"gatling\"]"))&&(twise[36].toString().equals("X")))
-					{exist = false;}
-					
-					if (exist)
-					{
-						System.out.println(row[0]+row[1]+row[2]+row[3]+row[4]+row[5]+row[13]);
-						//System.out.println(row[1]);
-						i++;
-						CSVWriter writer = new CSVWriter(new FileWriter(outputCSV, true),';');
-						writer.writeNext(line);
-						writer.close();
-					}
+				boolean exist = true;
+				twise = (String[]) object2;
+
+				//----------------------------------DOCKER
+				//true
+				if ((row[2].toString().equals("true"))&&(twise[8].toString().equals("-")))
+				{exist = false;}
+				//false 
+				if ((row[2].toString().equals("false"))&&(twise[8].toString().equals("X")))
+				{exist = false;}
+
+				//----------------------------------APPLICATION TYPE
+				//applicationType monolith
+				if ((row[3].toString().equals("\"monolith\""))&&(twise[27].toString().equals("-")))
+				{exist = false;}
+				//applicationType gateway 
+				if ((row[3].toString().equals("\"gateway\""))&&(twise[17].toString().equals("-")))
+				{exist = false;}
+				//applicationType uaa
+				if ((row[3].toString().equals("\"uaa\""))&&(twise[33].toString().equals("-")))
+				{exist = false;}
+				//applicationType microservice
+				if ((row[3].toString().equals("\"microservice\""))&&(twise[32].toString().equals("-")))
+				{exist = false;}
+
+				//----------------------------------AUTHENTICATION TYPE		
+				//authenticationType session
+				if ((row[4].toString().equals("\"session\""))&&(twise[21].toString().equals("-")))
+				{exist = false;}
+				//applicationType uaa
+				if ((row[4].toString().equals("\"uaa\""))&&(twise[30].toString().equals("-")))
+				{exist = false;}
+				//applicationType oauth2
+				if ((row[4].toString().equals("\"oauth2\""))&&(twise[16].toString().equals("-")))
+				{exist = false;}
+				//applicationType jwt
+				if ((row[4].toString().equals("\"jwt\""))&&(twise[18].toString().equals("-")))
+				{exist = false;}
+				//----------------------------------HIBERNATE CACHE		
+				//hazelcast
+				if ((row[5].toString().equals("\"hazelcast\""))&&(twise[29].toString().equals("-")))
+				{exist = false;}
+				//ehcache
+				if ((row[5].toString().equals("\"ehcache\""))&&(twise[15].toString().equals("-")))
+				{exist = false;}
+				if ((row[5].toString().equals("\"no\""))&&((twise[15].toString().equals("X"))||(twise[29].toString().equals("X"))))
+				{exist = false;}
+				//----------------------------------CLUSTERED HTTPSESSION		
+				//clustered http session
+				if ((row[6].toString().equals("\"hazelcast\""))&&(twise[43].toString().equals("-")))
+				{exist = false;}
+				if (((row[6].toString().equals("\"no\""))||(row[6].toString().equals("ND")))&&(twise[43].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------WEBSOCKET		
+				//spring-websocket
+				if ((row[7].toString().equals("\"spring-websocket\""))&&(twise[35].toString().equals("-")))
+				{exist = false;}
+				if (((row[7].toString().equals("\"no\""))||(row[7].toString().equals("ND")))&&(twise[35].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------DATABASE TYPE
+				//databaseType SQL
+				if ((row[8].toString().equals("\"sql\""))&&(twise[26].toString().equals("-")))
+				{exist = false;}
+				//databaseType MongoDB 
+				if ((row[8].toString().equals("\"mongodb\""))&&(twise[36].toString().equals("-")))
+				{exist = false;}
+				//databaseType Cassandra
+				if ((row[8].toString().equals("\"cassandra\""))&&(twise[5].toString().equals("-")))
+				{exist = false;}
+				if ((row[8].toString().equals("\"no\""))&&(twise[13].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------DEVDATABASE TYPE
+				//databaseType mysql
+				if ((row[9].toString().equals("\"mysql\""))&&(twise[11].toString().equals("-")))
+				{exist = false;}
+				//databaseType MariaDB 
+				if ((row[9].toString().equals("\"mariadb\""))&&(twise[42].toString().equals("-")))
+				{exist = false;}
+				//databaseType postgresql
+				if ((row[9].toString().equals("\"postgresql\""))&&(twise[38].toString().equals("-")))
+				{exist = false;}		
+				//databaseType DiskBased
+				if ((row[9].toString().equals("\"DiskBased\""))&&(twise[25].toString().equals("-")))
+				{exist = false;}	
+				//databaseType InMemory
+				if ((row[9].toString().equals("\"InMemory\""))&&(twise[24].toString().equals("-")))
+				{exist = false;}
+
+				//----------------------------------PROD DATABASE TYPE
+				//databaseType mysql
+				if ((row[10].toString().equals("\"mysql\""))&&(twise[12].toString().equals("-")))
+				{exist = false;}
+				//databaseType MariaDB 
+				if ((row[10].toString().equals("\"mariadb\""))&&(twise[22].toString().equals("-")))
+				{exist = false;}
+				//databaseType postgresql
+				if ((row[10].toString().equals("\"postgresql\""))&&(twise[4].toString().equals("-")))
+				{exist = false;}		
+
+				//----------------------------------BUILD TOOL
+				//maven
+				if ((row[11].toString().equals("\"maven\""))&&(twise[0].toString().equals("-")))
+				{exist = false;}
+				//gradle 
+				if ((row[11].toString().equals("\"gradle\""))&&(twise[39].toString().equals("-")))
+				{exist = false;}
+				//----------------------------------SEARCH ENGINE	
+				//elasticsearch
+				if ((row[12].toString().equals("\"elasticsearch\""))&&(twise[7].toString().equals("-")))
+				{exist = false;}
+				if ((row[12].toString().equals("\"no\""))&&(twise[7].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------SOCIAL LOGIN
+				//social login
+				if ((row[13].toString().equals("true"))&&(twise[20].toString().equals("-")))
+				{exist = false;}
+				if ((row[13].toString().equals("false"))&&(twise[20].toString().equals("X")))
+				{exist = false;}
+				if ((row[13].toString().equals("ND"))&&(twise[20].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------USESASS
+				//usesass
+				if ((row[14].toString().equals("true"))&&(twise[28].toString().equals("-")))
+				{exist = false;}
+				if ((row[14].toString().equals("false"))&&(twise[28].toString().equals("X")))
+				{exist = false;}
+				if ((row[14].toString().equals("ND"))&&(twise[28].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------TRANSLATION
+				//translation
+				if ((row[15].toString().equals("true"))&&(twise[19].toString().equals("-")))
+				{exist = false;}
+				if ((row[15].toString().equals("false"))&&(twise[19].toString().equals("X")))
+				{exist = false;}
+				if ((row[15].toString().equals("ND"))&&(twise[19].toString().equals("X")))
+				{exist = false;}
+				//----------------------------------TEST FRAMEWORKS
+				//without protractor
+				if ((row[16].toString().equals("[\"gatling\",\"cucumber\"]"))&&(twise[37].toString().equals("X")))
+				{exist = false;}
+				if ((row[16].toString().equals("[\"cucumber\",\"gatling\"]"))&&(twise[37].toString().equals("X")))
+				{exist = false;}
+
+				if (exist)
+				{
+					System.out.println(row[0]+row[1]+row[2]+row[3]+row[4]+row[5]+row[13]);
+					//System.out.println(row[1]);
+					i++;
+					CSVWriter writer = new CSVWriter(new FileWriter(outputCSV, true),';');
+					writer.writeNext(line);
+					writer.close();
 				}
-				lines2.close();
 			}
+			lines2.close();
+		}
 		lines.close();
 		System.out.println("Total: "+i);
 	}
