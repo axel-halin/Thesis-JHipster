@@ -502,9 +502,7 @@ public class Oracle {
 							}
 							
 							_log.info("Cleaning up... Docker");
-							cleanUp(jDirectory,true);
-							publish(jDirectory);
-							
+							cleanUp(jDirectory,true);						
 						} else{
 							_log.error("App Compilation Failed ...");
 							compile = FAIL;
@@ -519,6 +517,7 @@ public class Oracle {
 						stacktracesGen = resultChecker.extractStacktraces("generate.log");
 					}
 	
+					publish(jDirectory);
 					_log.info("Writing into jhipster.csv");
 	
 					//WITH DOCKER
