@@ -5,8 +5,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.eclipse.xtext.util.Files;
 import org.junit.Test;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -245,6 +248,64 @@ public class CSVUtils {
 		}
 		lines.close();
 	} 
+	
+	/**
+	 * Add new column in jhipster.csv bugs to categorize bugs.
+	 * 
+	 * @param filename Name of the CSVfile
+	 * @param filename2 Name of the CSVfile
+	 * @param doublon Check doublon if true
+	 *  
+	 */
+	public static void categorizeBugsCSV(String filename, String filename2) throws IOException {  
+		CSVReader lines = new CSVReader(new FileReader(filename), ',');
+		String[] row = null;
+
+		List content = lines.readAll();
+
+		for (Object object : content) {
+
+			row = (String[]) object;
+			String bug = "newBUG";
+						
+			if (row[23].equals("KO")) // build = KO
+			{
+				//extract log
+				String logCompilation = row[21];
+				String logBuild = row[24];
+
+				//CHECK LOG TO CATEGORIZE BUGS Error parsing reference: Could not connect to address=(host=mariadb)(port=3306)(type=master) : Connection refused 
+				Matcher m0 = Pattern.compile("(.*?)SocialUserConnection").matcher(logCompilation);
+				Matcher m1 = Pattern.compile("(.*?)Failed to get driver instance for jdbcUrl=jdbc:mariadb://(.*?):3306/jhipster").matcher(logBuild);
+				Matcher m3 = Pattern.compile("(.*?)No instances available for uaa").matcher(logBuild);
+				Matcher m4 = Pattern.compile("(.*?)\"jhipster - jhipster-mariadb(.*?)is not a valid repository/tag").matcher(logBuild);
+				Matcher m5 = Pattern.compile("(.*?)com.mysql.jdbc.exceptions.jdbc4.CommunicationsException").matcher(logBuild);
+				Matcher m6 = Pattern.compile("(.*?)org.springframework.security.oauth2.provider.token.store.JdbcTokenStore").matcher(logBuild);
+
+				while(m0.find()) bug = "BUG6:SOCIALLOGIN";
+				
+				while(m1.find()) bug = "BUG1:mariadb";
+				
+				while(m3.find()) bug = "BUG2:UAAAuthentication";
+				
+				while(m4.find()) bug = "BUG3:mariadb";
+				
+				while(m5.find()) bug = "BUG4:SQL";
+				
+				while(m6.find()) bug = "BUG5:OAUTH2";
+				
+				String[] newline = {row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
+						row[9],row[10],row[11],row[12],row[13],row[14],row[15],
+						row[16],row[17],row[18],row[19],row[20],row[21],row[22],row[23],row[24],bug};
+				
+				CSVWriter writer = new CSVWriter(new FileWriter(filename2, true),',');
+				writer.writeNext(newline);
+				writer.close();
+				}
+			};
+			lines.close();
+}
+
 
 	/**
 	 * Create new CSV with configurations from CSV t-wise from CSV
