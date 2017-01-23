@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -432,5 +434,26 @@ public class CSVUtils {
 			}
 		lines.close();
 		System.out.println("Total: "+i);
+	}
+	
+	
+	public static void extractRandomConfigs(String inputFile, String outputFile, int nConfigs, int nIterations) throws IOException{
+		CSVReader lines = new CSVReader(new FileReader(inputFile), ',');
+		List<String[]> content = lines.readAll();
+		
+		for (int i=0; i<nIterations;i++){
+			System.out.println(content.isEmpty());
+			// Shuffle list
+			Collections.shuffle(content);
+			int randomNum = ThreadLocalRandom.current().nextInt(1, content.size() - nConfigs);
+			// Write lines
+			CSVWriter writer = new CSVWriter(new FileWriter(outputFile+(i+1)+".csv", true),';');
+			for(int j=randomNum;j<=randomNum+nConfigs-1;j++){
+				writer.writeNext(content.get(j));
+			}
+			writer.close();
+		}
+		
+		lines.close();
 	}
 } 
