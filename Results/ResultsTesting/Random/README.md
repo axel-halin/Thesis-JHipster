@@ -22,3 +22,13 @@ We summarize here the results obtained with 3 CSV of 50 randoms configurations (
 | BUG4:SQL| 4 |
 | BUG5:OAUTH2| 1 |
 
+## Random3Classified.csv
+
+| Bug  | Frequency |
+| ---- | --------- | 
+| BUG1:mariadb  | 5  |
+| BUG2:UAAAuthentication  | 5  |
+| BUG3:mariadb | 4 |
+| BUG4:SQL| 3 |
+| BUG6:SOCIALLOGIN| 1 |
+| newBug | 2 |
