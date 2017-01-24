@@ -275,12 +275,12 @@ public class CSVUtils {
 				//extract log
 				String logCompilation = row[21];
 				String logBuild = row[24];
-
+//Error parsing reference: "jhipster - jhipster-mariadb:mariadb - jhipster-registry" is not a valid repository/tag
 				//CHECK LOG TO CATEGORIZE BUGS Error parsing reference: Could not connect to address=(host=mariadb)(port=3306)(type=master) : Connection refused 
 				Matcher m0 = Pattern.compile("(.*?)SocialUserConnection").matcher(logCompilation);
 				Matcher m1 = Pattern.compile("(.*?)Failed to get driver instance for jdbcUrl=jdbc:mariadb://(.*?):3306/jhipster").matcher(logBuild);
 				Matcher m3 = Pattern.compile("(.*?)No instances available for uaa").matcher(logBuild);
-				Matcher m4 = Pattern.compile("(.*?)\"jhipster - jhipster-mariadb(.*?)is not a valid repository/tag").matcher(logBuild);
+				Matcher m4 = Pattern.compile("(.*?)jhipster - jhipster-mariadb(.*?)is not a valid repository/tag").matcher(logBuild);
 				Matcher m5 = Pattern.compile("(.*?)com.mysql.jdbc.exceptions.jdbc4.CommunicationsException").matcher(logBuild);
 				Matcher m6 = Pattern.compile("(.*?)org.springframework.security.oauth2.provider.token.store.JdbcTokenStore").matcher(logBuild);
 
@@ -288,7 +288,8 @@ public class CSVUtils {
 				
 				while(m1.find()) bug = "BUG1:mariadb";
 				
-				while(m3.find()) bug = "BUG2:UAAAuthentication";
+				while(m3.find()) if(row[2].toString().equals("true")) {bug = "BUG2:UAAAuthenticationDocker";}
+				else {bug = "BUG7:UAAEhcache";}
 				
 				while(m4.find()) bug = "BUG3:mariadb";
 				
