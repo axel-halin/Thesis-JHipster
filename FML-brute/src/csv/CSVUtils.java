@@ -260,7 +260,7 @@ public class CSVUtils {
 	 *  
 	 */
 	public static void categorizeBugsCSV(String filename, String filename2) throws IOException {  
-		CSVReader lines = new CSVReader(new FileReader(filename), ',');
+		CSVReader lines = new CSVReader(new FileReader(filename), ';');
 		String[] row = null;
 
 		List content = lines.readAll();
@@ -502,7 +502,6 @@ public class CSVUtils {
 		System.out.println("Total: "+i);
 	}
 	
-	
 	public static void extractRandomConfigs(String inputFile, String outputFile, int nConfigs, int nIterations) throws IOException{
 		CSVReader lines = new CSVReader(new FileReader(inputFile), ',');
 		List<String[]> content = lines.readAll();
@@ -522,4 +521,196 @@ public class CSVUtils {
 		
 		lines.close();
 	}
+	
+	/**
+	 * Create new CSV with configurations from CSV PLEDGE 
+	 * 
+	 * @param filename Name of the complete CSVfile
+	 * @param filename2 Name of the PLEDGE CSVfile
+	 * @param outputCSV Name of the output CSVfile
+	 *  
+	 */
+	// WARNING ! REMOVE UNUSED FIRST LINES IN pledgeCSV
+	public static void createPledgeCSV(String completeCSV,String pledgeCSV, String outputCSV) throws IOException {  
+		CSVReader lines = new CSVReader(new FileReader(completeCSV), ',');
+		String[] row = null;
+
+		int i = 0;
+
+		List content = lines.readAll();
+		content.remove(0);
+
+		for (Object object : content) {
+
+			row = (String[]) object;
+			String[] line = {row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],
+					row[9],row[10],row[11],row[12],row[13],row[14],row[15],
+					row[16],row[17],row[18],row[19],row[20],row[21],row[22],row[23],row[24],
+					row[25],row[26],row[27],row[28],row[29],row[30],row[31],row[32],
+					row[33],row[34],row[35]};
+
+			CSVReader lines2 = new CSVReader(new FileReader(pledgeCSV), ';');
+			String[] pledge = null;
+
+			List content2 = lines2.readAll();
+
+			for (Object object2 : content2) {
+
+				boolean exist = true;
+				pledge = (String[]) object2;
+
+				//----------------------------------DOCKER
+				//true
+				if ((row[2].toString().equals("true"))&&(pledge[8].toString().equals("-9")))
+				{exist = false;}
+				//false 
+				if ((row[2].toString().equals("false"))&&(pledge[8].toString().equals("9")))
+				{exist = false;}
+
+				//----------------------------------APPLICATION TYPE
+				//applicationType monolith
+				if ((row[3].toString().equals("\"monolith\""))&&(pledge[27].toString().equals("-28")))
+				{exist = false;}
+				//applicationType gateway 
+				if ((row[3].toString().equals("\"gateway\""))&&(pledge[17].toString().equals("-18")))
+				{exist = false;}
+				//applicationType uaa
+				if ((row[3].toString().equals("\"uaa\""))&&(pledge[32].toString().equals("-33")))
+				{exist = false;}
+				//applicationType microservice
+				if ((row[3].toString().equals("\"microservice\""))&&(pledge[31].toString().equals("-32")))
+				{exist = false;}
+
+				//----------------------------------AUTHENTICATION TYPE		
+				//authenticationType session
+				if ((row[4].toString().equals("\"session\""))&&(pledge[21].toString().equals("-22")))
+				{exist = false;}
+				//applicationType uaa
+				if ((row[4].toString().equals("\"uaa\""))&&(pledge[30].toString().equals("-31")))
+				{exist = false;}
+				//applicationType oauth2
+				if ((row[4].toString().equals("\"oauth2\""))&&(pledge[16].toString().equals("-17")))
+				{exist = false;}
+				//applicationType jwt
+				if ((row[4].toString().equals("\"jwt\""))&&(pledge[18].toString().equals("-19")))
+				{exist = false;}
+				//----------------------------------HIBERNATE CACHE		
+				//hazelcast
+				if ((row[5].toString().equals("\"hazelcast\""))&&(pledge[29].toString().equals("-30")))
+				{exist = false;}
+				//ehcache
+				if ((row[5].toString().equals("\"ehcache\""))&&(pledge[15].toString().equals("-16")))
+				{exist = false;}
+				if ((row[5].toString().equals("\"no\""))&&((pledge[15].toString().equals("16"))||(pledge[29].toString().equals("30"))))
+				{exist = false;}
+				//----------------------------------CLUSTERED HTTPSESSION		
+				//clustered http session
+				if ((row[6].toString().equals("\"hazelcast\""))&&(pledge[43].toString().equals("-44")))
+				{exist = false;}
+				if (((row[6].toString().equals("\"no\""))||(row[6].toString().equals("ND")))&&(pledge[43].toString().equals("44")))
+				{exist = false;}
+				//----------------------------------WEBSOCKET		
+				//spring-websocket
+				if ((row[7].toString().equals("\"spring-websocket\""))&&(pledge[35].toString().equals("-36")))
+				{exist = false;}
+				if (((row[7].toString().equals("\"no\""))||(row[7].toString().equals("ND")))&&(pledge[35].toString().equals("36")))
+				{exist = false;}
+				//----------------------------------DATABASE TYPE
+				//databaseType SQL
+				if ((row[8].toString().equals("\"sql\""))&&(pledge[26].toString().equals("-27")))
+				{exist = false;}
+				//databaseType MongoDB 
+				if ((row[8].toString().equals("\"mongodb\""))&&(pledge[37].toString().equals("-38")))
+				{exist = false;}
+				//databaseType Cassandra
+				if ((row[8].toString().equals("\"cassandra\""))&&(pledge[5].toString().equals("-6")))
+				{exist = false;}
+				if ((row[8].toString().equals("\"no\""))&&(pledge[13].toString().equals("14")))
+				{exist = false;}
+				//----------------------------------DEVDATABASE TYPE
+				//databaseType mysql
+				if ((row[9].toString().equals("\"mysql\""))&&(pledge[10].toString().equals("-11")))
+				{exist = false;}
+				//databaseType MariaDB 
+				if ((row[9].toString().equals("\"mariadb\""))&&(pledge[40].toString().equals("-41")))
+				{exist = false;}
+				//databaseType postgresql
+				if ((row[9].toString().equals("\"postgresql\""))&&(pledge[36].toString().equals("-37")))
+				{exist = false;}		
+				//databaseType DiskBased
+				if ((row[9].toString().equals("\"DiskBased\""))&&(pledge[25].toString().equals("-26")))
+				{exist = false;}	
+				//databaseType InMemory
+				if ((row[9].toString().equals("\"InMemory\""))&&(pledge[24].toString().equals("-25")))
+				{exist = false;}
+
+				//----------------------------------PROD DATABASE TYPE
+				//databaseType mysql
+				if ((row[10].toString().equals("\"mysql\""))&&(pledge[12].toString().equals("-13")))
+				{exist = false;}
+				//databaseType MariaDB 
+				if ((row[10].toString().equals("\"mariadb\""))&&(pledge[22].toString().equals("-23")))
+				{exist = false;}
+				//databaseType postgresql
+				if ((row[10].toString().equals("\"postgresql\""))&&(pledge[4].toString().equals("-5")))
+				{exist = false;}		
+
+				//----------------------------------BUILD TOOL
+				//maven
+				if ((row[11].toString().equals("\"maven\""))&&(pledge[0].toString().equals("-1")))
+				{exist = false;}
+				//gradle 
+				if ((row[11].toString().equals("\"gradle\""))&&(pledge[39].toString().equals("-40")))
+				{exist = false;}
+				//----------------------------------SEARCH ENGINE	
+				//elasticsearch
+				if ((row[12].toString().equals("\"elasticsearch\""))&&(pledge[7].toString().equals("-8")))
+				{exist = false;}
+				if ((row[12].toString().equals("\"no\""))&&(pledge[7].toString().equals("8")))
+				{exist = false;}
+				//----------------------------------SOCIAL LOGIN
+				//social login
+				if ((row[13].toString().equals("true"))&&(pledge[19].toString().equals("-20")))
+				{exist = false;}
+				if ((row[13].toString().equals("false"))&&(pledge[19].toString().equals("20")))
+				{exist = false;}
+				if ((row[13].toString().equals("ND"))&&(pledge[19].toString().equals("20")))
+				{exist = false;}
+				//----------------------------------USESASS
+				//usesass
+				if ((row[14].toString().equals("true"))&&(pledge[28].toString().equals("-29")))
+				{exist = false;}
+				if ((row[14].toString().equals("false"))&&(pledge[28].toString().equals("29")))
+				{exist = false;}
+				if ((row[14].toString().equals("ND"))&&(pledge[28].toString().equals("29")))
+				{exist = false;}
+				//----------------------------------TRANSLATION
+				//translation
+				if ((row[15].toString().equals("true"))&&(pledge[20].toString().equals("-21")))
+				{exist = false;}
+				if ((row[15].toString().equals("false"))&&(pledge[20].toString().equals("21")))
+				{exist = false;}
+				if ((row[15].toString().equals("ND"))&&(pledge[20].toString().equals("21")))
+				{exist = false;}
+				//----------------------------------TEST FRAMEWORKS
+				//without protractor
+				if ((row[16].toString().equals("[\"gatling\",\"cucumber\"]"))&&(pledge[38].toString().equals("39")))
+				{exist = false;}
+				if ((row[16].toString().equals("[\"cucumber\",\"gatling\"]"))&&(pledge[38].toString().equals("39")))
+				{exist = false;}
+
+				if (exist)
+				{
+					i++;
+					CSVWriter writer = new CSVWriter(new FileWriter(outputCSV, true),';');
+					writer.writeNext(line);
+					writer.close();
+				}
+			}
+			lines2.close();
+		}
+		lines.close();
+		System.out.println("Total: "+i);
+	}
+	
 } 
