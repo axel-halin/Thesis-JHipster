@@ -1,3 +1,4 @@
+"Id","JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache","clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType","buildTool","searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate","Log-Gen","TimeToGenerate","Compile","Log-Compile","TimeToCompile","Build","Log-Build","Bug"
 "1484349272005","jhipster9232","true","""monolith""","""session""","""ehcache""","""hazelcast""","""spring-websocket""","""sql""","""mariadb""","""mariadb""","""gradle""","""elasticsearch""","true","false","true","[""cucumber"",""protractor"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java

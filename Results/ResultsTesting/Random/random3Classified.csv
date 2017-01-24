@@ -1,3 +1,4 @@
+"Id","JHipsterRegister","Docker","applicationType","authenticationType","hibernateCache","clusteredHttpSession","websocket","databaseType","devDatabaseType","prodDatabaseType","buildTool","searchEngine","enableSocialSignIn","useSass","enableTranslation","testFrameworks","Generate","Log-Gen","TimeToGenerate","Compile","Log-Compile","TimeToCompile","Build","Log-Build","Bug"
 "1484332670804","jhipster9115","true","""monolith""","""jwt""","""no""","""no""","""spring-websocket""","""cassandra""","""cassandra""","""cassandra""","""maven""","""no""","false","true","false","[""protractor"",""cucumber"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
