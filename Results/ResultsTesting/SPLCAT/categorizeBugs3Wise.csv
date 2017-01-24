@@ -31,7 +31,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484616773519","jhipster299","true","""uaa""","""uaa""","""no""","ND","ND","""sql""","""DiskBased""","""mariadb""","""gradle""","""elasticsearch""","ND","ND","true","[""cucumber"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -90,7 +90,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484170063582","jhipster1256","false","""gateway""","""uaa""","""no""","""hazelcast""","""spring-websocket""","""mongodb""","""mongodb""","""mongodb""","""gradle""","""no""","false","true","false","[""gatling"",""cucumber"",""protractor""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -123,7 +123,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484190833815","jhipster1372","true","""monolith""","""jwt""","""hazelcast""","""hazelcast""","""spring-websocket""","""sql""","""DiskBased""","""mariadb""","""gradle""","""no""","true","true","false","[""protractor"",""cucumber"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -219,7 +219,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484194454271","jhipster1674","true","""monolith""","""session""","""ehcache""","""no""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""elasticsearch""","true","false","true","[""protractor"",""gatling"",""cucumber""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -346,7 +346,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 
 ERROR:  relation ""public.databasechangeloglock"" does not exist at character 22
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484190981871","jhipster2921","true","""monolith""","""jwt""","""ehcache""","""hazelcast""","""spring-websocket""","""sql""","""mariadb""","""mariadb""","""gradle""","""no""","true","true","true","[""cucumber"",""protractor"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -416,7 +416,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484748620187","jhipster3349","false","""monolith""","""session""","""ehcache""","""no""","""no""","""sql""","""mariadb""","""mariadb""","""gradle""","""no""","false","false","true","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -473,7 +473,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [32mjhipster-mariadb          |[0m 2017-01-12  6:52:06 140577933809600 [ERROR] Aborting
 ERROR: 1049  Unknown database 'test'
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484695526126","jhipster3645","false","""monolith""","""oauth2""","""hazelcast""","""no""","""spring-websocket""","""sql""","""mariadb""","""mariadb""","""gradle""","""elasticsearch""","false","true","true","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -594,7 +594,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484268149306","jhipster5245","true","""microservice""","""uaa""","""no""","ND","ND","""sql""","""DiskBased""","""postgresql""","""maven""","""no""","ND","ND","false","[""gatling"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -627,7 +627,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 
 ERROR:  relation ""public.databasechangeloglock"" does not exist at character 22
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484260921737","jhipster5939","true","""monolith""","""session""","""no""","""hazelcast""","""spring-websocket""","""sql""","""mariadb""","""mariadb""","""gradle""","""elasticsearch""","false","false","false","[""cucumber"",""protractor"",""gatling""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -747,7 +747,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 
 ERROR:  relation ""public.databasechangeloglock"" does not exist at character 22
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484276520019","jhipster6849","false","""gateway""","""uaa""","""hazelcast""","""hazelcast""","""no""","""sql""","""DiskBased""","""postgresql""","""gradle""","""no""","false","false","false","[""protractor"",""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -780,7 +780,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484271528956","jhipster6943","true","""gateway""","""uaa""","""hazelcast""","""no""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""no""","false","true","true","[""protractor"",""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -813,7 +813,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484249130839","jhipster6982","true","""monolith""","""oauth2""","""no""","""hazelcast""","""no""","""sql""","""mariadb""","""mariadb""","""gradle""","""no""","false","false","false","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -963,7 +963,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484247004359","jhipster7781","true","""microservice""","""uaa""","""no""","ND","ND","""mongodb""","""mongodb""","""mongodb""","""gradle""","""no""","ND","ND","true","[""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -994,7 +994,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484271467781","jhipster7844","false","""microservice""","""uaa""","""no""","ND","ND","""sql""","""mysql""","""mysql""","""maven""","""no""","ND","ND","true","[""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1062,7 +1062,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484253697721","jhipster8185","false","""gateway""","""jwt""","""no""","""hazelcast""","""no""","""sql""","""DiskBased""","""mariadb""","""gradle""","""no""","false","false","true","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -1144,7 +1144,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484345840290","jhipster9179","false","""gateway""","""uaa""","""no""","""no""","""spring-websocket""","""sql""","""mariadb""","""mariadb""","""maven""","""no""","false","true","true","[""gatling"",""cucumber"",""protractor""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1217,7 +1217,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484354090547","jhipster9835","true","""uaa""","""uaa""","""no""","ND","ND","""cassandra""","""cassandra""","""cassandra""","""maven""","""no""","ND","ND","false","[""gatling"",""cucumber""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -1278,7 +1278,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484470385713","jhipster11515","false","""gateway""","""uaa""","""hazelcast""","""no""","""no""","""sql""","""DiskBased""","""mysql""","""gradle""","""no""","false","true","false","[""cucumber"",""protractor"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1311,7 +1311,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484481222874","jhipster11529","true","""gateway""","""uaa""","""ehcache""","""hazelcast""","""spring-websocket""","""sql""","""DiskBased""","""mysql""","""maven""","""elasticsearch""","false","false","false","[""protractor"",""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1344,7 +1344,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484483868888","jhipster11679","true","""monolith""","""oauth2""","""ehcache""","""no""","""spring-websocket""","""sql""","""postgresql""","""postgresql""","""gradle""","""elasticsearch""","false","false","false","[""gatling"",""protractor"",""cucumber""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -1492,7 +1492,7 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
-","BUG2:UAAAuthentication"
+","BUG7:UAAEhcache"
 "1484680968694","jhipster12801","true","""microservice""","""jwt""","""ehcache""","ND","ND","""sql""","""mysql""","""mysql""","""gradle""","""elasticsearch""","ND","ND","false","[""gatling"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1554,7 +1554,7 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 
 ERROR:  relation ""public.databasechangeloglock"" does not exist at character 22
 
-","BUG2:UAAAuthentication"
+","BUG2:UAAAuthenticationDocker"
 "1484685720338","jhipster13104","false","""microservice""","""jwt""","""no""","ND","ND","""sql""","""InMemory""","""mariadb""","""gradle""","""no""","ND","ND","true","[""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
