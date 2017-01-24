@@ -1,0 +1,729 @@
+"Id";"JHipsterRegister";"Docker";"applicationType";"authenticationType";"hibernateCache";"clusteredHttpSession";"websocket";"databaseType";"devDatabaseType";"prodDatabaseType";"buildTool";"searchEngine";"enableSocialSignIn";"useSass";"enableTranslation";"testFrameworks";"Generate";"Log-Gen";"TimeToGenerate";"Compile";"Log-Compile";"TimeToCompile";"Build";"Log-Build";"TimeToBuildDockerPackage";"TimeToBuild";"ImageDocker";"TestsResult";"Cucumber";"KarmaJS";"Gatling";"Protractor";"CoverageInstructions";"CoverageBranches";"JSStatementsCoverage";"JSBranchesCoverage"
+"1484133298856";"jhipster53";"false";"""monolith""";"""jwt""";"""ehcache""";"""hazelcast""";"""spring-websocket""";"""sql""";"""postgresql""";"""postgresql""";"""maven""";"""elasticsearch""";"true";"true";"false";"[""protractor"",""gatling"",""cucumber""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"27.882";"OK";"";"5.309";"OK";"ND";"NOTDOCKER";"18.482";"NOTDOCKER";"Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 27.696 sec - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.641 sec - in io.variability.jhipster.service.SocialServiceIntTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.224 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.543 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.172 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.502 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.162 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"54";"25";"ND";"ND"
+"1484231804777";"jhipster139";"false";"""monolith""";"""session""";"""ehcache""";"""hazelcast""";"""no""";"""sql""";"""InMemory""";"""postgresql""";"""maven""";"""elasticsearch""";"true";"false";"true";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"70.416";"OK";"";"13.560";"OK";"ND";"NOTDOCKER";"31.818";"NOTDOCKER";"Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 46.284 sec - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.956 sec - in io.variability.jhipster.service.SocialServiceIntTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.085 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.817 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.364 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.784 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 46.583 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"26 specs, 0 failures";"54";"25";"33.62% ";"16.18% "
+"1484174183559";"jhipster614";"true";"""gateway""";"""uaa""";"""hazelcast""";"""no""";"""spring-websocket""";"""sql""";"""mariadb""";"""mariadb""";"""maven""";"""elasticsearch""";"false";"true";"true";"[""protractor"",""gatling"",""cucumber""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"28.536";"OK";"";"4.859";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while the singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+[33mjhipster-mariadb          |[0m 2017-01-11 23:04:49 140376909494208 [ERROR] Aborting
+ERROR: 1049  Unknown database 'test'
+
+";"ND";"ND";"ND";"ND";"Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.028 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"1";"1";"ND";"ND"
+"1484604933240";"jhipster641";"true";"""uaa""";"""uaa""";"""no""";"ND";"ND";"""sql""";"""InMemory""";"""mysql""";"""gradle""";"""elasticsearch""";"ND";"ND";"false";"[""gatling"",""cucumber""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"3.276";"OK";"";"13.588 ";"OK";"ND";"44.736 ";"46.905";"""279.5 MB""";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484191547645";"jhipster1323";"true";"""monolith""";"""session""";"""ehcache""";"""hazelcast""";"""no""";"""sql""";"""DiskBased""";"""mariadb""";"""maven""";"""elasticsearch""";"true";"true";"true";"[""cucumber"",""gatling"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"30.041";"OK";"";"5.278";"OK";"ND";"279.0";"31.445";"""281.3 MB""";"Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.137 sec - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.651 sec - in io.variability.jhipster.service.SocialServiceIntTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.228 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.529 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.177 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.511 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.12 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"10 specs, 0 failures";"44";"27";"ND";"ND"
+"1484181744471";"jhipster1464";"true";"""monolith""";"""session""";"""hazelcast""";"""no""";"""spring-websocket""";"""sql""";"""mysql""";"""mysql""";"""gradle""";"""elasticsearch""";"true";"true";"false";"[""cucumber"",""protractor"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"29.267";"OK";"";"25.148 ";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Error creating bean with name 'org.springframework.cache.annotation.ProxyCachingConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Failed to initialize pool: Communications link failure
+
+Exception: Communications link failure
+
+Exception(SQLError.java:988)
+
+Exception: Connection refused (Connection refused)
+
+Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"31.63% ";"14.92% "
+"1484196152866";"jhipster1475";"false";"""monolith""";"""oauth2""";"""hazelcast""";"""hazelcast""";"""spring-websocket""";"""sql""";"""mariadb""";"""mariadb""";"""maven""";"""elasticsearch""";"false";"true";"true";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"32.471";"OK";"";"5.086";"OK";"ND";"NOTDOCKER";"21.638";"NOTDOCKER";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.098 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.272 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.793 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.209 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.079 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.211 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"10 specs, 0 failures";"39";"16";"ND";"ND"
+"1484610734059";"jhipster1736";"false";"""monolith""";"""oauth2""";"""hazelcast""";"""hazelcast""";"""no""";"""sql""";"""InMemory""";"""postgresql""";"""gradle""";"""elasticsearch""";"false";"true";"false";"[""protractor"",""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"23.948";"OK";"";"21.876 ";"OK";"ND";"NOTDOCKER";"199.951";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"32% ";"14.94% "
+"1484174517570";"jhipster2257";"false";"""microservice""";"""jwt""";"""no""";"ND";"ND";"""no""";"""no""";"""no""";"""gradle""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"5.005";"OK";"";"21.243 ";"OK";"ND";"NOTDOCKER";"58.279 ";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484706835736";"jhipster2641";"false";"""monolith""";"""oauth2""";"""hazelcast""";"""hazelcast""";"""spring-websocket""";"""sql""";"""InMemory""";"""postgresql""";"""gradle""";"""elasticsearch""";"false";"false";"false";"[""gatling"",""protractor"",""cucumber""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"47.282";"OK";"";"38.01 ";"OK";"ND";"NOTDOCKER";"204.403";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"31.44% ";"14.92% "
+"1484160358732";"jhipster3100";"true";"""microservice""";"""uaa""";"""no""";"ND";"ND";"""cassandra""";"""cassandra""";"""cassandra""";"""gradle""";"""no""";"ND";"ND";"true";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"5.35";"OK";"";"18.558 ";"KO";"";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484184299454";"jhipster4218";"false";"""monolith""";"""jwt""";"""no""";"""hazelcast""";"""spring-websocket""";"""sql""";"""DiskBased""";"""mysql""";"""gradle""";"""no""";"true";"false";"false";"[""protractor"",""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"20.462";"OK";"";"22.345 ";"OK";"ND";"NOTDOCKER";"194.126";"NOTDOCKER";"ND";"ND";"OK";"26 specs, 0 failures";"ND";"ND";"31.38% ";"14.85% "
+"1484687532700";"jhipster4238";"true";"""monolith""";"""session""";"""ehcache""";"""hazelcast""";"""no""";"""sql""";"""DiskBased""";"""postgresql""";"""maven""";"""elasticsearch""";"true";"false";"true";"[""cucumber"",""protractor"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"20.752";"OK";"";"4.322";"OK";"ND";"179.0";"23.494";"""282.1 MB""";"Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.666 sec - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.619 sec - in io.variability.jhipster.service.SocialServiceIntTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.178 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.407 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.179 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.609 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.707 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"26 specs, 0 failures";"54";"25";"ND";"ND"
+"1484172219496";"jhipster4308";"false";"""monolith""";"""session""";"""ehcache""";"""hazelcast""";"""spring-websocket""";"""sql""";"""InMemory""";"""mysql""";"""gradle""";"""no""";"true";"false";"true";"[""gatling"",""protractor"",""cucumber""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"20.252";"OK";"";"24.561 ";"OK";"ND";"NOTDOCKER";"227.482";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"32.88% ";"16.01% "
+"1484201599112";"jhipster4428";"false";"""gateway""";"""jwt""";"""no""";"""no""";"""spring-websocket""";"""cassandra""";"""cassandra""";"""cassandra""";"""maven""";"""no""";"false";"true";"true";"[""protractor"",""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"26.518";"OK";"";"4.215";"OK";"ND";"NOTDOCKER";"11.601";"NOTDOCKER";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 32.213 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 30.597 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 52.244 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"10 specs, 0 failures";"33";"13";"ND";"ND"
+"1484204268189";"jhipster4430";"true";"""microservice""";"""uaa""";"""no""";"ND";"ND";"""no""";"""no""";"""no""";"""maven""";"""no""";"ND";"ND";"true";"[""gatling"",""cucumber""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.529";"OK";"";"3.153";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+";"ND";"ND";"ND";"ND";"Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"0";"0";"ND";"ND"
+"1484700399579";"jhipster4545";"false";"""monolith""";"""session""";"""ehcache""";"""hazelcast""";"""spring-websocket""";"""sql""";"""mysql""";"""mysql""";"""gradle""";"""elasticsearch""";"true";"true";"false";"[""cucumber"",""gatling"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"34.883";"OK";"";"29.944 ";"OK";"ND";"NOTDOCKER";"172.837";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"31.63% ";"14.92% "
+"1484282398464";"jhipster4753";"false";"""monolith""";"""session""";"""hazelcast""";"""hazelcast""";"""spring-websocket""";"""sql""";"""postgresql""";"""postgresql""";"""maven""";"""elasticsearch""";"true";"true";"true";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"29.972";"OK";"";"5.288";"OK";"ND";"NOTDOCKER";"18.311";"NOTDOCKER";"Tests run: 31, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 28.218 sec - in io.variability.jhipster.repository.CustomSocialUsersConnectionRepositoryIntTest
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.178 sec - in io.variability.jhipster.service.SocialServiceIntTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.291 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.599 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.189 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.472 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 28.796 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"26 specs, 0 failures";"54";"24";"ND";"ND"
+"1484282607338";"jhipster5601";"true";"""monolith""";"""session""";"""no""";"""no""";"""no""";"""mongodb""";"""mongodb""";"""mongodb""";"""maven""";"""no""";"true";"true";"true";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"30.69";"KO";"Exception
+
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster5601/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:3: error: package org.hibernate.annotations does not exist
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster5601/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:4: error: package org.hibernate.annotations does not exist
+[ERROR] error on execute: error during compilation
+[ERROR] Failed to execute goal org.bsc.maven:maven-processor-plugin:2.2.4:process (process) on project jhipster: Error executing: error during compilation -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+";"KO";"KO";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND"
+"1485005734983";"jhipster5617";"false";"""uaa""";"""uaa""";"""hazelcast""";"ND";"ND";"""sql""";"""InMemory""";"""mariadb""";"""maven""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"4.058";"OK";"";"7.551";"OK";"ND";"NOTDOCKER";"25.322";"NOTDOCKER";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.14 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 24.867 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.137 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.358 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.16 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.764 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"40";"16";"ND";"ND"
+"1484257600287";"jhipster5837";"false";"""microservice""";"""jwt""";"""hazelcast""";"ND";"ND";"""sql""";"""DiskBased""";"""postgresql""";"""gradle""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"3.387";"OK";"";"10.925 ";"OK";"ND";"NOTDOCKER";"77.373";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1485018978859";"jhipster5874";"true";"""gateway""";"""uaa""";"""hazelcast""";"""no""";"""spring-websocket""";"""sql""";"""postgresql""";"""postgresql""";"""maven""";"""no""";"false";"true";"false";"[""protractor"",""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"33.761";"OK";"";"5.503";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while the singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+ERROR:  relation ""public.databasechangeloglock"" does not exist at character 22
+
+";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1485018440884";"jhipster6312";"false";"""gateway""";"""uaa""";"""no""";"""hazelcast""";"""no""";"""cassandra""";"""cassandra""";"""cassandra""";"""gradle""";"""no""";"false";"true";"true";"[""cucumber"",""protractor"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"40.645";"OK";"";"33.64 ";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while the singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+";"NOTDOCKER";"ND";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"32.73% ";"15.95% "
+"1484258805021";"jhipster6737";"false";"""gateway""";"""uaa""";"""ehcache""";"""no""";"""spring-websocket""";"""sql""";"""DiskBased""";"""mariadb""";"""gradle""";"""elasticsearch""";"false";"true";"false";"[""protractor"",""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"59.585";"OK";"";"42.692 ";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://localhost:3306/jhipster
+
+Exception: Error creating bean with name 'org.springframework.cache.config.internalCacheAdvisor' defined in class path resource [org/springframework/cache/annotation/ProxyCachingConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.cache.interceptor.BeanFactoryCacheOperationSourceAdvisor]: Factory method 'cacheAdvisor' threw exception; nested exception is java.lang.NullPointerException)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://localhost:3306/jhipster
+
+Exception: Failed to get driver instance for jdbcUrl=jdbc:mariadb://localhost:3306/jhipster
+
+Exception: No suitable driver
+
+Caused by: java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://localhost:3306/jhipster
+
+Caused by: java.sql.SQLException: No suitable driver
+
+";"NOTDOCKER";"ND";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"30.62% ";"14.67% "
+"1485040203447";"jhipster7074";"false";"""microservice""";"""uaa""";"""hazelcast""";"ND";"ND";"""sql""";"""InMemory""";"""mariadb""";"""maven""";"""no""";"ND";"ND";"false";"[""gatling"",""cucumber""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"3.384";"OK";"";"4.911";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'eurekaInstanceConfigBean': Singleton bean creation not allowed while the singletons of this factory are in destruction (Do not request a bean from a BeanFactory in a destroy method implementation!)
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Exception
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa -> [Help 1]
+
+Exception
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:1.4.0.RELEASE:run (default-cli) on project jhipster: An exception occurred while running. null: InvocationTargetException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+";"NOTDOCKER";"ND";"NOTDOCKER";"ND";"Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"0";"0";"ND";"ND"
+"1484259085498";"jhipster7539";"true";"""microservice""";"""jwt""";"""ehcache""";"ND";"ND";"""sql""";"""DiskBased""";"""mariadb""";"""gradle""";"""elasticsearch""";"ND";"ND";"true";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.687";"OK";"";"9.799 ";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: Error creating bean with name 'metaDataSourceAdvisor': Cannot resolve reference to bean 'methodSecurityMetadataSource' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'methodSecurityMetadataSource' defined in class path resource [org/springframework/security/config/annotation/method/configuration/GlobalMethodSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.access.method.MethodSecurityMetadataSource]: Factory method 'methodSecurityMetadataSource' threw exception; nested exception is java.lang.IllegalArgumentException: org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity is required)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: No suitable driver
+
+Caused by: java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Caused by: java.sql.SQLException: No suitable driver
+
+[36mjhipster-mariadb          |[0m 2017-01-12 22:41:19 140205414488000 [ERROR] Aborting
+ERROR: 1049  Unknown database 'test'
+
+";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484267756801";"jhipster7995";"false";"""gateway""";"""jwt""";"""ehcache""";"""hazelcast""";"""spring-websocket""";"""sql""";"""InMemory""";"""mysql""";"""gradle""";"""elasticsearch""";"false";"true";"true";"[""cucumber"",""gatling"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"24.39";"OK";"";"26.138 ";"OK";"ND";"NOTDOCKER";"131.285";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"32.59% ";"15.89% "
+"1484251636449";"jhipster8184";"false";"""microservice""";"""uaa""";"""ehcache""";"ND";"ND";"""sql""";"""DiskBased""";"""mysql""";"""gradle""";"""elasticsearch""";"ND";"ND";"true";"[""gatling"",""cucumber""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.991";"OK";"";"35.895 ";"KO";"Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception: None of the configured nodes are available: [{#transport#-1}{127.0.0.1}{localhost/127.0.0.1:9300}]
+
+Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfiguration': Unsatisfied dependency expressed through field 'tokenStore': Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Exception: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'tokenStore' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.TokenStore]: Factory method 'tokenStore' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jwtAccessTokenConverter' defined in class path resource [io/variability/jhipster/config/MicroserviceSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter]: Factory method 'jwtAccessTokenConverter' threw exception; nested exception is java.lang.IllegalStateException: No instances available for uaa
+
+Caused by: java.lang.IllegalStateException: No instances available for uaa
+
+";"NOTDOCKER";"ND";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484251490167";"jhipster8634";"true";"""uaa""";"""uaa""";"""no""";"ND";"ND";"""cassandra""";"""cassandra""";"""cassandra""";"""maven""";"""no""";"ND";"ND";"true";"[""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"3.569";"OK";"";"4.048";"KO";"";"ND";"ND";"ND";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.072 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 6.434 sec <<< FAILURE! - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 6.785 sec <<< FAILURE! - in io.variability.jhipster.web.rest.UserResourceIntTest";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484289144551";"jhipster8811";"false";"""microservice""";"""jwt""";"""no""";"ND";"ND";"""no""";"""no""";"""no""";"""gradle""";"""no""";"ND";"ND";"true";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.538";"OK";"";"8.79 ";"OK";"ND";"NOTDOCKER";"27.832 ";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484270478079";"jhipster9097";"false";"""monolith""";"""session""";"""no""";"""hazelcast""";"""spring-websocket""";"""mongodb""";"""mongodb""";"""mongodb""";"""maven""";"""no""";"true";"false";"false";"[""protractor"",""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"20.743";"KO";"Exception
+
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster9097/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:3: error: package org.hibernate.annotations does not exist
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster9097/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:4: error: package org.hibernate.annotations does not exist
+[ERROR] error on execute: error during compilation
+[ERROR] Failed to execute goal org.bsc.maven:maven-processor-plugin:2.2.4:process (process) on project jhipster: Error executing: error during compilation -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+";"KO";"KO";"COMPILATION ERROR";"NOTDOCKER";"ND";"NOTDOCKER";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND"
+"1484366367187";"jhipster9848";"true";"""monolith""";"""jwt""";"""no""";"""no""";"""spring-websocket""";"""cassandra""";"""cassandra""";"""cassandra""";"""gradle""";"""no""";"false";"true";"false";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"23.949";"OK";"";"17.043 ";"KO";"";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"30.67% ";"14.77% "
+"1484422912310";"jhipster10167";"true";"""uaa""";"""uaa""";"""ehcache""";"ND";"ND";"""sql""";"""mariadb""";"""mariadb""";"""gradle""";"""elasticsearch""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.813";"OK";"";"18.424 ";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: Error creating bean with name 'metaDataSourceAdvisor': Cannot resolve reference to bean 'methodSecurityMetadataSource' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration': Injection of autowired dependencies failed; nested exception is java.lang.RuntimeException: Could not postProcess org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@27e32fe4 of type class org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Exception: No suitable driver
+
+Caused by: java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster
+
+Caused by: java.sql.SQLException: No suitable driver
+
+[35mjhipster-mariadb          |[0m 2017-01-14 19:49:31 140677828986816 [ERROR] Aborting
+ERROR: 1049  Unknown database 'test'
+
+";"ND";"ND";"ND";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484422804236";"jhipster10317";"true";"""monolith""";"""jwt""";"""no""";"""hazelcast""";"""no""";"""mongodb""";"""mongodb""";"""mongodb""";"""maven""";"""no""";"true";"true";"true";"[""cucumber"",""gatling"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"25.25";"KO";"Exception
+
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster10317/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:3: error: package org.hibernate.annotations does not exist
+[ERROR] diagnostic: /tmp/oracle/Thesis-JHipster/FML-brute/jhipsters/jhipster10317/src/main/java/io/variability/jhipster/domain/SocialUserConnection.java:4: error: package org.hibernate.annotations does not exist
+[ERROR] error on execute: error during compilation
+[ERROR] Failed to execute goal org.bsc.maven:maven-processor-plugin:2.2.4:process (process) on project jhipster: Error executing: error during compilation -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+";"KO";"KO";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND"
+"1484433613876";"jhipster10932";"true";"""microservice""";"""jwt""";"""ehcache""";"ND";"ND";"""sql""";"""DiskBased""";"""postgresql""";"""gradle""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.778";"OK";"";"9.236 ";"OK";"ND";"39.607 ";"25.361";"""255.6 MB""";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484428361601";"jhipster10976";"true";"""uaa""";"""uaa""";"""ehcache""";"ND";"ND";"""sql""";"""mariadb""";"""mariadb""";"""maven""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.834";"OK";"";"4.157";"KO";"Error parsing reference: ""jhipster - jhipster-mariadb:mariadb - jhipster-registry"" is not a valid repository/tag
+";"ND";"ND";"ND";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.321 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.466 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.173 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.076 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.465 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"41";"17";"ND";"ND"
+"1484420730696";"jhipster11015";"false";"""microservice""";"""jwt""";"""hazelcast""";"ND";"ND";"""sql""";"""DiskBased""";"""mysql""";"""gradle""";"""no""";"ND";"ND";"false";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.793";"OK";"";"16.306 ";"OK";"ND";"NOTDOCKER";"72.17";"NOTDOCKER";"ND";"ND";"OK";"ND";"ND";"ND";"ND";"ND"
+"1484497679843";"jhipster11894";"true";"""microservice""";"""jwt""";"""no""";"ND";"ND";"""sql""";"""mysql""";"""mysql""";"""maven""";"""no""";"ND";"ND";"true";"[""cucumber"",""gatling""]";"OK";"ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"2.425";"OK";"";"3.381";"OK";"ND";"114.0";"34.583";"""240.7 MB""";"ND";"Tests run: 0, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"52";"18";"ND";"ND"
+"1484691821326";"jhipster12209";"true";"""monolith""";"""jwt""";"""no""";"""hazelcast""";"""no""";"""mongodb""";"""mongodb""";"""mongodb""";"""gradle""";"""no""";"true";"false";"true";"[""gatling"",""cucumber"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"25.827";"KO";"";"KO";"KO";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND";"ND"
+"1484706598810";"jhipster12622";"true";"""monolith""";"""oauth2""";"""hazelcast""";"""hazelcast""";"""spring-websocket""";"""sql""";"""DiskBased""";"""mysql""";"""maven""";"""no""";"false";"true";"false";"[""cucumber"",""gatling"",""protractor""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"31.942";"OK";"";"4.852";"KO";"Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Failed to initialize pool: Communications link failure
+
+Exception: Communications link failure
+
+Exception(SQLError.java:988)
+
+Exception: Connection refused (Connection refused)
+
+Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+";"ND";"ND";"ND";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.112 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.484 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.729 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.183 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.065 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.71 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"51";"20";"ND";"ND"
+"1484691691069";"jhipster12909";"true";"""uaa""";"""uaa""";"""no""";"ND";"ND";"""mongodb""";"""mongodb""";"""mongodb""";"""maven""";"""no""";"ND";"ND";"true";"[""gatling"",""cucumber""]";"OK";"Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+";"3.042";"OK";"";"4.945";"OK";"ND";"169.0";"22.032";"""224.8 MB""";"Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.1 sec - in io.variability.jhipster.security.SecurityUtilsUnitTest
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 50.452 sec - in io.variability.jhipster.service.UserServiceIntTest
+Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.42 sec - in io.variability.jhipster.web.rest.AccountResourceIntTest
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.471 sec - in io.variability.jhipster.web.rest.AuditResourceIntTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.063 sec - in io.variability.jhipster.web.rest.UserResourceIntTest";"Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.639 sec - in io.variability.jhipster.cucumber.CucumberTest";"OK";"ND";"43";"16";"ND";"ND"
