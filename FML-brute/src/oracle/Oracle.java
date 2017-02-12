@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -53,7 +55,7 @@ public class Oracle {
 		Process process = null;
 		try{
 			ProcessBuilder processBuilder = new ProcessBuilder(fileName);
-			processBuilder.directory(new File(projectDirectory + "/" + desiredDirectory));
+			processBuilder.directory(new File(projectDirectory +"/"+ desiredDirectory));
 			process = processBuilder.start();
 			process.waitFor();
 		} catch(IOException e){
@@ -66,6 +68,16 @@ public class Oracle {
 		}
 	}
 
+	private static void runCommand(String command,String[] env, File path){
+		try{
+			Process p = Runtime.getRuntime().exec(command,env,path);
+			p.waitFor();
+			_log.info("Done running command");
+		} catch (Exception e) { 
+			_log.error("An error occured");
+			_log.error(e.getMessage());}
+	}
+	
 	/**
 	 * Generate the App from the yo-rc.json.
 	 * 
@@ -236,35 +248,21 @@ public class Oracle {
 		return prop; // default linux
 	}
 
-
+	
+	private static boolean infrastructureBug(String logFile,String path){
+		String text = Files.readFileIntoString(path+logFile);
+		Matcher m = Pattern.compile("((.*?)Communications link failure)").matcher(text);
+		while(m.find()) return true;
+		return false;
+	}
+	
+	
 	/**
 	 * Generate & Build & Tests all variants of JHipster 3.6.1. 
 	 */
 	//@Test
 	//public void genJHipsterVariants() throws Exception{
 	public static void main(String[] args) throws Exception{
-
-		/*//Create CSV file JHipster if not exist.
-		if (checkIfFileNotExist("jhipster.csv"))
-		{
-		_log.info("Create New CSV File JHipster");
-		CSVUtils.createCSVFileJHipster("jhipster.csv"); 
-		}
-		
-		//Create CSV file Coverage if not exist.
-		if (checkIfFileNotExist("coverageJACOCO.csv"))
-		{
-		_log.info("Create New CSV File Coverage");
-		CSVUtils.createCSVFileCoverage("coverageJACOCO.csv");
-		}
-		
-		//Create CSV file Coverage if not exist.
-		if (checkIfFileNotExist("cucumber.csv"))
-		{
-		_log.info("Create New CSV File Cucumber");
-		CSVUtils.createCSVCucumber("cucumber.csv");
-		}*/
-		
 		//Folder i to j Oracle 
 		Integer jhipsterI = Integer.parseInt(args[0]);
 		Integer jhipsterJ = Integer.parseInt(args[1]);
@@ -276,16 +274,6 @@ public class Oracle {
 		String idSpreadsheet_cucumber = property.getProperty("idSpreadsheetCucumber");
 		String idSpreadsheet_oracle = property.getProperty("idSpreadsheetOracle");
 		final String idSpreadsheet_cucumberDocker = property.getProperty("idSpreadsheetCucumberDocker");
-		
-	/*	_log.info("Starting intialization Oracle Database...");
-		
-			// Start Oracle Image Docker
-			Thread threadOracleDatabase = new Thread(new ThreadOracleDatabase(projectDirectory));
-			threadOracleDatabase.start();
-
-			// Let Oracle Databse initiate before other initialization...
-			try{Thread.sleep(30000);}
-			catch(Exception e){_log.error(e.getMessage());}*/
 		
 		for (int i = jhipsterI;i<=jhipsterJ-1;i++){
 			_log.info("Starting treatment of JHipster n° "+i);
@@ -300,6 +288,9 @@ public class Oracle {
 			//return number of milliseconds since January 1, 1970, 00:00:00 GMT
 			Id = String.valueOf(timestamp.getTime());
 
+			// Docker build file
+			String dockerLogs = "buildDocker.log";
+			
 			//Strings used for the csv
 			String generation = DEFAULT_NOT_FOUND_VALUE;
 			String generationTime = DEFAULT_NOT_FOUND_VALUE;
@@ -479,15 +470,36 @@ public class Oracle {
 							t1.start();
 							//build WITH docker
 							dockerCompose(jDirectory);
-							Thread.sleep(3000);
+							Thread.sleep(5000);
 							t1.done();
+							_log.info("Done");
+							//TODO set up distinct log file for 2nd try
+							// If infrastructure bug, retry 
+							if(buildWithDocker.toString().equals(FAIL)){
+								_log.info("Build failed... checking the bug");
+								if(infrastructureBug("buildDocker.log",getjDirectory(jDirectory))){
+									_log.info("Infrastructure bug!!");
+									ThreadCheckBuild t3 = new ThreadCheckBuild(getjDirectory(jDirectory), true, "buildDocker2.log",imageSize, buildWithDocker, prodDatabaseType);
+									t3.start();
+									_log.info("Thread started");
+									// launch Docker compose
+									//runCommand("docker-compose -f src/main/docker/app.yml up >> buildDocker2.log 2>&1",null,new File(getjDirectory(jDirectory)));
+									startProcess("./dockerRetry.sh",getjDirectory(jDirectory));
+									Thread.sleep(3000);
+									t3.done();
+									dockerLogs = "dockerBuild2.log";
+									_log.info("Done");
+								}
+								_log.info("Not infrastructure related");
+								startProcess("./dockerStop.sh",getjDirectory(jDirectory));
+							}					
 	
 							if(imageSize.toString().equals("")){
 								imageSize.delete(0, 5);
 								imageSize.append(DEFAULT_NOT_FOUND_VALUE);
 							}
 	
-							if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces("buildDocker.log");
+							if(buildWithDocker.toString().equals(FAIL)) stacktracesBuildWithDocker = resultChecker.extractStacktraces(dockerLogs);
 							else {
 								String buildTimeWithDockerVar = resultChecker.extractTime("buildDocker.log");
 								String[] partsBuildWithDocker = buildTimeWithDockerVar.split(";");

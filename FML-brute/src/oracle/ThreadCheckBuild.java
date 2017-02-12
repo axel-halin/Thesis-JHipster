@@ -151,9 +151,24 @@ public class ThreadCheckBuild extends Thread {
 		return false;
 	}
 	
+	
+	private static void runCommand(String command,String[] env, File path){
+		try{
+			Process p = Runtime.getRuntime().exec(command,env,path);
+			p.waitFor();
+			_log.info("Done running command");
+		} catch (Exception e) { 
+			_log.error("An error occured");
+			_log.error(e.getMessage());}
+	}
+	
 	private void killServer(){
-		if (USE_DOCKER) startProcess("./dockerStop.sh");
-		else startProcess("./killScript.sh");
+		// TODO Docker => kill server in Oracle.java
+		/*if (USE_DOCKER) startProcess("./dockerStop.sh");
+		else startProcess("./killScript.sh");*/
+		if(!USE_DOCKER) startProcess("./killScript.sh");
+		else runCommand("docker-compose -f src/main/docker/app.yml stop",null,new File(PATH));
+		// TODO docker -> docker-compose -f src/main/docker/app.yml stop
 	}
 	
 	

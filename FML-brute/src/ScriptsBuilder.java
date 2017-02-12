@@ -210,6 +210,7 @@ public class ScriptsBuilder {
 	 */
 	private void generateDockerScripts(JhipsterConfiguration jconf, String jDirectory){
 		generateDockerStartScript(jDirectory, jconf);
+		generateDockerRetryScript(jDirectory, jconf);
 		generateDockerStopScript(jconf, jDirectory);
 	}					
 
@@ -233,6 +234,16 @@ public class ScriptsBuilder {
 				+ " >> buildDocker.log 2>&1\n";
 
 		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerStart.sh", script);
+	}
+	
+	private void generateDockerRetryScript(String jDirectory, JhipsterConfiguration jconf){
+		Properties properties = getProperties(PROPERTIES_FILE);
+		String script = "#!/bin/bash\n\n";
+		// Docker-compose
+		script += properties.getProperty("dockerStart")
+				+ " >> buildDocker2.log 2>&1\n";
+
+		Files.writeStringIntoFile(getjDirectory(jDirectory)+"dockerRetry.sh", script);
 	}
 
 	/**
