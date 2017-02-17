@@ -56,6 +56,7 @@ public class RAnalysis {
 	 * @param re
 	 */
 	private static void selectOneEnabled(Rengine re){
+		//readCSV(re,"jhipster.csv","data");
 		readCSV(re,"jhipster.csv","data");
 		for(String feat : OPTIONALS){
 			selectEnabled(re,feat,feat+"OneEnabled","data");
@@ -69,7 +70,7 @@ public class RAnalysis {
 			// find proportion of failure
 			extractFailureProportion(re,feat+"OneEnabled");
 			// find proportion of bugs
-			
+			extractBugProportion(re,feat+"OneEnabled");
 		}
 	}
 	
@@ -78,8 +79,7 @@ public class RAnalysis {
 	/**
 	 * Select and store all rows of dataframe collection where feature is enabled in outputVar.
 	 *
-	 * The default value for an enabled feature is "true" (docker,translation,social and sass)
-	 * 
+	 * @param re
 	 * @param feature
 	 * @param outputVar
 	 * @param collection
@@ -92,6 +92,14 @@ public class RAnalysis {
 		re.eval(command);
 	}
 	
+	/**
+	 * Select and store all rows of dataframe collection where feature is disabled in outputVar.
+	 * 
+	 * @param re
+	 * @param feature
+	 * @param outputVar
+	 * @param collection
+	 */
 	private static void selectDisabled(Rengine re, String feature, String outputVar, String collection){
 		String value = "no|false|ND";
 		String command = String.format("%s <- %s[grep(\"%s\",%s$%s),]",outputVar,collection,value,collection,feature);
@@ -107,6 +115,34 @@ public class RAnalysis {
 		int buildKO = re.eval(buildKOCommand).asInt();
 		
 		double total= (double) buildKO/(buildOK + buildKO);
-		System.out.println("Proportion of failures in "+collection+" = "+total*100+"%");
+		System.out.println("Proportion of failures in "+collection+" = "+total*100+"% ("+buildKO+"/"+(buildKO+buildOK)+") configs");
+	}
+	
+	private static void extractBugProportion(Rengine re, String collection){
+		String regex6 = "SocialUserConnection";
+		String regex3 = "Error parsing reference: \\\"jhipster - jhipster-mariadb\\\" is not a valid repository/tag"
+						+ "|Error parsing reference: \\\"jhipster - jhipster-mariadb:mariadb - jhipster-registry\\\" is not a valid repository/tag";
+		String regex1 = "java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://mariadb:3306/jhipster"
+						+"|java.lang.RuntimeException: Failed to get driver instance for jdbcUrl=jdbc:mariadb://localhost:3306/jhipster";
+		String regex2 = "java.lang.IllegalStateException: No instances available for uaa";
+		String regex5 = "JdbcTokenStore";
+		
+		// Bug 1: mariadb gradle
+		String bug1Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex1,collection);
+		//TODO split bug2 according to Docker or Maven/Gradle
+		// Bug 2: uaa
+		String bug2Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex2,collection);
+		// Bug 3: mariadb Docker
+		String bug3Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex3,collection);
+		// Bug 5: oauth2
+		String bug5Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex5,collection);;
+		// Bug 6: social login
+		String bug6Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Compile),])",collection,regex6,collection);
+		
+		System.out.println(re.eval(bug1Command));
+		System.out.println(re.eval(bug2Command));
+		System.out.println(re.eval(bug3Command));
+		System.out.println(re.eval(bug6Command));
+		System.out.println(re.eval(bug5Command));
 	}
 }
