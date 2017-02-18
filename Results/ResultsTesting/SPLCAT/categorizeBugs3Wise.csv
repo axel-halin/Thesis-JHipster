@@ -220,35 +220,6 @@ Caused by: java.lang.IllegalStateException: No instances available for uaa
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
 ","BUG7:UAAEhcache"
-"1484194454271","jhipster1674","true","""monolith""","""session""","""ehcache""","""no""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""elasticsearch""","true","false","true","[""protractor"",""gatling"",""cucumber""]","OK","Exception.java
-
-ExceptionHandlingAsyncTaskExecutor.java
-
-Exception.java
-
-ExceptionTranslator.java
-
-","24.833","OK","","5.253","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Error creating bean with name 'metaDataSourceAdvisor': Cannot resolve reference to bean 'methodSecurityMetadataSource' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
-
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Failed to initialize pool: Communications link failure
-
-Exception: Communications link failure
-
-Exception(SQLError.java:988)
-
-Exception: Connection refused (Connection refused)
-
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
 "1484606699314","jhipster2082","false","""monolith""","""jwt""","""no""","""no""","""no""","""sql""","""mariadb""","""mariadb""","""gradle""","""elasticsearch""","true","false","true","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
@@ -357,35 +328,6 @@ ExceptionTranslator.java
 
 ","25.298","OK","","24.037 ","KO","Error parsing reference: ""jhipster - jhipster-mariadb"" is not a valid repository/tag
 ","BUG3:mariadb"
-"1484708320425","jhipster3317","true","""monolith""","""session""","""no""","""no""","""spring-websocket""","""sql""","""DiskBased""","""mysql""","""gradle""","""elasticsearch""","true","true","false","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
-
-ExceptionHandlingAsyncTaskExecutor.java
-
-Exception.java
-
-ExceptionTranslator.java
-
-","55.94","OK","","37.679 ","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Error creating bean with name 'org.springframework.cache.annotation.ProxyCachingConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
-
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Failed to initialize pool: Communications link failure
-
-Exception: Communications link failure
-
-Exception(SQLError.java:988)
-
-Exception: Connection refused (Connection refused)
-
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
 "1484750246097","jhipster3343","true","""microservice""","""uaa""","""no""","ND","ND","""no""","""no""","""no""","""gradle""","""no""","ND","ND","false","[""gatling"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -654,7 +596,7 @@ Caused by: java.sql.SQLException: No suitable driver
 ERROR: 1049  Unknown database 'test'
 
 ","BUG1:mariadb"
-"1485014361323","jhipster6075","true","""monolith""","""oauth2""","""hazelcast""","""hazelcast""","""spring-websocket""","""sql""","""InMemory""","""mysql""","""gradle""","""elasticsearch""","false","false","true","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
+"1487193732744","jhipster6075","true","""monolith""","""oauth2""","""hazelcast""","""hazelcast""","""spring-websocket""","""sql""","""InMemory""","""mysql""","""gradle""","""elasticsearch""","false","false","true","[""gatling"",""cucumber"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
 
@@ -662,27 +604,21 @@ Exception.java
 
 ExceptionTranslator.java
 
-","26.383","OK","","27.07 ","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+","26.645","OK","","24.924 ","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userResource': Unsatisfied dependency expressed through field 'userService': Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Error creating bean with name 'org.springframework.cache.annotation.ProxyCachingConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
+Exception: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
 
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+Exception: Error creating bean with name 'userResource': Unsatisfied dependency expressed through field 'userService': Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Failed to initialize pool: Communications link failure
+Exception: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Communications link failure
+Exception: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception(SQLError.java:988)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Connection refused (Connection refused)
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
+","BUG5:OAUTH2"
 "1484279838204","jhipster6098","false","""gateway""","""uaa""","""ehcache""","""hazelcast""","""no""","""sql""","""mariadb""","""mariadb""","""gradle""","""no""","false","false","true","[""gatling"",""protractor"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -847,7 +783,7 @@ Caused by: java.lang.RuntimeException: Failed to get driver instance for jdbcUrl
 Caused by: java.sql.SQLException: No suitable driver
 
 ","BUG1:mariadb"
-"1484260355444","jhipster7040","true","""monolith""","""oauth2""","""hazelcast""","""no""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""no""","false","false","false","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
+"1487205726986","jhipster7040","true","""monolith""","""oauth2""","""hazelcast""","""no""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""no""","false","false","false","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
 
@@ -855,56 +791,21 @@ Exception.java
 
 ExceptionTranslator.java
 
-","21.349","OK","","4.139","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+","25.529","OK","","4.784","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountResource': Unsatisfied dependency expressed through field 'userService': Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
+Exception: Error creating bean with name 'metaDataSourceAdvisor': Cannot resolve reference to bean 'methodSecurityMetadataSource' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration': Injection of autowired dependencies failed; nested exception is java.lang.RuntimeException: Could not postProcess org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@5c448433 of type class org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler)
 
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+Exception: Error creating bean with name 'accountResource': Unsatisfied dependency expressed through field 'userService': Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Failed to initialize pool: Communications link failure
+Exception: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Communications link failure
+Exception: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception(SQLError.java:988)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userService': Unsatisfied dependency expressed through field 'jdbcTokenStore': No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Exception: Connection refused (Connection refused)
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore] found for dependency [org.springframework.security.oauth2.provider.token.store.JdbcTokenStore]: expected at least 1 bean which qualifies as autowire candidate for this dependency. Dependency annotations: {@javax.inject.Inject()}
 
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
-"1484248575717","jhipster7082","true","""monolith""","""session""","""no""","""hazelcast""","""no""","""sql""","""mysql""","""mysql""","""gradle""","""no""","true","false","false","[""protractor"",""gatling"",""cucumber""]","OK","Exception.java
-
-ExceptionHandlingAsyncTaskExecutor.java
-
-Exception.java
-
-ExceptionTranslator.java
-
-","34.243","OK","","10.67 ","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Error creating bean with name 'org.springframework.cache.annotation.ProxyCachingConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
-
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Failed to initialize pool: Communications link failure
-
-Exception: Communications link failure
-
-Exception(SQLError.java:988)
-
-Exception: Connection refused (Connection refused)
-
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
+","BUG5:OAUTH2"
 "1484246992057","jhipster7331","true","""microservice""","""uaa""","""no""","ND","ND","""cassandra""","""cassandra""","""cassandra""","""maven""","""no""","ND","ND","false","[""cucumber"",""gatling""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java
@@ -1493,33 +1394,6 @@ Caused by: org.springframework.beans.BeanInstantiationException: Failed to insta
 Caused by: java.lang.IllegalStateException: No instances available for uaa
 
 ","BUG7:UAAEhcache"
-"1484680968694","jhipster12801","true","""microservice""","""jwt""","""ehcache""","ND","ND","""sql""","""mysql""","""mysql""","""gradle""","""elasticsearch""","ND","ND","false","[""gatling"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
-
-Exception.java
-
-ExceptionTranslator.java
-
-","3.081","OK","","22.309 ","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Error creating bean with name 'metaDataSourceAdvisor': Cannot resolve reference to bean 'methodSecurityMetadataSource' while setting constructor argument; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'methodSecurityMetadataSource' defined in class path resource [org/springframework/security/config/annotation/method/configuration/GlobalMethodSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.security.access.method.MethodSecurityMetadataSource]: Factory method 'methodSecurityMetadataSource' threw exception; nested exception is java.lang.IllegalArgumentException: org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity is required)
-
-Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Exception: Failed to initialize pool: Communications link failure
-
-Exception: Communications link failure
-
-Exception(SQLError.java:988)
-
-Exception: Connection refused (Connection refused)
-
-Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
-
-Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
-
-Caused by: java.net.ConnectException: Connection refused (Connection refused)
-
-","BUG4:SQL"
 "1484702915514","jhipster12822","true","""gateway""","""uaa""","""no""","""hazelcast""","""spring-websocket""","""sql""","""postgresql""","""postgresql""","""maven""","""elasticsearch""","false","true","true","[""protractor"",""gatling"",""cucumber""]","OK","ExceptionHandlingAsyncTaskExecutor.java
 
 Exception.java

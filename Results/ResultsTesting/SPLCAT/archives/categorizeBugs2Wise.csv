@@ -280,6 +280,56 @@ Caused by: java.sql.SQLException: No suitable driver
 ERROR: 1049  Unknown database 'test'
 
 ","BUG1:mariadb"
+"1485031501882","jhipster6426","false","""gateway""","""jwt""","""no""","""no""","""no""","""sql""","""DiskBased""","""postgresql""","""gradle""","""no""","false","false","false","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+","26.991","OK","","45.286 ","KO","Exception: Address already in use
+
+Exception: Failed to start component [Connector[HTTP/1.1-8080]]
+
+Exception: service.getName(): ""Tomcat"";  Protocol handler start failed
+
+Exception: Address already in use
+
+Caused by: org.apache.catalina.LifecycleException: service.getName(): ""Tomcat"";  Protocol handler start failed
+
+Caused by: java.net.BindException: Address already in use
+
+","newBUG"
+"1484863500077","jhipster7673","true","""monolith""","""oauth2""","""no""","""hazelcast""","""spring-websocket""","""sql""","""mysql""","""mysql""","""maven""","""elasticsearch""","false","true","true","[""cucumber"",""protractor"",""gatling""]","OK","Exception.java
+
+ExceptionHandlingAsyncTaskExecutor.java
+
+Exception.java
+
+ExceptionTranslator.java
+
+","24.15","OK","","4.165","KO","Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': Initialization of bean failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' is defined)
+
+Exception: Error creating bean with name 'liquibase' defined in class path resource [io/variability/jhipster/config/DatabaseConfiguration.class]: Invocation of init method failed; nested exception is com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Exception: Failed to initialize pool: Communications link failure
+
+Exception: Communications link failure
+
+Exception(SQLError.java:988)
+
+Exception: Connection refused (Connection refused)
+
+Caused by: com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+
+","BUG4:SQL"
 "1484368767378","jhipster9556","false","""monolith""","""jwt""","""no""","""no""","""no""","""mongodb""","""mongodb""","""mongodb""","""gradle""","""no""","true","false","false","[""cucumber"",""gatling"",""protractor""]","OK","Exception.java
 
 ExceptionHandlingAsyncTaskExecutor.java
