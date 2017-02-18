@@ -1,17 +1,12 @@
 package r;
 
-import org.apache.log4j.Logger;
-import org.mortbay.log.Log;
 import org.rosuda.JRI.Rengine;
 
 
 public class RAnalysis {
-	private static final Logger _log = Logger.getLogger("RAnalysis");
-	
 	private static final String[] OPTIONALS = {"Docker","enableTranslation","enableSocialSignIn",
 												"useSass", "websocket", "clusteredHttpSession",
 												"searchEngine"};
-
 
 	public static void main(String[] args) {
 		// just making sure we have the right version of everything
@@ -30,8 +25,8 @@ public class RAnalysis {
 		}
 
 		
-		// TODO
 		selectOneEnabled(re);
+		selectOneDisabled(re);
 		
 		re.end();
 		System.out.println("end");
@@ -56,7 +51,6 @@ public class RAnalysis {
 	 * @param re
 	 */
 	private static void selectOneEnabled(Rengine re){
-		//readCSV(re,"jhipster.csv","data");
 		readCSV(re,"jhipster.csv","data");
 		for(String feat : OPTIONALS){
 			selectEnabled(re,feat,feat+"OneEnabled","data");
@@ -66,7 +60,6 @@ public class RAnalysis {
 				}
 			}
 
-			// TODO 
 			// find proportion of failure
 			extractFailureProportion(re,feat+"OneEnabled");
 			// find proportion of bugs
@@ -74,6 +67,19 @@ public class RAnalysis {
 		}
 	}
 	
+	
+	private static void selectOneDisabled(Rengine re){
+		readCSV(re,"jhipster.csv","data");
+		for(String feat: OPTIONALS){
+			selectDisabled(re,feat,feat+"OneDisabled","data");
+			for (String feat2:OPTIONALS){
+				if (!feat2.equals(feat)) selectEnabled(re,feat2,feat+"OneDisabled",feat+"OneDisabled");
+			}
+			
+			extractFailureProportion(re, feat+"OneDisabled");
+			extractBugProportion(re, feat+"OneDisabled");
+		}
+	}
 	
 	
 	/**
@@ -107,6 +113,14 @@ public class RAnalysis {
 		re.eval(command);
 	}
 	
+	/**
+	 * Extract the failure proportion of dataframe collection.
+	 * 
+	 * A failure is a variant that cannot build (Build=KO).
+	 * 
+	 * @param re
+	 * @param collection
+	 */
 	private static void extractFailureProportion(Rengine re, String collection){
 		String buildOKCommand = String.format("nrow(%s[grep(\"OK\",%s$Build),])", collection,collection);
 		String buildKOCommand = String.format("nrow(%s[grep(\"KO\",%s$Build),])", collection,collection);
@@ -118,6 +132,14 @@ public class RAnalysis {
 		System.out.println("Proportion of failures in "+collection+" = "+total*100+"% ("+buildKO+"/"+(buildKO+buildOK)+") configs");
 	}
 	
+	/**
+	 * Extract the proportion of each bug in the dataframe collection.
+	 * 
+	 * More details about the bugs can be found in the reports.
+	 * 
+	 * @param re
+	 * @param collection
+	 */
 	private static void extractBugProportion(Rengine re, String collection){
 		String regex6 = "SocialUserConnection";
 		String regex3 = "Error parsing reference: \\\"jhipster - jhipster-mariadb\\\" is not a valid repository/tag"
@@ -129,20 +151,28 @@ public class RAnalysis {
 		
 		// Bug 1: mariadb gradle
 		String bug1Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex1,collection);
-		//TODO split bug2 according to Docker or Maven/Gradle
-		// Bug 2: uaa
-		String bug2Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex2,collection);
+		int bug1 = re.eval(bug1Command).asInt();
+		// Bug 2: uaa docker
+		String bug2Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),][grep(\"true\",%s[grep(\"%s\",%s$Log.Build),]$Docker),])", collection,regex2,collection,collection,regex2,collection);
+		int bug2 = re.eval(bug2Command).asInt();
 		// Bug 3: mariadb Docker
 		String bug3Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex3,collection);
+		int bug3 = re.eval(bug3Command).asInt();
 		// Bug 5: oauth2
 		String bug5Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),])", collection,regex5,collection);;
+		int bug5 = re.eval(bug5Command).asInt();
 		// Bug 6: social login
 		String bug6Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Compile),])",collection,regex6,collection);
+		int bug6 = re.eval(bug6Command).asInt();
+		// Bug 7: uaa not Docker
+		String bug7Command = String.format("nrow(%s[grep(\"%s\",%s$Log.Build),][grep(\"false\",%s[grep(\"%s\",%s$Log.Build),]$Docker),])", collection,regex2,collection,collection,regex2,collection);
+		int bug7 = re.eval(bug7Command).asInt();
 		
-		System.out.println(re.eval(bug1Command));
-		System.out.println(re.eval(bug2Command));
-		System.out.println(re.eval(bug3Command));
-		System.out.println(re.eval(bug6Command));
-		System.out.println(re.eval(bug5Command));
+		System.out.println("Number of bug 1: "+bug1);
+		System.out.println("Number of bug 2: "+bug2);
+		System.out.println("Number of bug 3: "+bug3);
+		System.out.println("Number of bug 5: "+bug5);
+		System.out.println("Number of bug 6: "+bug6);
+		System.out.println("Number of bug 7: "+bug7);
 	}
 }
