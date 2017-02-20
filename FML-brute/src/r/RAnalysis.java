@@ -27,6 +27,7 @@ public class RAnalysis {
 		
 		selectOneEnabled(re);
 		selectOneDisabled(re);
+		selectMostEnabledDisabled(re);
 		
 		re.end();
 		System.out.println("end");
@@ -81,6 +82,16 @@ public class RAnalysis {
 		}
 	}
 	
+	private static void selectMostEnabledDisabled(Rengine re){
+		readCSV(re,"jhipster.csv","data");
+		for(String feat:OPTIONALS) selectEnabled(re,feat,"data","data");
+		extractFailureProportion(re, "data");
+		extractBugProportion(re, "data");
+		readCSV(re,"jhipster.csv","data");
+		for(String feat:OPTIONALS) selectDisabled(re,feat,"data","data");
+		extractFailureProportion(re,"data");
+		extractBugProportion(re, "data");
+	}
 	
 	/**
 	 * Select and store all rows of dataframe collection where feature is enabled in outputVar.
@@ -94,7 +105,7 @@ public class RAnalysis {
 		String value = "true|spring-websocket|hazelcast|elasticsearch|ehcache";
 		
 		String command = String.format("%s <- %s[grep(\"%s\",%s$%s),]",outputVar,collection,value,collection,feature);
-		//_log.info(command);
+		//System.out.println(command);
 		re.eval(command);
 	}
 	
